@@ -262,12 +262,12 @@ function LayoutEditor() {
         </aside>
 
         {/* Stage */}
-        <main className="panel flex flex-col gap-3 p-4">
-          <div className="flex items-center justify-between">
+        <main className="flex min-w-0 flex-1 flex-col gap-3 bg-surface p-4">
+          <div className="flex shrink-0 items-center justify-between">
             <p className="label-caps">Canvas · {preset.label}</p>
             <p className="label-caps">Coverage {coverage}%</p>
           </div>
-          <div className="flex flex-1 items-center justify-center rounded-md bg-surface p-3">
+          <div className="flex min-h-0 flex-1 items-center justify-center rounded-md border border-border bg-background/50 p-4">
             <div
               ref={stageRef}
               onPointerDown={() => setSelectedId(null)}
