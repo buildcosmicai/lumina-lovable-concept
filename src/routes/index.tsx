@@ -271,8 +271,8 @@ function LayoutEditor() {
             <div
               ref={stageRef}
               onPointerDown={() => setSelectedId(null)}
-              className="relative w-full max-w-full overflow-hidden rounded-md border border-border bg-background"
-              style={{ aspectRatio: String(preset.ratio) }}
+              className="relative max-h-full max-w-full overflow-hidden rounded-md border border-border bg-background"
+              style={{ aspectRatio: String(preset.ratio), width: "100%" }}
             >
               {showGrid && (
                 <div
