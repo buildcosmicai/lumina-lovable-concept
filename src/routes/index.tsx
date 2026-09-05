@@ -78,7 +78,9 @@ const ZONE_TONE: Record<ZoneKind, string> = {
   web: "var(--zone-2)",
 };
 
-const PRESETS = [
+type Preset = { id: string; label: string; ratio: number; icon: typeof RectangleHorizontal };
+
+const PRESETS: Preset[] = [
   { id: "landscape", label: "16:9 Landscape", ratio: 16 / 9, icon: RectangleHorizontal },
   { id: "portrait", label: "9:16 Portrait", ratio: 9 / 16, icon: RectangleVertical },
   { id: "ultrawide", label: "32:9 Video wall", ratio: 32 / 9, icon: RectangleHorizontal },
@@ -98,8 +100,8 @@ const clamp = (v: number, min: number, max: number) => Math.min(max, Math.max(mi
 
 function LayoutEditor() {
   const [zones, setZones] = useState<Zone[]>(START);
-  const [selectedId, setSelectedId] = useState<string | null>(START[0].id);
-  const [preset, setPreset] = useState(PRESETS[0]);
+  const [selectedId, setSelectedId] = useState<string | null>(START[0]!.id);
+  const [preset, setPreset] = useState<Preset>(PRESETS[0]!);
   const [snap, setSnap] = useState(true);
   const [showGrid, setShowGrid] = useState(true);
   const [name, setName] = useState("Lobby — Morning loop");
@@ -384,7 +386,7 @@ function LayoutEditor() {
                     min={10}
                     max={100}
                     step={5}
-                    onValueChange={([v]) => update(selected.id, { opacity: v })}
+                    onValueChange={([v]) => update(selected.id, { opacity: v ?? selected.opacity })}
                   />
                 </div>
                 <div className="flex gap-2">
