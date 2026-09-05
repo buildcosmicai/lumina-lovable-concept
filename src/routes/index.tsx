@@ -210,9 +210,9 @@ function LayoutEditor() {
         </div>
       </header>
 
-      <div className="grid gap-4 p-4 lg:grid-cols-[220px_1fr_270px]">
+      <div className="flex min-h-0 flex-1">
         {/* Left: library + screen */}
-        <aside className="panel space-y-5 p-4">
+        <aside className="w-56 shrink-0 space-y-5 overflow-y-auto border-r border-border bg-card p-4">
           <div className="space-y-2">
             <p className="label-caps">Screen</p>
             <div className="grid gap-1.5">
