@@ -198,7 +198,7 @@ function LayoutEditor() {
           value={name}
           onChange={(e) => setName(e.target.value)}
           aria-label="Layout name"
-          className="h-8 w-full max-w-64 bg-secondary text-sm sm:w-64"
+          className="h-8 w-64 bg-secondary text-sm"
         />
         <div className="ml-auto flex items-center gap-2">
           <Button variant="secondary" size="sm" onClick={() => toast("Preview started", { description: `${zones.length} zones · ${preset.label}` })}>
