@@ -755,7 +755,10 @@ function LayoutEditor() {
               {[...zones].reverse().map((z) => (
                 <div
                   key={z.id}
-                  onClick={(e) => selectZone(z.id, e.shiftKey) || (!e.shiftKey && setSelectedIds([z.id]))}
+                  onClick={(e) => {
+                    if (e.shiftKey) selectZone(z.id, true);
+                    else setSelectedIds([z.id]);
+                  }}
                   className={cn(
                     "flex cursor-pointer items-center gap-2 rounded-md border border-transparent px-2 py-1.5 text-xs hover:bg-secondary",
                     selectedIds.includes(z.id) && "border-border bg-secondary",
