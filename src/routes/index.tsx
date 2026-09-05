@@ -331,7 +331,7 @@ function LayoutEditor() {
         </main>
 
         {/* Right: layers + inspector */}
-        <aside className="panel space-y-5 p-4">
+        <aside className="w-72 shrink-0 space-y-5 overflow-y-auto border-l border-border bg-card p-4">
           <div className="space-y-2">
             <p className="label-caps">Layers ({zones.length})</p>
             <div className="space-y-1">
