@@ -182,9 +182,9 @@ function LayoutEditor() {
   };
 
   return (
-    <div className="min-h-screen bg-surface text-foreground">
+    <div className="flex h-screen flex-col overflow-hidden bg-surface text-foreground">
       <Toaster />
-      <header className="flex flex-wrap items-center gap-3 border-b border-border bg-card px-4 py-3">
+      <header className="flex shrink-0 items-center gap-3 border-b border-border bg-card px-4 py-2.5">
         <div className="flex items-center gap-2">
           <span className="grid size-8 place-items-center rounded-md bg-primary text-primary-foreground">
             <Layers className="size-4" />
