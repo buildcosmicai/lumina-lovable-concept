@@ -154,6 +154,57 @@ function LayoutEditor() {
     window.addEventListener("pointerup", onUp);
   };
 
+  const startLibraryDrag = (e: React.PointerEvent, kind: ZoneKind, label: string) => {
+    e.preventDefault();
+    const W = 30;
+    const H = 25;
+    let created: Zone | null = null;
+    let overStage = false;
+
+    const positionFromPointer = (ev: PointerEvent): { x: number; y: number } | null => {
+      const stage = stageRef.current;
+      if (!stage) return null;
+      const rect = stage.getBoundingClientRect();
+      if (ev.clientX < rect.left || ev.clientX > rect.right || ev.clientY < rect.top || ev.clientY > rect.bottom) return null;
+      const px = ((ev.clientX - rect.left) / rect.width) * 100;
+      const py = ((ev.clientY - rect.top) / rect.height) * 100;
+      return {
+        x: clamp(snapVal(px - W / 2), 0, 100 - W),
+        y: clamp(snapVal(py - H / 2), 0, 100 - H),
+      };
+    };
+
+    const onMove = (ev: PointerEvent) => {
+      const pos = positionFromPointer(ev);
+      overStage = pos !== null;
+      if (!pos) return;
+      if (!created) {
+        const zone: Zone = { id: uid(), name: label, kind, x: pos.x, y: pos.y, w: W, h: H, locked: false, opacity: 100 };
+        created = zone;
+        setZones((p) => [...p, zone]);
+        setSelectedId(zone.id);
+      } else {
+        update(created.id, pos);
+      }
+    };
+
+    const onUp = (ev: PointerEvent) => {
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerup", onUp);
+      const moved = Math.abs(ev.clientX - e.clientX) + Math.abs(ev.clientY - e.clientY) > 4;
+      if (!moved) {
+        // Plain click: keep the classic "add at default spot" behavior
+        if (created) remove(created.id);
+        addZone(kind, label);
+        return;
+      }
+      if (created && !overStage) remove(created.id);
+    };
+
+    window.addEventListener("pointermove", onMove);
+    window.addEventListener("pointerup", onUp);
+  };
+
   const addZone = (kind: ZoneKind, label: string) => {
     const zone: Zone = {
       id: uid(),
@@ -238,8 +289,9 @@ function LayoutEditor() {
               {KINDS.map((k) => (
                 <button
                   key={k.kind}
-                  onClick={() => addZone(k.kind, k.label)}
-                  className="flex flex-col items-start gap-1.5 rounded-md border border-border bg-secondary/40 px-2.5 py-2 text-left text-xs transition-colors hover:border-primary/50 hover:bg-secondary"
+                  onPointerDown={(e) => startLibraryDrag(e, k.kind, k.label)}
+                  title="Drag onto the canvas or click to add"
+                  className="flex cursor-grab touch-none flex-col items-start gap-1.5 rounded-md border border-border bg-secondary/40 px-2.5 py-2 text-left text-xs transition-colors select-none hover:border-primary/50 hover:bg-secondary active:cursor-grabbing"
                 >
                   <k.icon className="size-4" style={{ color: ZONE_TONE[k.kind] }} />
                   {k.label}
