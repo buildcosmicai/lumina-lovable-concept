@@ -182,9 +182,9 @@ function LayoutEditor() {
   };
 
   return (
-    <div className="min-h-screen bg-surface text-foreground">
+    <div className="flex h-screen flex-col overflow-hidden bg-surface text-foreground">
       <Toaster />
-      <header className="flex flex-wrap items-center gap-3 border-b border-border bg-card px-4 py-3">
+      <header className="flex shrink-0 items-center gap-3 border-b border-border bg-card px-4 py-2.5">
         <div className="flex items-center gap-2">
           <span className="grid size-8 place-items-center rounded-md bg-primary text-primary-foreground">
             <Layers className="size-4" />
@@ -198,7 +198,7 @@ function LayoutEditor() {
           value={name}
           onChange={(e) => setName(e.target.value)}
           aria-label="Layout name"
-          className="h-8 w-full max-w-64 bg-secondary text-sm sm:w-64"
+          className="h-8 w-64 bg-secondary text-sm"
         />
         <div className="ml-auto flex items-center gap-2">
           <Button variant="secondary" size="sm" onClick={() => toast("Preview started", { description: `${zones.length} zones · ${preset.label}` })}>
@@ -210,9 +210,9 @@ function LayoutEditor() {
         </div>
       </header>
 
-      <div className="grid gap-4 p-4 lg:grid-cols-[220px_1fr_270px]">
+      <div className="flex min-h-0 flex-1">
         {/* Left: library + screen */}
-        <aside className="panel space-y-5 p-4">
+        <aside className="w-56 shrink-0 space-y-5 overflow-y-auto border-r border-border bg-card p-4">
           <div className="space-y-2">
             <p className="label-caps">Screen</p>
             <div className="grid gap-1.5">
@@ -262,17 +262,20 @@ function LayoutEditor() {
         </aside>
 
         {/* Stage */}
-        <main className="panel flex flex-col gap-3 p-4">
-          <div className="flex items-center justify-between">
+        <main className="flex min-w-0 flex-1 flex-col gap-3 bg-surface p-4">
+          <div className="flex shrink-0 items-center justify-between">
             <p className="label-caps">Canvas · {preset.label}</p>
             <p className="label-caps">Coverage {coverage}%</p>
           </div>
-          <div className="flex flex-1 items-center justify-center rounded-md bg-surface p-3">
+          <div className="flex min-h-0 flex-1 items-center justify-center rounded-md border border-border bg-background/50 p-4">
             <div
               ref={stageRef}
               onPointerDown={() => setSelectedId(null)}
-              className="relative w-full max-w-full overflow-hidden rounded-md border border-border bg-background"
-              style={{ aspectRatio: String(preset.ratio) }}
+              className="relative max-h-full overflow-hidden rounded-md border border-border bg-background"
+              style={{
+                aspectRatio: String(preset.ratio),
+                width: `min(100%, calc((100vh - 150px) * ${preset.ratio}))`,
+              }}
             >
               {showGrid && (
                 <div
@@ -328,7 +331,7 @@ function LayoutEditor() {
         </main>
 
         {/* Right: layers + inspector */}
-        <aside className="panel space-y-5 p-4">
+        <aside className="w-72 shrink-0 space-y-5 overflow-y-auto border-l border-border bg-card p-4">
           <div className="space-y-2">
             <p className="label-caps">Layers ({zones.length})</p>
             <div className="space-y-1">
