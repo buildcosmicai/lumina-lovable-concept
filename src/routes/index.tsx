@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   Check,
@@ -511,6 +511,14 @@ function LayoutEditor() {
             <p className="label-caps">Zone composer</p>
           </div>
         </div>
+        <nav className="ml-4 flex items-center gap-1 text-sm">
+          <Link
+            to="/layouts"
+            className="rounded-md px-2.5 py-1 text-muted-foreground hover:bg-secondary hover:text-foreground"
+          >
+            Layouts
+          </Link>
+        </nav>
         <Input
           value={name}
           onChange={(e) => setName(e.target.value)}
