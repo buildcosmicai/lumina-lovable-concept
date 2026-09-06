@@ -1,12 +1,16 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import {
+  Check,
   Clock,
   CloudSun,
   Copy,
+  Folder as FolderIcon,
+  FolderPlus,
   Image as ImageIcon,
   Layers,
   Monitor,
+  MoreHorizontal,
   PenSquare,
   Plus,
   RectangleHorizontal,
@@ -15,10 +19,19 @@ import {
   Trash2,
   Type as TypeIcon,
   Video,
+  X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Toaster } from "@/components/ui/sonner";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
@@ -87,6 +100,9 @@ const uid = () => Math.random().toString(36).slice(2, 9);
 
 const EDITOR_KEY = "signage-layout-editor:v1";
 const LIBRARY_KEY = "signage-layout-editor:layouts:v1";
+const FOLDERS_KEY = "signage-layout-editor:folders:v1";
+
+type Folder = { id: string; name: string };
 
 type LayoutEntry = {
   id: string;
@@ -94,6 +110,7 @@ type LayoutEntry = {
   presetId: string;
   zones: Zone[];
   savedAt: string; // ISO
+  folderId?: string | null;
 };
 
 const DEFAULT_SETTINGS = {
@@ -233,6 +250,10 @@ function MiniPreview({ entry }: { entry: LayoutEntry }) {
 function LayoutsPage() {
   const navigate = useNavigate();
   const [layouts, setLayouts] = useState<LayoutEntry[]>([]);
+  const [folders, setFolders] = useState<Folder[]>([]);
+  const [activeFolder, setActiveFolder] = useState<string | "all" | "unfiled">("all");
+  const [creatingFolder, setCreatingFolder] = useState(false);
+  const [folderName, setFolderName] = useState("");
   const [query, setQuery] = useState("");
   const [loaded, setLoaded] = useState(false);
 
