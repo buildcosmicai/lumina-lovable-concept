@@ -386,9 +386,15 @@ function LayoutsPage() {
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    const list = q ? layouts.filter((l) => l.name.toLowerCase().includes(q)) : layouts;
+    const scoped =
+      activeFolder === "all"
+        ? layouts
+        : activeFolder === "unfiled"
+          ? layouts.filter((l) => !l.folderId)
+          : layouts.filter((l) => l.folderId === activeFolder);
+    const list = q ? scoped.filter((l) => l.name.toLowerCase().includes(q)) : scoped;
     return [...list].sort((a, b) => +new Date(b.savedAt) - +new Date(a.savedAt));
-  }, [layouts, query]);
+  }, [layouts, query, activeFolder]);
 
   return (
     <div className="flex min-h-screen flex-col bg-surface text-foreground">
@@ -426,7 +432,78 @@ function LayoutsPage() {
         </div>
       </header>
 
-      <main className="mx-auto w-full max-w-7xl flex-1 px-6 py-6">
+      <div className="mx-auto flex w-full max-w-7xl flex-1 gap-6 px-6 py-6">
+        <aside className="w-52 shrink-0 space-y-1">
+          <div className="mb-2 flex items-center justify-between">
+            <p className="label-caps">Folders</p>
+            <button
+              onClick={() => setCreatingFolder(true)}
+              className="grid size-6 place-items-center rounded-md text-muted-foreground hover:bg-secondary hover:text-primary"
+              aria-label="New folder"
+            >
+              <FolderPlus className="size-3.5" />
+            </button>
+          </div>
+          {creatingFolder && (
+            <div className="mb-2 flex items-center gap-1">
+              <Input
+                autoFocus
+                value={folderName}
+                onChange={(e) => setFolderName(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") createFolder();
+                  if (e.key === "Escape") {
+                    setCreatingFolder(false);
+                    setFolderName("");
+                  }
+                }}
+                placeholder="Folder name"
+                className="h-7 flex-1 text-xs"
+              />
+              <button onClick={createFolder} aria-label="Create folder" className="grid size-6 place-items-center rounded-md text-primary hover:bg-secondary">
+                <Check className="size-3.5" />
+              </button>
+              <button onClick={() => { setCreatingFolder(false); setFolderName(""); }} aria-label="Cancel" className="grid size-6 place-items-center rounded-md text-muted-foreground hover:bg-secondary">
+                <X className="size-3.5" />
+              </button>
+            </div>
+          )}
+          {(
+            [
+              { id: "all" as const, name: "All layouts", count: layouts.length },
+              { id: "unfiled" as const, name: "Unfiled", count: layouts.filter((l) => !l.folderId).length },
+              ...folders.map((f) => ({ ...f, count: layouts.filter((l) => l.folderId === f.id).length })),
+            ]
+          ).map((f) => (
+            <div
+              key={f.id}
+              className={cn(
+                "group flex w-full cursor-pointer items-center gap-2 rounded-md px-2.5 py-1.5 text-sm",
+                activeFolder === f.id ? "bg-secondary font-medium text-primary" : "text-muted-foreground hover:bg-secondary hover:text-foreground",
+              )}
+              onClick={() => setActiveFolder(f.id)}
+              role="button"
+            >
+              <FolderIcon className="size-3.5 shrink-0" />
+              <span className="min-w-0 flex-1 truncate">{f.name}</span>
+              <span className="font-mono text-[10px] text-muted-foreground">{f.count}</span>
+              {f.id !== "all" && f.id !== "unfiled" && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    deleteFolder(f as Folder & { count: number });
+                  }}
+                  aria-label={`Delete folder ${f.name}`}
+                  className="hidden size-4 place-items-center rounded text-destructive group-hover:grid"
+                >
+                  <Trash2 className="size-3" />
+                </button>
+              )}
+            </div>
+          ))}
+        </aside>
+
+      <main className="min-w-0 flex-1">
         <div className="mb-4 flex items-baseline justify-between">
           <p className="label-caps">
             {filtered.length} layout{filtered.length === 1 ? "" : "s"}
