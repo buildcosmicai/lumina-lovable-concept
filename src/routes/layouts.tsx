@@ -284,6 +284,12 @@ function LayoutsPage() {
     } catch {
       /* ignore */
     }
+    try {
+      const fraw = localStorage.getItem(FOLDERS_KEY);
+      if (fraw) setFolders(JSON.parse(fraw) as Folder[]);
+    } catch {
+      /* ignore */
+    }
     setLoaded(true);
   }, []);
 
@@ -294,6 +300,39 @@ function LayoutsPage() {
     } catch {
       /* ignore */
     }
+  };
+
+  const persistFolders = (next: Folder[]) => {
+    setFolders(next);
+    try {
+      localStorage.setItem(FOLDERS_KEY, JSON.stringify(next));
+    } catch {
+      /* ignore */
+    }
+  };
+
+  const createFolder = () => {
+    const name = folderName.trim();
+    if (!name) return;
+    const folder = { id: uid(), name };
+    persistFolders([...folders, folder]);
+    setFolderName("");
+    setCreatingFolder(false);
+    setActiveFolder(folder.id);
+    toast.success("Folder created", { description: name });
+  };
+
+  const deleteFolder = (folder: Folder) => {
+    persistFolders(folders.filter((f) => f.id !== folder.id));
+    persist(layouts.map((l) => (l.folderId === folder.id ? { ...l, folderId: null } : l)));
+    if (activeFolder === folder.id) setActiveFolder("all");
+    toast("Folder deleted", { description: `${folder.name} — layouts kept, now unfiled` });
+  };
+
+  const moveToFolder = (entry: LayoutEntry, folderId: string | null) => {
+    persist(layouts.map((l) => (l.id === entry.id ? { ...l, folderId } : l)));
+    const target = folderId ? folders.find((f) => f.id === folderId)?.name : "Unfiled";
+    toast.success("Layout moved", { description: `${entry.name} → ${target}` });
   };
 
   const openInEditor = (entry: LayoutEntry) => {
