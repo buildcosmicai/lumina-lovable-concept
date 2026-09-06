@@ -576,7 +576,8 @@ function LayoutsPage() {
             })}
           </div>
         )}
-      </main>
+        </main>
+      </div>
     </div>
   );
 }
