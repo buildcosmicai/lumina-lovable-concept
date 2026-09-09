@@ -1,14 +1,22 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import {
+  Activity,
+  CalendarDays,
   Check,
+  ChevronLeft,
+  ChevronRight,
   Clock,
   CloudSun,
   Copy,
+  Gauge,
   Folder as FolderIcon,
   FolderPlus,
   Image as ImageIcon,
+  Images,
+  KeyRound,
   Layers,
+  ListVideo,
   Monitor,
   MoreHorizontal,
   PenSquare,
@@ -16,8 +24,10 @@ import {
   RectangleHorizontal,
   RectangleVertical,
   Search,
+  Settings,
   Trash2,
   Type as TypeIcon,
+  Users,
   Video,
   X,
 } from "lucide-react";
@@ -249,6 +259,7 @@ function MiniPreview({ entry }: { entry: LayoutEntry }) {
 
 function LayoutsPage() {
   const navigate = useNavigate();
+  const [sidebarOpen, setSidebarOpen] = useState(true);
   const [layouts, setLayouts] = useState<LayoutEntry[]>([]);
   const [folders, setFolders] = useState<Folder[]>([]);
   const [activeFolder, setActiveFolder] = useState<string | "all" | "unfiled">("all");
@@ -397,53 +408,84 @@ function LayoutsPage() {
   }, [layouts, query, activeFolder]);
 
   return (
-    <div className="flex min-h-screen flex-col bg-surface text-foreground">
+    <div className="flex min-h-screen bg-surface text-foreground">
       <Toaster />
-      <header className="flex shrink-0 items-center gap-3 border-b border-border bg-card px-4 py-2.5">
-        <div className="flex items-center gap-2">
-          <span className="grid size-8 place-items-center rounded-md bg-primary text-primary-foreground">
+      <aside className={cn("sticky top-0 flex h-screen shrink-0 border-r border-border bg-card transition-[width] duration-200", sidebarOpen ? "w-72" : "w-16")}>
+        <div className="flex w-16 shrink-0 flex-col items-center border-r border-border bg-surface py-3">
+          <Link to="/layouts" aria-label="Layouts home" className="mb-5 grid size-9 place-items-center rounded-md bg-primary text-primary-foreground shadow-sm">
             <Layers className="size-4" />
-          </span>
-          <div>
-            <h1 className="text-sm font-semibold leading-tight">Signage Layout Editor</h1>
-            <p className="label-caps">Layouts</p>
-          </div>
-        </div>
-        <nav className="ml-4 flex items-center gap-1 text-sm">
-          <span className="rounded-md bg-secondary px-2.5 py-1 font-medium text-primary">Layouts</span>
-          <Link to="/" className="rounded-md px-2.5 py-1 text-muted-foreground hover:bg-secondary hover:text-foreground">
-            Editor
           </Link>
-        </nav>
-        <div className="ml-auto flex items-center gap-2">
-          <div className="relative">
-            <Search className="pointer-events-none absolute left-2.5 top-1/2 size-3.5 -translate-y-1/2 text-muted-foreground" />
-            <Input
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search layouts"
-              aria-label="Search layouts"
-              className="h-8 w-56 bg-secondary pl-8 text-sm"
-            />
-          </div>
-          <Button size="sm" onClick={createNew}>
-            <Plus className="size-4" /> New layout
+          <nav aria-label="Primary navigation" className="flex flex-col items-center gap-1.5">
+            {[
+              { label: "Control Center", icon: Gauge },
+              { label: "Pulse", icon: Activity },
+              { label: "Screens", icon: Monitor },
+              { label: "Schedules", icon: CalendarDays },
+              { label: "Media", icon: Images },
+              { label: "Playlists", icon: ListVideo },
+              { label: "Layouts", icon: Layers, active: true },
+              { label: "Licensing", icon: KeyRound },
+              { label: "Users", icon: Users },
+            ].map((item) => (
+              <Button
+                key={item.label}
+                variant="ghost"
+                size="icon"
+                title={item.label}
+                aria-label={item.label}
+                onClick={() => item.active ? setActiveFolder("all") : toast(item.label, { description: "This section is not connected yet." })}
+                className={cn("size-9 text-muted-foreground", item.active && "bg-primary/15 text-primary hover:bg-primary/20 hover:text-primary")}
+              >
+                <item.icon className="size-4" />
+              </Button>
+            ))}
+          </nav>
+          <Button variant="ghost" size="icon" title="Settings" aria-label="Settings" className="mt-auto size-9 text-muted-foreground" onClick={() => toast("Settings", { description: "This section is not connected yet." })}>
+            <Settings className="size-4" />
           </Button>
         </div>
-      </header>
 
-      <div className="mx-auto flex w-full max-w-7xl flex-1 gap-6 px-6 py-6">
-        <aside className="w-52 shrink-0 space-y-1">
-          <div className="mb-2 flex items-center justify-between">
-            <p className="label-caps">Folders</p>
-            <button
-              onClick={() => setCreatingFolder(true)}
-              className="grid size-6 place-items-center rounded-md text-muted-foreground hover:bg-secondary hover:text-primary"
-              aria-label="New folder"
-            >
-              <FolderPlus className="size-3.5" />
-            </button>
-          </div>
+        {sidebarOpen && (
+          <div className="flex min-w-0 flex-1 flex-col overflow-y-auto px-4 py-4">
+            <div className="mb-5 flex items-start justify-between gap-2">
+              <div>
+                <p className="font-display text-sm font-semibold">Signage CMS</p>
+                <p className="label-caps mt-0.5">Workspace</p>
+              </div>
+              <Button variant="ghost" size="icon" onClick={() => setSidebarOpen(false)} aria-label="Collapse sidebar" title="Collapse sidebar" className="size-7 text-muted-foreground">
+                <ChevronLeft className="size-3.5" />
+              </Button>
+            </div>
+
+            {[
+              { title: "Main", items: ["Control Center", "Pulse"] },
+              { title: "Network", items: ["Screens", "Schedules"] },
+              { title: "Library", items: ["Media", "Playlists", "Layouts", "Licensing", "Users"] },
+            ].map((group) => (
+              <section key={group.title} className="mb-4">
+                <p className="label-caps mb-1.5 px-2">{group.title}</p>
+                <nav className="space-y-0.5" aria-label={group.title}>
+                  {group.items.map((item) => (
+                    <Button
+                      key={item}
+                      variant="ghost"
+                      onClick={() => item === "Layouts" ? setActiveFolder("all") : toast(item, { description: "This section is not connected yet." })}
+                      className={cn("h-8 w-full justify-start px-2 text-sm font-normal text-muted-foreground", item === "Layouts" && "bg-primary/15 font-semibold text-primary hover:bg-primary/20 hover:text-primary")}
+                    >
+                      {item}
+                    </Button>
+                  ))}
+                </nav>
+              </section>
+            ))}
+
+            <section className="mt-1 border-t border-border pt-4">
+              <div className="mb-2 flex items-center justify-between px-2">
+                <p className="label-caps">Folders</p>
+                <Button variant="ghost" size="icon" onClick={() => setCreatingFolder(true)} className="size-6 text-muted-foreground hover:text-primary" aria-label="New folder" title="New folder">
+                  <FolderPlus className="size-3.5" />
+                </Button>
+              </div>
           {creatingFolder && (
             <div className="mb-2 flex items-center gap-1">
               <Input
@@ -460,12 +502,12 @@ function LayoutsPage() {
                 placeholder="Folder name"
                 className="h-7 flex-1 text-xs"
               />
-              <button onClick={createFolder} aria-label="Create folder" className="grid size-6 place-items-center rounded-md text-primary hover:bg-secondary">
+              <Button variant="ghost" size="icon" onClick={createFolder} aria-label="Create folder" className="size-6 text-primary">
                 <Check className="size-3.5" />
-              </button>
-              <button onClick={() => { setCreatingFolder(false); setFolderName(""); }} aria-label="Cancel" className="grid size-6 place-items-center rounded-md text-muted-foreground hover:bg-secondary">
+              </Button>
+              <Button variant="ghost" size="icon" onClick={() => { setCreatingFolder(false); setFolderName(""); }} aria-label="Cancel" className="size-6 text-muted-foreground">
                 <X className="size-3.5" />
-              </button>
+              </Button>
             </div>
           )}
           {(
@@ -488,20 +530,48 @@ function LayoutsPage() {
               <span className="min-w-0 flex-1 truncate">{f.name}</span>
               <span className="font-mono text-[10px] text-muted-foreground">{f.count}</span>
               {f.id !== "all" && f.id !== "unfiled" && (
-                <button
+                <Button
+                  variant="ghost"
+                  size="icon"
                   onClick={(e) => {
                     e.stopPropagation();
                     deleteFolder(f as Folder & { count: number });
                   }}
                   aria-label={`Delete folder ${f.name}`}
-                  className="hidden size-4 place-items-center rounded text-destructive group-hover:grid"
+                  className="hidden size-5 text-destructive group-hover:inline-flex"
                 >
                   <Trash2 className="size-3" />
-                </button>
+                </Button>
               )}
             </div>
           ))}
-        </aside>
+            </section>
+          </div>
+        )}
+        {!sidebarOpen && (
+          <Button variant="ghost" size="icon" onClick={() => setSidebarOpen(true)} aria-label="Expand sidebar" title="Expand sidebar" className="absolute left-11 top-3 size-7 border border-border bg-card text-muted-foreground shadow-sm">
+            <ChevronRight className="size-3.5" />
+          </Button>
+        )}
+      </aside>
+
+      <div className="flex min-w-0 flex-1 flex-col">
+        <header className="flex shrink-0 items-center gap-3 border-b border-border bg-card px-5 py-3">
+          <div>
+            <h1 className="font-display text-base font-semibold leading-tight">Layouts</h1>
+            <p className="text-xs text-muted-foreground">Create and manage screen compositions</p>
+          </div>
+          <Link to="/" className="ml-3 rounded-md px-2.5 py-1 text-sm text-muted-foreground hover:bg-secondary hover:text-foreground">Editor</Link>
+          <div className="ml-auto flex items-center gap-2">
+            <div className="relative">
+              <Search className="pointer-events-none absolute left-2.5 top-1/2 size-3.5 -translate-y-1/2 text-muted-foreground" />
+              <Input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search layouts" aria-label="Search layouts" className="h-8 w-56 bg-secondary pl-8 text-sm" />
+            </div>
+            <Button size="sm" onClick={createNew}><Plus className="size-4" /> New layout</Button>
+          </div>
+        </header>
+
+        <div className="mx-auto flex w-full max-w-7xl flex-1 px-6 py-6">
 
       <main className="min-w-0 flex-1">
         <div className="mb-4 flex items-baseline justify-between">
@@ -577,6 +647,7 @@ function LayoutsPage() {
           </div>
         )}
         </main>
+        </div>
       </div>
     </div>
   );
