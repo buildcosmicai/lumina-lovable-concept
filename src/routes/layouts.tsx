@@ -106,6 +106,18 @@ const PRESETS: Preset[] = [
   { id: "ultrawide", label: "32:9 Video wall", ratio: 32 / 9, icon: RectangleHorizontal },
 ];
 
+const NAV_ITEMS = [
+  { label: "Control Center", icon: Gauge },
+  { label: "Pulse", icon: Activity },
+  { label: "Screens", icon: Monitor },
+  { label: "Schedules", icon: CalendarDays },
+  { label: "Media", icon: Images },
+  { label: "Playlists", icon: ListVideo },
+  { label: "Layouts", icon: Layers, active: true },
+  { label: "Licensing", icon: KeyRound },
+  { label: "Users", icon: Users },
+];
+
 const uid = () => Math.random().toString(36).slice(2, 9);
 
 const EDITOR_KEY = "signage-layout-editor:v1";
