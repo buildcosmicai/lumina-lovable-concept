@@ -449,37 +449,29 @@ function LayoutsPage() {
 
         {sidebarOpen && (
           <div className="flex min-w-0 flex-1 flex-col overflow-y-auto px-4 py-4">
-            <div className="mb-5 flex items-start justify-between gap-2">
-              <div>
+            <div className="mb-5 flex h-9 items-center justify-between gap-2">
+              <div className="flex items-baseline gap-2">
                 <p className="font-display text-sm font-semibold">Signage CMS</p>
-                <p className="label-caps mt-0.5">Workspace</p>
+                <p className="label-caps">Workspace</p>
               </div>
               <Button variant="ghost" size="icon" onClick={() => setSidebarOpen(false)} aria-label="Collapse sidebar" title="Collapse sidebar" className="size-7 text-muted-foreground">
                 <ChevronLeft className="size-3.5" />
               </Button>
             </div>
 
-            {[
-              { title: "Main", items: ["Control Center", "Pulse"] },
-              { title: "Network", items: ["Screens", "Schedules"] },
-              { title: "Library", items: ["Media", "Playlists", "Layouts", "Licensing", "Users"] },
-            ].map((group) => (
-              <section key={group.title} className="mb-4">
-                <p className="label-caps mb-1.5 px-2">{group.title}</p>
-                <nav className="space-y-0.5" aria-label={group.title}>
-                  {group.items.map((item) => (
-                    <Button
-                      key={item}
-                      variant="ghost"
-                      onClick={() => item === "Layouts" ? setActiveFolder("all") : toast(item, { description: "This section is not connected yet." })}
-                      className={cn("h-8 w-full justify-start px-2 text-sm font-normal text-muted-foreground", item === "Layouts" && "bg-primary/15 font-semibold text-primary hover:bg-primary/20 hover:text-primary")}
-                    >
-                      {item}
-                    </Button>
-                  ))}
-                </nav>
-              </section>
-            ))}
+            <nav aria-label="Primary navigation" className="flex flex-col gap-0.5">
+              {NAV_ITEMS.map((item) => (
+                <Button
+                  key={item.label}
+                  variant="ghost"
+                  onClick={() => item.active ? setActiveFolder("all") : toast(item.label, { description: "This section is not connected yet." })}
+                  className={cn("h-9 w-full justify-start gap-3 px-2 text-sm font-normal text-muted-foreground", item.active && "bg-primary/15 font-semibold text-primary hover:bg-primary/20 hover:text-primary")}
+                >
+                  <item.icon className="size-4 shrink-0" />
+                  {item.label}
+                </Button>
+              ))}
+            </nav>
 
             <section className="mt-1 border-t border-border pt-4">
               <div className="mb-2 flex items-center justify-between px-2">
