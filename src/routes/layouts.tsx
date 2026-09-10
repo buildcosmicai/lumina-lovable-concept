@@ -427,18 +427,8 @@ function LayoutsPage() {
           <Link to="/layouts" aria-label="Layouts home" className="mb-5 grid size-9 place-items-center rounded-md bg-primary text-primary-foreground shadow-sm">
             <Layers className="size-4" />
           </Link>
-          <nav aria-label="Primary navigation" className="flex flex-col items-center gap-1.5">
-            {[
-              { label: "Control Center", icon: Gauge },
-              { label: "Pulse", icon: Activity },
-              { label: "Screens", icon: Monitor },
-              { label: "Schedules", icon: CalendarDays },
-              { label: "Media", icon: Images },
-              { label: "Playlists", icon: ListVideo },
-              { label: "Layouts", icon: Layers, active: true },
-              { label: "Licensing", icon: KeyRound },
-              { label: "Users", icon: Users },
-            ].map((item) => (
+          <nav aria-label="Primary navigation" className="flex flex-col items-center gap-0.5">
+            {NAV_ITEMS.map((item) => (
               <Button
                 key={item.label}
                 variant="ghost"
