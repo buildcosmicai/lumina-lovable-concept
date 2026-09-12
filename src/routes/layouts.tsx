@@ -111,9 +111,9 @@ const NAV_ITEMS = [
   { label: "Pulse", icon: Activity },
   { label: "Screens", icon: Monitor },
   { label: "Schedules", icon: CalendarDays },
-  { label: "Media", icon: Images },
+  { label: "Media", icon: Images, to: "/media" as const },
   { label: "Playlists", icon: ListVideo },
-  { label: "Layouts", icon: Layers, active: true },
+  { label: "Layouts", icon: Layers, active: true, to: "/layouts" as const },
   { label: "Licensing", icon: KeyRound },
   { label: "Users", icon: Users },
 ];
@@ -428,18 +428,12 @@ function LayoutsPage() {
             <Layers className="size-4" />
           </Link>
           <nav aria-label="Primary navigation" className="flex flex-col items-center gap-0.5">
-            {NAV_ITEMS.map((item) => (
-              <Button
-                key={item.label}
-                variant="ghost"
-                size="icon"
-                title={item.label}
-                aria-label={item.label}
-                onClick={() => item.active ? setActiveFolder("all") : toast(item.label, { description: "This section is not connected yet." })}
-                className={cn("size-9 text-muted-foreground", item.active && "bg-primary/15 text-primary hover:bg-primary/20 hover:text-primary")}
-              >
-                <item.icon className="size-4" />
+            {NAV_ITEMS.map((item) => item.to ? (
+              <Button key={item.label} asChild variant="ghost" size="icon" className={cn("size-9 text-muted-foreground", item.active && "bg-primary/15 text-primary hover:bg-primary/20 hover:text-primary")}>
+                <Link to={item.to} title={item.label} aria-label={item.label}><item.icon className="size-4" /></Link>
               </Button>
+            ) : (
+              <Button key={item.label} variant="ghost" size="icon" title={item.label} aria-label={item.label} onClick={() => toast(item.label, { description: "This section is not connected yet." })} className="size-9 text-muted-foreground"><item.icon className="size-4" /></Button>
             ))}
           </nav>
           <Button variant="ghost" size="icon" title="Settings" aria-label="Settings" className="mt-auto size-9 text-muted-foreground" onClick={() => toast("Settings", { description: "This section is not connected yet." })}>
@@ -460,16 +454,12 @@ function LayoutsPage() {
             </div>
 
             <nav aria-label="Primary navigation" className="flex flex-col gap-0.5">
-              {NAV_ITEMS.map((item) => (
-                <Button
-                  key={item.label}
-                  variant="ghost"
-                  onClick={() => item.active ? setActiveFolder("all") : toast(item.label, { description: "This section is not connected yet." })}
-                  className={cn("h-9 w-full justify-start gap-3 px-2 text-sm font-normal text-muted-foreground", item.active && "bg-primary/15 font-semibold text-primary hover:bg-primary/20 hover:text-primary")}
-                >
-                  <item.icon className="size-4 shrink-0" />
-                  {item.label}
+              {NAV_ITEMS.map((item) => item.to ? (
+                <Button key={item.label} asChild variant="ghost" className={cn("h-9 w-full justify-start gap-3 px-2 text-sm font-normal text-muted-foreground", item.active && "bg-primary/15 font-semibold text-primary hover:bg-primary/20 hover:text-primary")}>
+                  <Link to={item.to}><item.icon className="size-4 shrink-0" />{item.label}</Link>
                 </Button>
+              ) : (
+                <Button key={item.label} variant="ghost" onClick={() => toast(item.label, { description: "This section is not connected yet." })} className="h-9 w-full justify-start gap-3 px-2 text-sm font-normal text-muted-foreground"><item.icon className="size-4 shrink-0" />{item.label}</Button>
               ))}
             </nav>
 
