@@ -70,7 +70,19 @@ function MediaPage() {
   const [creatingFolder, setCreatingFolder] = useState(false);
   const [folderName, setFolderName] = useState("");
   const [view, setView] = useState<"grid" | "list">("grid");
+  const [renaming, setRenaming] = useState(false);
+  const [draftName, setDraftName] = useState("");
   const selected = items.find((item) => item.id === selectedId) ?? null;
+
+  const startRename = (item: MediaItem) => { setSelectedId(item.id); setDraftName(item.name); setRenaming(true); };
+  const commitRename = () => {
+    const name = draftName.trim();
+    if (!name || !selected) { setRenaming(false); return; }
+    setItems((current) => current.map((item) => (item.id === selected.id ? { ...item, name } : item)));
+    setRenaming(false);
+    toast.success("File renamed", { description: name });
+  };
+
 
   const visible = useMemo(() => items.filter((item) => {
     const matchesSearch = item.name.toLowerCase().includes(query.trim().toLowerCase());
