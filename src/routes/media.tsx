@@ -62,7 +62,7 @@ function MediaPage() {
   const uploadRef = useRef<HTMLInputElement>(null);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [items, setItems] = useState(START_MEDIA);
-  const [selectedId, setSelectedId] = useState(START_MEDIA[0].id);
+  const [selectedId, setSelectedId] = useState(START_MEDIA[0]!.id);
   const [query, setQuery] = useState("");
   const [kind, setKind] = useState<"all" | MediaKind>("all");
   const [folder, setFolder] = useState("All media");
