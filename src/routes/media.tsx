@@ -190,7 +190,7 @@ function MediaPage() {
               <div className="panel overflow-hidden"><div className="grid grid-cols-[44px_minmax(180px,1fr)_90px_110px_120px_36px] gap-3 border-b border-border bg-secondary/60 px-3 py-2 label-caps"><span /><span>Name</span><span>Type</span><span>Size</span><span>Added</span><span /></div>{visible.map((item) => <div key={item.id} onClick={() => setSelectedId(item.id)} className={cn("grid cursor-pointer grid-cols-[44px_minmax(180px,1fr)_90px_110px_120px_36px] items-center gap-3 border-b border-border px-3 py-2.5 text-xs last:border-0 hover:bg-secondary/50", item.id === selectedId && "bg-primary/10")}><img src={item.src} alt="" width={80} height={45} className="h-8 w-11 rounded-sm object-cover" /><span className="truncate font-medium">{item.name}</span><span className="capitalize text-muted-foreground">{item.kind}</span><span className="font-mono text-[10px] text-muted-foreground">{item.size}</span><span className="text-muted-foreground">{item.added}</span><ItemMenu item={item} onDelete={() => removeItem(item)} onRename={() => startRename(item)} /></div>)}</div>
             )}
           </main>
-          {selected && <DetailsPanel item={selected} onClose={() => setSelectedId("")} onDelete={() => removeItem(selected)} />}
+          {selected && <DetailsPanel item={selected} onClose={() => { setRenaming(false); setSelectedId(""); }} onDelete={() => removeItem(selected)} renaming={renaming} draftName={draftName} setDraftName={setDraftName} onStartRename={() => startRename(selected)} onCommitRename={commitRename} onCancelRename={() => setRenaming(false)} />}
         </div>
       </div>
     </div>
