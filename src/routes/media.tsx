@@ -62,7 +62,7 @@ function MediaPage() {
   const uploadRef = useRef<HTMLInputElement>(null);
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [items, setItems] = useState(START_MEDIA);
-  const [selectedId, setSelectedId] = useState(START_MEDIA[0].id);
+  const [selectedId, setSelectedId] = useState(START_MEDIA[0]!.id);
   const [query, setQuery] = useState("");
   const [kind, setKind] = useState<"all" | MediaKind>("all");
   const [folder, setFolder] = useState("All media");
@@ -70,7 +70,19 @@ function MediaPage() {
   const [creatingFolder, setCreatingFolder] = useState(false);
   const [folderName, setFolderName] = useState("");
   const [view, setView] = useState<"grid" | "list">("grid");
+  const [renaming, setRenaming] = useState(false);
+  const [draftName, setDraftName] = useState("");
   const selected = items.find((item) => item.id === selectedId) ?? null;
+
+  const startRename = (item: MediaItem) => { setSelectedId(item.id); setDraftName(item.name); setRenaming(true); };
+  const commitRename = () => {
+    const name = draftName.trim();
+    if (!name || !selected) { setRenaming(false); return; }
+    setItems((current) => current.map((item) => (item.id === selected.id ? { ...item, name } : item)));
+    setRenaming(false);
+    toast.success("File renamed", { description: name });
+  };
+
 
   const visible = useMemo(() => items.filter((item) => {
     const matchesSearch = item.name.toLowerCase().includes(query.trim().toLowerCase());
@@ -96,7 +108,7 @@ function MediaPage() {
       size: `${Math.max(.1, file.size / 1024 / 1024).toFixed(1)} MB`, dimensions: "Processing…",
       added: "Just now", folder: folder === "All media" ? "Unfiled" : folder, usedIn: [],
     }));
-    setItems((current) => [...additions, ...current]); setSelectedId(additions[0].id);
+    setItems((current) => [...additions, ...current]); setSelectedId(additions[0]!.id);
     toast.success(`${files.length} file${files.length === 1 ? "" : "s"} uploaded`);
     event.target.value = "";
   };
@@ -172,30 +184,33 @@ function MediaPage() {
             {visible.length === 0 ? <div className="panel grid min-h-72 place-items-center text-center"><div><Search className="mx-auto mb-3 size-7 text-muted-foreground" /><p className="text-sm font-medium">No media found</p><p className="mt-1 text-xs text-muted-foreground">Try another search or folder.</p></div></div> : view === "grid" ? (
               <div className="grid grid-cols-2 gap-4 xl:grid-cols-3 2xl:grid-cols-4">
                 <Button variant="ghost" onClick={() => uploadRef.current?.click()} className="h-auto min-h-52 flex-col gap-2 rounded-lg border border-dashed border-border bg-card/50 text-muted-foreground hover:border-primary/60 hover:bg-card hover:text-primary"><Upload className="size-6" /><span className="text-sm font-medium">Upload files</span></Button>
-                {visible.map((item) => <MediaCard key={item.id} item={item} active={item.id === selectedId} onSelect={() => setSelectedId(item.id)} onDelete={() => removeItem(item)} />)}
+                {visible.map((item) => <MediaCard key={item.id} item={item} active={item.id === selectedId} onSelect={() => setSelectedId(item.id)} onDelete={() => removeItem(item)} onRename={() => startRename(item)} />)}
               </div>
             ) : (
-              <div className="panel overflow-hidden"><div className="grid grid-cols-[44px_minmax(180px,1fr)_90px_110px_120px_36px] gap-3 border-b border-border bg-secondary/60 px-3 py-2 label-caps"><span /><span>Name</span><span>Type</span><span>Size</span><span>Added</span><span /></div>{visible.map((item) => <div key={item.id} onClick={() => setSelectedId(item.id)} className={cn("grid cursor-pointer grid-cols-[44px_minmax(180px,1fr)_90px_110px_120px_36px] items-center gap-3 border-b border-border px-3 py-2.5 text-xs last:border-0 hover:bg-secondary/50", item.id === selectedId && "bg-primary/10")}><img src={item.src} alt="" width={80} height={45} className="h-8 w-11 rounded-sm object-cover" /><span className="truncate font-medium">{item.name}</span><span className="capitalize text-muted-foreground">{item.kind}</span><span className="font-mono text-[10px] text-muted-foreground">{item.size}</span><span className="text-muted-foreground">{item.added}</span><ItemMenu item={item} onDelete={() => removeItem(item)} /></div>)}</div>
+              <div className="panel overflow-hidden"><div className="grid grid-cols-[44px_minmax(180px,1fr)_90px_110px_120px_36px] gap-3 border-b border-border bg-secondary/60 px-3 py-2 label-caps"><span /><span>Name</span><span>Type</span><span>Size</span><span>Added</span><span /></div>{visible.map((item) => <div key={item.id} onClick={() => setSelectedId(item.id)} className={cn("grid cursor-pointer grid-cols-[44px_minmax(180px,1fr)_90px_110px_120px_36px] items-center gap-3 border-b border-border px-3 py-2.5 text-xs last:border-0 hover:bg-secondary/50", item.id === selectedId && "bg-primary/10")}><img src={item.src} alt="" width={80} height={45} className="h-8 w-11 rounded-sm object-cover" /><span className="truncate font-medium">{item.name}</span><span className="capitalize text-muted-foreground">{item.kind}</span><span className="font-mono text-[10px] text-muted-foreground">{item.size}</span><span className="text-muted-foreground">{item.added}</span><ItemMenu item={item} onDelete={() => removeItem(item)} onRename={() => startRename(item)} /></div>)}</div>
             )}
           </main>
-          {selected && <DetailsPanel item={selected} onClose={() => setSelectedId("")} onDelete={() => removeItem(selected)} />}
+          {selected && <DetailsPanel item={selected} onClose={() => { setRenaming(false); setSelectedId(""); }} onDelete={() => removeItem(selected)} renaming={renaming} draftName={draftName} setDraftName={setDraftName} onStartRename={() => startRename(selected)} onCommitRename={commitRename} onCancelRename={() => setRenaming(false)} />}
         </div>
       </div>
     </div>
   );
 }
 
-function MediaCard({ item, active, onSelect, onDelete }: { item: MediaItem; active: boolean; onSelect: () => void; onDelete: () => void }) {
+function MediaCard({ item, active, onSelect, onDelete, onRename }: { item: MediaItem; active: boolean; onSelect: () => void; onDelete: () => void; onRename: () => void }) {
   return <article className={cn("group overflow-hidden rounded-lg border bg-card transition-shadow", active ? "border-primary shadow-panel ring-1 ring-primary/20" : "border-border hover:shadow-panel")}>
     <Button variant="ghost" onClick={onSelect} className="relative block h-auto w-full rounded-none p-0"><img src={item.src} alt={`Preview of ${item.name}`} loading="lazy" width={1088} height={608} className="aspect-video w-full object-cover" />{item.kind === "video" && <span className="absolute inset-0 grid place-items-center bg-foreground/10"><span className="grid size-9 place-items-center rounded-full bg-card/90 text-foreground shadow-sm"><Play className="ml-0.5 size-4 fill-current" /></span></span>}<span className="absolute bottom-2 left-2 inline-flex items-center gap-1 rounded-sm bg-card/90 px-1.5 py-1 font-mono text-[9px] uppercase text-foreground shadow-sm">{item.kind === "video" ? <FileVideo className="size-3 text-accent" /> : <FileImage className="size-3 text-primary" />}{item.kind}{item.duration && ` · ${item.duration}`}</span></Button>
-    <div className="flex items-center gap-2 p-3"><div className="min-w-0 flex-1"><h2 className="truncate text-sm font-medium">{item.name}</h2><p className="mt-0.5 font-mono text-[10px] text-muted-foreground">{item.dimensions} · {item.size}</p></div><ItemMenu item={item} onDelete={onDelete} /></div>
+    <div className="flex items-center gap-2 p-3"><div className="min-w-0 flex-1"><h2 className="truncate text-sm font-medium">{item.name}</h2><p className="mt-0.5 font-mono text-[10px] text-muted-foreground">{item.dimensions} · {item.size}</p></div><ItemMenu item={item} onDelete={onDelete} onRename={onRename} /></div>
   </article>;
 }
 
-function ItemMenu({ item, onDelete }: { item: MediaItem; onDelete: () => void }) {
-  return <DropdownMenu><DropdownMenuTrigger asChild><Button variant="ghost" size="icon" onClick={(e) => e.stopPropagation()} aria-label={`Actions for ${item.name}`} className="size-8 shrink-0 text-muted-foreground"><MoreHorizontal className="size-4" /></Button></DropdownMenuTrigger><DropdownMenuContent align="end"><DropdownMenuItem onClick={() => toast("Rename", { description: item.name })}><Pencil className="size-3.5" /> Rename</DropdownMenuItem><DropdownMenuItem onClick={() => toast.success("Download started", { description: item.name })}><Download className="size-3.5" /> Download</DropdownMenuItem><DropdownMenuSeparator /><DropdownMenuItem variant="destructive" onClick={onDelete}><Trash2 className="size-3.5" /> Delete</DropdownMenuItem></DropdownMenuContent></DropdownMenu>;
+function ItemMenu({ item, onDelete, onRename }: { item: MediaItem; onDelete: () => void; onRename: () => void }) {
+  return <DropdownMenu><DropdownMenuTrigger asChild><Button variant="ghost" size="icon" onClick={(e) => e.stopPropagation()} aria-label={`Actions for ${item.name}`} className="size-8 shrink-0 text-muted-foreground"><MoreHorizontal className="size-4" /></Button></DropdownMenuTrigger><DropdownMenuContent align="end"><DropdownMenuItem onClick={onRename}><Pencil className="size-3.5" /> Rename</DropdownMenuItem><DropdownMenuItem onClick={() => toast.success("Download started", { description: item.name })}><Download className="size-3.5" /> Download</DropdownMenuItem><DropdownMenuSeparator /><DropdownMenuItem className="text-destructive focus:text-destructive" onClick={onDelete}><Trash2 className="size-3.5" /> Delete</DropdownMenuItem></DropdownMenuContent></DropdownMenu>;
 }
 
-function DetailsPanel({ item, onClose, onDelete }: { item: MediaItem; onClose: () => void; onDelete: () => void }) {
-  return <aside className="w-72 shrink-0 overflow-y-auto border-l border-border bg-card"><div className="flex h-12 items-center justify-between border-b border-border px-4"><div className="flex items-center gap-2"><Info className="size-4 text-primary" /><h2 className="font-display text-sm font-semibold">File details</h2></div><Button variant="ghost" size="icon" onClick={onClose} aria-label="Close details" className="size-7 text-muted-foreground"><X className="size-3.5" /></Button></div><div className="p-4"><div className="relative overflow-hidden rounded-md border border-border bg-surface"><img src={item.src} alt={`Preview of ${item.name}`} width={1088} height={608} className="aspect-video w-full object-cover" />{item.kind === "video" && <span className="absolute inset-0 grid place-items-center"><span className="grid size-8 place-items-center rounded-full bg-card/90"><Play className="ml-0.5 size-3.5 fill-current" /></span></span>}</div><h3 className="mt-3 break-words text-sm font-semibold">{item.name}</h3><p className="mt-1 flex items-center gap-1.5 text-xs capitalize text-muted-foreground">{item.kind === "video" ? <Video className="size-3.5 text-accent" /> : <ImageIcon className="size-3.5 text-primary" />}{item.kind} file</p><dl className="mt-5 space-y-3 border-y border-border py-4 text-xs">{[["Dimensions", item.dimensions], ["File size", item.size], ["Added", item.added], ["Folder", item.folder], ...(item.duration ? [["Duration", item.duration]] : [])].map(([term, value]) => <div key={term} className="flex justify-between gap-4"><dt className="text-muted-foreground">{term}</dt><dd className="text-right font-medium">{value}</dd></div>)}</dl><div className="mt-5"><p className="label-caps mb-2">Used in</p>{item.usedIn.length ? <div className="space-y-1.5">{item.usedIn.map((layout) => <div key={layout} className="flex items-center gap-2 rounded-md bg-secondary px-2.5 py-2 text-xs"><Layers className="size-3.5 text-accent" /><span className="truncate">{layout}</span></div>)}</div> : <p className="text-xs text-muted-foreground">Not used in any layouts.</p>}</div><div className="mt-6 grid grid-cols-2 gap-2"><Button variant="outline" size="sm" onClick={() => toast.success("Download started", { description: item.name })}><Download className="size-3.5" /> Download</Button><Button variant="outline" size="sm" className="text-destructive hover:text-destructive" onClick={onDelete}><Trash2 className="size-3.5" /> Delete</Button></div></div></aside>;
+type DetailsProps = { item: MediaItem; onClose: () => void; onDelete: () => void; renaming: boolean; draftName: string; setDraftName: (value: string) => void; onStartRename: () => void; onCommitRename: () => void; onCancelRename: () => void };
+
+function DetailsPanel({ item, onClose, onDelete, renaming, draftName, setDraftName, onStartRename, onCommitRename, onCancelRename }: DetailsProps) {
+  return <aside className="w-72 shrink-0 overflow-y-auto border-l border-border bg-card"><div className="flex h-12 items-center justify-between border-b border-border px-4"><div className="flex items-center gap-2"><Info className="size-4 text-primary" /><h2 className="font-display text-sm font-semibold">File details</h2></div><Button variant="ghost" size="icon" onClick={onClose} aria-label="Close details" className="size-7 text-muted-foreground"><X className="size-3.5" /></Button></div><div className="p-4"><div className="relative overflow-hidden rounded-md border border-border bg-surface"><img src={item.src} alt={`Preview of ${item.name}`} width={1088} height={608} className="aspect-video w-full object-cover" />{item.kind === "video" && <span className="absolute inset-0 grid place-items-center"><span className="grid size-8 place-items-center rounded-full bg-card/90"><Play className="ml-0.5 size-3.5 fill-current" /></span></span>}</div>{renaming ? <div className="mt-3 flex items-center gap-1"><Input autoFocus value={draftName} onChange={(e) => setDraftName(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") onCommitRename(); if (e.key === "Escape") onCancelRename(); }} aria-label="File name" className="h-7 flex-1 text-xs" /><Button variant="ghost" size="icon" onClick={onCommitRename} aria-label="Save name" className="size-6 text-primary"><Check className="size-3.5" /></Button><Button variant="ghost" size="icon" onClick={onCancelRename} aria-label="Cancel rename" className="size-6 text-muted-foreground"><X className="size-3.5" /></Button></div> : <div className="mt-3 flex items-start gap-1"><h3 className="min-w-0 flex-1 break-words text-sm font-semibold">{item.name}</h3><Button variant="ghost" size="icon" onClick={onStartRename} aria-label="Rename file" title="Rename" className="size-6 shrink-0 text-muted-foreground hover:text-primary"><Pencil className="size-3.5" /></Button></div>}<p className="mt-1 flex items-center gap-1.5 text-xs capitalize text-muted-foreground">{item.kind === "video" ? <Video className="size-3.5 text-accent" /> : <ImageIcon className="size-3.5 text-primary" />}{item.kind} file</p><dl className="mt-5 space-y-3 border-y border-border py-4 text-xs">{[["Dimensions", item.dimensions], ["File size", item.size], ["Added", item.added], ["Folder", item.folder], ...(item.duration ? [["Duration", item.duration]] : [])].map(([term, value]) => <div key={term} className="flex justify-between gap-4"><dt className="text-muted-foreground">{term}</dt><dd className="text-right font-medium">{value}</dd></div>)}</dl><div className="mt-5"><p className="label-caps mb-2">Used in</p>{item.usedIn.length ? <div className="space-y-1.5">{item.usedIn.map((layout) => <div key={layout} className="flex items-center gap-2 rounded-md bg-secondary px-2.5 py-2 text-xs"><Layers className="size-3.5 text-accent" /><span className="truncate">{layout}</span></div>)}</div> : <p className="text-xs text-muted-foreground">Not used in any layouts.</p>}</div><div className="mt-6 grid grid-cols-2 gap-2"><Button variant="outline" size="sm" onClick={() => toast.success("Download started", { description: item.name })}><Download className="size-3.5" /> Download</Button><Button variant="outline" size="sm" className="text-destructive hover:text-destructive" onClick={onDelete}><Trash2 className="size-3.5" /> Delete</Button></div></div></aside>;
 }
+
