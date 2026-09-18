@@ -108,7 +108,7 @@ function MediaPage() {
       size: `${Math.max(.1, file.size / 1024 / 1024).toFixed(1)} MB`, dimensions: "Processing…",
       added: "Just now", folder: folder === "All media" ? "Unfiled" : folder, usedIn: [],
     }));
-    setItems((current) => [...additions, ...current]); setSelectedId(additions[0].id);
+    setItems((current) => [...additions, ...current]); setSelectedId(additions[0]!.id);
     toast.success(`${files.length} file${files.length === 1 ? "" : "s"} uploaded`);
     event.target.value = "";
   };
