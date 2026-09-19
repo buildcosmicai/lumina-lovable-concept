@@ -10,12 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ControlCenterRouteImport } from './routes/control-center'
 import { Route as LayoutsRouteImport } from './routes/layouts'
 import { Route as MediaRouteImport } from './routes/media'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ControlCenterRoute = ControlCenterRouteImport.update({
+  id: '/control-center',
+  path: '/control-center',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LayoutsRoute = LayoutsRouteImport.update({
@@ -31,30 +37,34 @@ const MediaRoute = MediaRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/control-center': typeof ControlCenterRoute
   '/layouts': typeof LayoutsRoute
   '/media': typeof MediaRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/control-center': typeof ControlCenterRoute
   '/layouts': typeof LayoutsRoute
   '/media': typeof MediaRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/control-center': typeof ControlCenterRoute
   '/layouts': typeof LayoutsRoute
   '/media': typeof MediaRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/layouts' | '/media'
+  fullPaths: '/' | '/control-center' | '/layouts' | '/media'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/layouts' | '/media'
-  id: '__root__' | '/' | '/layouts' | '/media'
+  to: '/' | '/control-center' | '/layouts' | '/media'
+  id: '__root__' | '/' | '/control-center' | '/layouts' | '/media'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ControlCenterRoute: typeof ControlCenterRoute
   LayoutsRoute: typeof LayoutsRoute
   MediaRoute: typeof MediaRoute
 }
@@ -66,6 +76,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/control-center': {
+      id: '/control-center'
+      path: '/control-center'
+      fullPath: '/control-center'
+      preLoaderRoute: typeof ControlCenterRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/layouts': {
@@ -87,6 +104,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ControlCenterRoute: ControlCenterRoute,
   LayoutsRoute: LayoutsRoute,
   MediaRoute: MediaRoute,
 }
