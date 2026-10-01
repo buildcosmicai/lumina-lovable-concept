@@ -107,7 +107,7 @@ const PRESETS: Preset[] = [
 ];
 
 const NAV_ITEMS = [
-  { label: "Control Center", icon: Gauge },
+  { label: "Control Center", icon: Gauge, to: "/control-center" as const },
   { label: "Pulse", icon: Activity },
   { label: "Screens", icon: Monitor },
   { label: "Schedules", icon: CalendarDays },
