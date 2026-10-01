@@ -8,3 +8,5 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Keep each major CMS workspace module as its own top-level TanStack route so navigation remains type-safe, shareable, and independently testable.

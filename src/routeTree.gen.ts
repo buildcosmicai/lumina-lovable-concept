@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ControlCenterRouteImport } from './routes/control-center'
 import { Route as LayoutsRouteImport } from './routes/layouts'
 import { Route as MediaRouteImport } from './routes/media'
+import { Route as PulseRouteImport } from './routes/pulse'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -34,18 +35,25 @@ const MediaRoute = MediaRouteImport.update({
   path: '/media',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PulseRoute = PulseRouteImport.update({
+  id: '/pulse',
+  path: '/pulse',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/control-center': typeof ControlCenterRoute
   '/layouts': typeof LayoutsRoute
   '/media': typeof MediaRoute
+  '/pulse': typeof PulseRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/control-center': typeof ControlCenterRoute
   '/layouts': typeof LayoutsRoute
   '/media': typeof MediaRoute
+  '/pulse': typeof PulseRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -53,13 +61,14 @@ export interface FileRoutesById {
   '/control-center': typeof ControlCenterRoute
   '/layouts': typeof LayoutsRoute
   '/media': typeof MediaRoute
+  '/pulse': typeof PulseRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/control-center' | '/layouts' | '/media'
+  fullPaths: '/' | '/control-center' | '/layouts' | '/media' | '/pulse'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/control-center' | '/layouts' | '/media'
-  id: '__root__' | '/' | '/control-center' | '/layouts' | '/media'
+  to: '/' | '/control-center' | '/layouts' | '/media' | '/pulse'
+  id: '__root__' | '/' | '/control-center' | '/layouts' | '/media' | '/pulse'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -67,6 +76,7 @@ export interface RootRouteChildren {
   ControlCenterRoute: typeof ControlCenterRoute
   LayoutsRoute: typeof LayoutsRoute
   MediaRoute: typeof MediaRoute
+  PulseRoute: typeof PulseRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -99,6 +109,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MediaRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/pulse': {
+      id: '/pulse'
+      path: '/pulse'
+      fullPath: '/pulse'
+      preLoaderRoute: typeof PulseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -107,6 +124,7 @@ const rootRouteChildren: RootRouteChildren = {
   ControlCenterRoute: ControlCenterRoute,
   LayoutsRoute: LayoutsRoute,
   MediaRoute: MediaRoute,
+  PulseRoute: PulseRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
