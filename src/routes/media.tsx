@@ -38,7 +38,7 @@ type MediaItem = {
 };
 
 const NAV_ITEMS = [
-  { label: "Control Center", icon: Gauge }, { label: "Pulse", icon: Activity },
+  { label: "Control Center", icon: Gauge, to: "/control-center" as const }, { label: "Pulse", icon: Activity },
   { label: "Screens", icon: Monitor }, { label: "Schedules", icon: CalendarDays },
   { label: "Media", icon: Images, to: "/media" as const }, { label: "Playlists", icon: ListVideo },
   { label: "Layouts", icon: Layers, to: "/layouts" as const }, { label: "Licensing", icon: KeyRound },
