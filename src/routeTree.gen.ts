@@ -14,6 +14,8 @@ import { Route as ControlCenterRouteImport } from './routes/control-center'
 import { Route as LayoutsRouteImport } from './routes/layouts'
 import { Route as MediaRouteImport } from './routes/media'
 import { Route as PulseRouteImport } from './routes/pulse'
+import { Route as ScreensRouteImport } from './routes/screens'
+import { Route as ScreensScreenIdRouteImport } from './routes/screens.$screenId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -40,6 +42,16 @@ const PulseRoute = PulseRouteImport.update({
   path: '/pulse',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ScreensRoute = ScreensRouteImport.update({
+  id: '/screens',
+  path: '/screens',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ScreensScreenIdRoute = ScreensScreenIdRouteImport.update({
+  id: '/$screenId',
+  path: '/$screenId',
+  getParentRoute: () => ScreensRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -47,6 +59,8 @@ export interface FileRoutesByFullPath {
   '/layouts': typeof LayoutsRoute
   '/media': typeof MediaRoute
   '/pulse': typeof PulseRoute
+  '/screens': typeof ScreensRouteWithChildren
+  '/screens/$screenId': typeof ScreensScreenIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -54,6 +68,8 @@ export interface FileRoutesByTo {
   '/layouts': typeof LayoutsRoute
   '/media': typeof MediaRoute
   '/pulse': typeof PulseRoute
+  '/screens': typeof ScreensRouteWithChildren
+  '/screens/$screenId': typeof ScreensScreenIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -62,13 +78,37 @@ export interface FileRoutesById {
   '/layouts': typeof LayoutsRoute
   '/media': typeof MediaRoute
   '/pulse': typeof PulseRoute
+  '/screens': typeof ScreensRouteWithChildren
+  '/screens/$screenId': typeof ScreensScreenIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/control-center' | '/layouts' | '/media' | '/pulse'
+  fullPaths:
+    | '/'
+    | '/control-center'
+    | '/layouts'
+    | '/media'
+    | '/pulse'
+    | '/screens'
+    | '/screens/$screenId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/control-center' | '/layouts' | '/media' | '/pulse'
-  id: '__root__' | '/' | '/control-center' | '/layouts' | '/media' | '/pulse'
+  to:
+    | '/'
+    | '/control-center'
+    | '/layouts'
+    | '/media'
+    | '/pulse'
+    | '/screens'
+    | '/screens/$screenId'
+  id:
+    | '__root__'
+    | '/'
+    | '/control-center'
+    | '/layouts'
+    | '/media'
+    | '/pulse'
+    | '/screens'
+    | '/screens/$screenId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -77,6 +117,7 @@ export interface RootRouteChildren {
   LayoutsRoute: typeof LayoutsRoute
   MediaRoute: typeof MediaRoute
   PulseRoute: typeof PulseRoute
+  ScreensRoute: typeof ScreensRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -116,8 +157,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PulseRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/screens': {
+      id: '/screens'
+      path: '/screens'
+      fullPath: '/screens'
+      preLoaderRoute: typeof ScreensRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/screens/$screenId': {
+      id: '/screens/$screenId'
+      path: '/$screenId'
+      fullPath: '/screens/$screenId'
+      preLoaderRoute: typeof ScreensScreenIdRouteImport
+      parentRoute: typeof ScreensRoute
+    }
   }
 }
+
+interface ScreensRouteChildren {
+  ScreensScreenIdRoute: typeof ScreensScreenIdRoute
+}
+
+const ScreensRouteChildren: ScreensRouteChildren = {
+  ScreensScreenIdRoute: ScreensScreenIdRoute,
+}
+
+const ScreensRouteWithChildren =
+  ScreensRoute._addFileChildren(ScreensRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -125,6 +191,7 @@ const rootRouteChildren: RootRouteChildren = {
   LayoutsRoute: LayoutsRoute,
   MediaRoute: MediaRoute,
   PulseRoute: PulseRoute,
+  ScreensRoute: ScreensRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

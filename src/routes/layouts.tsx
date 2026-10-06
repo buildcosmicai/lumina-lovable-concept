@@ -109,7 +109,7 @@ const PRESETS: Preset[] = [
 const NAV_ITEMS = [
   { label: "Control Center", icon: Gauge, to: "/control-center" as const },
   { label: "Pulse", icon: Activity, to: "/pulse" as const },
-  { label: "Screens", icon: Monitor },
+  { label: "Screens", icon: Monitor, to: "/screens" as const },
   { label: "Schedules", icon: CalendarDays },
   { label: "Media", icon: Images, to: "/media" as const },
   { label: "Playlists", icon: ListVideo },
