@@ -10,3 +10,4 @@
 <!-- LOVABLE:END -->
 
 - Keep each major CMS workspace module as its own top-level TanStack route so navigation remains type-safe, shareable, and independently testable.
+- Screen inventory and detail pages share typed demo records from a client-safe library so status and assignments stay consistent across routes.
