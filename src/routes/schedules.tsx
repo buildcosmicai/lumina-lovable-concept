@@ -128,7 +128,7 @@ function SchedulesPage() {
     const start = Math.max(START, +m[2] + (m[3] ? 0.5 : 0));
     const end = Math.min(END, +m[4] + (m[5] ? 0.5 : 0));
     if (end <= start) { toast("The end time must be after the start time"); return; }
-    const recur = (m[7] ? m[7][0].toUpperCase() + m[7].slice(1).toLowerCase() : "Once") as Slot["recur"];
+    const r7 = m[7]; const recur = (r7 ? r7.charAt(0).toUpperCase() + r7.slice(1).toLowerCase() : "Once") as Slot["recur"];
     const slot = addSlot({ title: m[1] as string, channel, start, end, recur });
     setCommand("");
     toast(`Scheduled “${slot.title}”`, { description: `${CHANNELS[channel]} · ${fmt(start)}–${fmt(end)} · ${recur}` });
@@ -205,7 +205,7 @@ function SchedulesPage() {
             <p className="label-caps">Playing now · {fmt(NOW)}</p>
             <ul className="mt-3 space-y-2">
               {nowPlaying.map((s) => (
-                <li key={s.id}><button onClick={() => setSelectedId(s.id)} className="flex w-full items-center gap-2 text-left text-xs"><span className={cn("size-2 shrink-0 rounded-full", TONES[s.tone])} /><span className="truncate font-medium">{s.title}</span><span className="ml-auto truncate text-muted-foreground">{CHANNELS[s.channel].split(" ")[0]}</span></button></li>
+                <li key={s.id}><button onClick={() => setSelectedId(s.id)} className="flex w-full items-center gap-2 text-left text-xs"><span className={cn("size-2 shrink-0 rounded-full", TONES[s.tone])} /><span className="truncate font-medium">{s.title}</span><span className="ml-auto truncate text-muted-foreground">{CHANNELS[s.channel]?.split(" ")[0]}</span></button></li>
               ))}
             </ul>
           </section>
