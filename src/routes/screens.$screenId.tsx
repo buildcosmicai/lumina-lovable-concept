@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Activity, ArrowLeft, CalendarDays, CheckCircle2, ChevronLeft, ChevronRight, CircleAlert, Clock3, Cpu, Gauge, HardDrive, Images, KeyRound, Layers, ListVideo, MapPin, MemoryStick, Monitor, MoreHorizontal, Pencil, Radio, RefreshCw, RotateCw, Settings, Signal, Thermometer, Users, WifiOff, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
