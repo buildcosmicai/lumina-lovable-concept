@@ -15,6 +15,7 @@ import { Route as LayoutsRouteImport } from './routes/layouts'
 import { Route as MediaRouteImport } from './routes/media'
 import { Route as PulseRouteImport } from './routes/pulse'
 import { Route as ScreensRouteImport } from './routes/screens'
+import { Route as ScreensIndexRouteImport } from './routes/screens.index'
 import { Route as ScreensScreenIdRouteImport } from './routes/screens.$screenId'
 
 const IndexRoute = IndexRouteImport.update({
@@ -47,6 +48,11 @@ const ScreensRoute = ScreensRouteImport.update({
   path: '/screens',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ScreensIndexRoute = ScreensIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ScreensRoute,
+} as any)
 const ScreensScreenIdRoute = ScreensScreenIdRouteImport.update({
   id: '/$screenId',
   path: '/$screenId',
@@ -61,6 +67,7 @@ export interface FileRoutesByFullPath {
   '/pulse': typeof PulseRoute
   '/screens': typeof ScreensRouteWithChildren
   '/screens/$screenId': typeof ScreensScreenIdRoute
+  '/screens/': typeof ScreensIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -68,8 +75,8 @@ export interface FileRoutesByTo {
   '/layouts': typeof LayoutsRoute
   '/media': typeof MediaRoute
   '/pulse': typeof PulseRoute
-  '/screens': typeof ScreensRouteWithChildren
   '/screens/$screenId': typeof ScreensScreenIdRoute
+  '/screens': typeof ScreensIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -80,6 +87,7 @@ export interface FileRoutesById {
   '/pulse': typeof PulseRoute
   '/screens': typeof ScreensRouteWithChildren
   '/screens/$screenId': typeof ScreensScreenIdRoute
+  '/screens/': typeof ScreensIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -91,6 +99,7 @@ export interface FileRouteTypes {
     | '/pulse'
     | '/screens'
     | '/screens/$screenId'
+    | '/screens/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -98,8 +107,8 @@ export interface FileRouteTypes {
     | '/layouts'
     | '/media'
     | '/pulse'
-    | '/screens'
     | '/screens/$screenId'
+    | '/screens'
   id:
     | '__root__'
     | '/'
@@ -109,6 +118,7 @@ export interface FileRouteTypes {
     | '/pulse'
     | '/screens'
     | '/screens/$screenId'
+    | '/screens/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -164,6 +174,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ScreensRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/screens/': {
+      id: '/screens/'
+      path: '/'
+      fullPath: '/screens/'
+      preLoaderRoute: typeof ScreensIndexRouteImport
+      parentRoute: typeof ScreensRoute
+    }
     '/screens/$screenId': {
       id: '/screens/$screenId'
       path: '/$screenId'
@@ -176,10 +193,12 @@ declare module '@tanstack/react-router' {
 
 interface ScreensRouteChildren {
   ScreensScreenIdRoute: typeof ScreensScreenIdRoute
+  ScreensIndexRoute: typeof ScreensIndexRoute
 }
 
 const ScreensRouteChildren: ScreensRouteChildren = {
   ScreensScreenIdRoute: ScreensScreenIdRoute,
+  ScreensIndexRoute: ScreensIndexRoute,
 }
 
 const ScreensRouteWithChildren =
