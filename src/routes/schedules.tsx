@@ -121,14 +121,15 @@ function SchedulesPage() {
 
   const runCommand = () => {
     const m = command.trim().match(/^(.+?)\s+(?:from\s+)?(\d{1,2})(?::(30))?\s*(?:-|to)\s*(\d{1,2})(?::(30))?\s+(?:at|on|in)\s+(.+?)(?:\s+(daily|weekdays|weekends))?$/i);
-    if (!m) { toast("Try a sentence like this", { description: "Lunch specials 11-14 at Cafeteria weekdays" }); return; }
-    const channel = CHANNELS.findIndex((c) => c.toLowerCase().includes(m[6].toLowerCase()) || m[6].toLowerCase().includes(c.toLowerCase().split(" ")[0]));
+    if (!m || !m[1] || !m[2] || !m[4] || !m[6]) { toast("Try a sentence like this", { description: "Lunch specials 11-14 at Cafeteria weekdays" }); return; }
+    const where = m[6].toLowerCase();
+    const channel = CHANNELS.findIndex((c) => c.toLowerCase().includes(where) || where.includes(c.toLowerCase().split(" ")[0] ?? ""));
     if (channel < 0) { toast("Screen group not found", { description: `Choose one of: ${CHANNELS.join(", ")}` }); return; }
     const start = Math.max(START, +m[2] + (m[3] ? 0.5 : 0));
     const end = Math.min(END, +m[4] + (m[5] ? 0.5 : 0));
     if (end <= start) { toast("The end time must be after the start time"); return; }
     const recur = (m[7] ? m[7][0].toUpperCase() + m[7].slice(1).toLowerCase() : "Once") as Slot["recur"];
-    const slot = addSlot({ title: m[1], channel, start, end, recur });
+    const slot = addSlot({ title: m[1] as string, channel, start, end, recur });
     setCommand("");
     toast(`Scheduled “${slot.title}”`, { description: `${CHANNELS[channel]} · ${fmt(start)}–${fmt(end)} · ${recur}` });
   };
