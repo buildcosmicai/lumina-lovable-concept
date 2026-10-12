@@ -24,7 +24,7 @@ const NAV_ITEMS = [
   { label: "Control Center", icon: Gauge, to: "/control-center" as const },
   { label: "Pulse", icon: Activity, to: "/pulse" as const },
   { label: "Screens", icon: Monitor, to: "/screens" as const },
-  { label: "Schedules", icon: CalendarDays },
+  { label: "Schedules", icon: CalendarDays, to: "/schedules" as const },
   { label: "Media", icon: Images, to: "/media" as const },
   { label: "Playlists", icon: ListVideo },
   { label: "Layouts", icon: Layers, to: "/layouts" as const },
