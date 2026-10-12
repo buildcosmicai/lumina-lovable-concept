@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ControlCenterRouteImport } from './routes/control-center'
 import { Route as LayoutsRouteImport } from './routes/layouts'
 import { Route as MediaRouteImport } from './routes/media'
+import { Route as PlaylistsRouteImport } from './routes/playlists'
 import { Route as PulseRouteImport } from './routes/pulse'
 import { Route as SchedulesRouteImport } from './routes/schedules'
 import { Route as ScreensRouteImport } from './routes/screens'
@@ -38,6 +39,11 @@ const LayoutsRoute = LayoutsRouteImport.update({
 const MediaRoute = MediaRouteImport.update({
   id: '/media',
   path: '/media',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlaylistsRoute = PlaylistsRouteImport.update({
+  id: '/playlists',
+  path: '/playlists',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PulseRoute = PulseRouteImport.update({
@@ -76,6 +82,7 @@ export interface FileRoutesByFullPath {
   '/control-center': typeof ControlCenterRoute
   '/layouts': typeof LayoutsRoute
   '/media': typeof MediaRoute
+  '/playlists': typeof PlaylistsRoute
   '/pulse': typeof PulseRoute
   '/schedules': typeof SchedulesRoute
   '/screens': typeof ScreensRouteWithChildren
@@ -88,6 +95,7 @@ export interface FileRoutesByTo {
   '/control-center': typeof ControlCenterRoute
   '/layouts': typeof LayoutsRoute
   '/media': typeof MediaRoute
+  '/playlists': typeof PlaylistsRoute
   '/pulse': typeof PulseRoute
   '/schedules': typeof SchedulesRoute
   '/sign-in': typeof SignInRoute
@@ -100,6 +108,7 @@ export interface FileRoutesById {
   '/control-center': typeof ControlCenterRoute
   '/layouts': typeof LayoutsRoute
   '/media': typeof MediaRoute
+  '/playlists': typeof PlaylistsRoute
   '/pulse': typeof PulseRoute
   '/schedules': typeof SchedulesRoute
   '/screens': typeof ScreensRouteWithChildren
@@ -114,6 +123,7 @@ export interface FileRouteTypes {
     | '/control-center'
     | '/layouts'
     | '/media'
+    | '/playlists'
     | '/pulse'
     | '/schedules'
     | '/screens'
@@ -126,6 +136,7 @@ export interface FileRouteTypes {
     | '/control-center'
     | '/layouts'
     | '/media'
+    | '/playlists'
     | '/pulse'
     | '/schedules'
     | '/sign-in'
@@ -137,6 +148,7 @@ export interface FileRouteTypes {
     | '/control-center'
     | '/layouts'
     | '/media'
+    | '/playlists'
     | '/pulse'
     | '/schedules'
     | '/screens'
@@ -150,6 +162,7 @@ export interface RootRouteChildren {
   ControlCenterRoute: typeof ControlCenterRoute
   LayoutsRoute: typeof LayoutsRoute
   MediaRoute: typeof MediaRoute
+  PlaylistsRoute: typeof PlaylistsRoute
   PulseRoute: typeof PulseRoute
   SchedulesRoute: typeof SchedulesRoute
   ScreensRoute: typeof ScreensRouteWithChildren
@@ -184,6 +197,13 @@ declare module '@tanstack/react-router' {
       path: '/media'
       fullPath: '/media'
       preLoaderRoute: typeof MediaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/playlists': {
+      id: '/playlists'
+      path: '/playlists'
+      fullPath: '/playlists'
+      preLoaderRoute: typeof PlaylistsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/pulse': {
@@ -249,6 +269,7 @@ const rootRouteChildren: RootRouteChildren = {
   ControlCenterRoute: ControlCenterRoute,
   LayoutsRoute: LayoutsRoute,
   MediaRoute: MediaRoute,
+  PlaylistsRoute: PlaylistsRoute,
   PulseRoute: PulseRoute,
   SchedulesRoute: SchedulesRoute,
   ScreensRoute: ScreensRouteWithChildren,
