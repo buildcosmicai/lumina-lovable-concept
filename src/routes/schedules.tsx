@@ -3,7 +3,7 @@ import { useMemo, useRef, useState } from "react";
 import {
   Activity, AlertTriangle, CalendarDays, ChevronLeft, ChevronRight, Clock, Copy, Gauge, Images, KeyRound,
   Layers, ListVideo, Monitor, Plus, Repeat, Settings, Sparkles, Trash2, Users, Wand2,
-} from "lucide-react";
+, Handshake } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Toaster } from "@/components/ui/sonner";
