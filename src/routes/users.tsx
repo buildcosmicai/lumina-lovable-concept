@@ -375,7 +375,7 @@ function EditPanel({ user, groups, onClose, onSave, onDelete }: { user: User; gr
 }
 
 type Draft = Omit<User, "id" | "status" | "lastActive" | "tone">;
-function RoleDialog({ initial, onClose, onSave }: { initial?: RoleDef; onClose: () => void; onSave: (r: RoleDef) => void }) {
+function RoleDialog({ initial, onClose, onSave }: { initial?: RoleDef | undefined; onClose: () => void; onSave: (r: RoleDef) => void }) {
   const ROLES = useRoles();
   const [name, setName] = useState(initial?.role ?? "");
   const [desc, setDesc] = useState(initial?.desc ?? "");
@@ -395,7 +395,7 @@ function RoleDialog({ initial, onClose, onSave }: { initial?: RoleDef; onClose: 
         <div className="mt-3"><span className="label-caps">Permissions</span>
           <div className="mt-1 divide-y divide-border rounded-md border border-border">{PERMS.map((p, i) => (
             <label key={p} className="flex items-center justify-between px-3 py-2 text-sm"><span>{p}{i === 0 && <span className="ml-2 text-xs text-muted-foreground">always on</span>}</span>
-              <Switch aria-label={p} checked={perms[i]} disabled={i === 0} onCheckedChange={(v) => setPerms(perms.map((x, j) => (j === i ? v : x)))} /></label>
+              <Switch aria-label={p} checked={!!perms[i]} disabled={i === 0} onCheckedChange={(v) => setPerms(perms.map((x, j) => (j === i ? v : x)))} /></label>
           ))}</div>
         </div>
         <div className="mt-5 flex justify-end gap-2"><Button variant="outline" size="sm" onClick={onClose}>Cancel</Button><Button size="sm" disabled={!ok} onClick={() => onSave({ role: name.trim(), desc: desc.trim() || "Custom role", perms, custom: true })}>{initial ? "Save role" : "Create role"}</Button></div>
