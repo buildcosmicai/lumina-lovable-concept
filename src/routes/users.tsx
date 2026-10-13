@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useSyncExternalStore } from "react";
 import {
   Activity, CalendarDays, Check, ChevronLeft, ChevronRight, Gauge, Images, KeyRound, Layers, ListVideo, Mail, Monitor,
   Plus, Search, Send, Settings, ShieldCheck, Trash2, UserPlus, Users, X, Clock3, Sparkles,
@@ -37,18 +37,24 @@ const NAV_ITEMS = [
   { label: "Users", icon: Users, to: "/users" as const },
 ];
 
-type Role = "Owner" | "Admin" | "Editor" | "Publisher" | "Viewer";
+type Role = string;
 type Status = "Active" | "Invited" | "Suspended";
 type User = { id: number; name: string; email: string; role: Role; status: Status; groups: number[]; lastActive: string; tone: number; locations: string[] };
 type Group = { id: number; name: string; tone: number };
+type RoleDef = { role: Role; desc: string; perms: boolean[]; custom?: boolean };
 
-const ROLES: { role: Role; desc: string; perms: boolean[] }[] = [
+let roleStore: RoleDef[] = [
   { role: "Owner", desc: "Everything, including billing", perms: [true, true, true, true, true] },
   { role: "Admin", desc: "Manage users, screens and content", perms: [true, true, true, true, false] },
   { role: "Publisher", desc: "Edit and push content live", perms: [true, true, true, false, false] },
   { role: "Editor", desc: "Create drafts, no publishing", perms: [true, true, false, false, false] },
   { role: "Viewer", desc: "Look, don't touch", perms: [true, false, false, false, false] },
 ];
+const roleListeners = new Set<() => void>();
+function setRoles(fn: (r: RoleDef[]) => RoleDef[]) { roleStore = fn(roleStore); roleListeners.forEach((l) => l()); }
+function useRoles() {
+  return useSyncExternalStore((l) => { roleListeners.add(l); return () => roleListeners.delete(l); }, () => roleStore, () => roleStore);
+}
 const PERMS = ["View", "Edit content", "Publish", "Manage users", "Billing"];
 const TONES = ["bg-zone-1", "bg-zone-2", "bg-zone-3", "bg-zone-4", "bg-zone-5"];
 const LOCATIONS = ["London HQ", "Manchester", "Bristol"];
@@ -82,6 +88,8 @@ function Avatar({ u, size = "size-8" }: { u: Pick<User, "name" | "tone">; size?:
 function UsersPage() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [users, setUsers] = useState(SEED);
+  const ROLES = useRoles();
+  const [roleEdit, setRoleEdit] = useState<string | null>(null);
   const [groups, setGroups] = useState(SEED_GROUPS);
   const [groupFilter, setGroupFilter] = useState<number | "all" | "none">("all");
   const [statusFilter, setStatusFilter] = useState<Status | "All">("All");
@@ -257,15 +265,33 @@ function UsersPage() {
             </section>
 
             <section className="panel mt-5 p-4">
-              <div className="flex items-baseline justify-between"><h2 className="text-sm font-semibold">What each role can do</h2><p className="text-xs text-muted-foreground">Roles keep permissions simple — pick one per person</p></div>
-              <div className="mt-3 grid grid-cols-[minmax(0,1.6fr)_repeat(5,minmax(0,1fr))] gap-y-1 text-xs">
-                <span />{PERMS.map((p) => <span key={p} className="label-caps text-center">{p}</span>)}
+              <div className="flex items-center justify-between gap-3"><div><h2 className="text-sm font-semibold">What each role can do</h2><p className="text-xs text-muted-foreground">Build your own roles — click a tick to change a custom role</p></div>
+                <Button size="sm" variant="outline" onClick={() => setRoleEdit("new")}><Plus className="size-3.5" />New role</Button></div>
+              <div className="mt-3 grid grid-cols-[minmax(0,1.6fr)_repeat(5,minmax(0,1fr))_4.5rem] gap-y-1 text-xs">
+                <span />{PERMS.map((p) => <span key={p} className="label-caps text-center">{p}</span>)}<span />
                 {ROLES.map((r) => [
-                  <div key={r.role} className="py-1.5"><p className="font-medium">{r.role}</p><p className="text-[11px] text-muted-foreground">{r.desc}</p></div>,
-                  ...r.perms.map((ok, i) => <span key={r.role + i} className="grid place-items-center">{ok ? <Check className="size-3.5 text-accent" /> : <span className="size-1 rounded-full bg-border" />}</span>),
+                  <div key={r.role} className="py-1.5"><p className="font-medium">{r.role}{r.custom && <span className="ml-1.5 rounded bg-accent/15 px-1 text-[10px] text-accent">Custom</span>}<span className="ml-1.5 text-[10px] text-muted-foreground">{users.filter((u) => u.role === r.role).length} people</span></p><p className="text-[11px] text-muted-foreground">{r.desc}</p></div>,
+                  ...r.perms.map((ok, i) => (
+                    <button key={r.role + i} disabled={!r.custom || i === 0} aria-label={`${r.role} ${PERMS[i]}`} onClick={() => setRoles((all) => all.map((x) => x.role === r.role ? { ...x, perms: x.perms.map((v, j) => (j === i ? !v : v)) } : x))} className={cn("grid place-items-center rounded", r.custom && i > 0 && "hover:bg-surface")}>
+                      {ok ? <Check className="size-3.5 text-accent" /> : <span className="size-1 rounded-full bg-border" />}
+                    </button>
+                  )),
+                  <div key={r.role + "a"} className="flex items-center justify-end gap-0.5">{r.custom && <>
+                    <Button variant="ghost" size="icon" className="size-6" aria-label={`Edit ${r.role}`} onClick={() => setRoleEdit(r.role)}><Settings className="size-3" /></Button>
+                    <Button variant="ghost" size="icon" className="size-6" aria-label={`Delete ${r.role}`} onClick={() => {
+                      const n = users.filter((u) => u.role === r.role).length;
+                      setRoles((all) => all.filter((x) => x.role !== r.role));
+                      if (n) setUsers((all) => all.map((u) => (u.role === r.role ? { ...u, role: "Viewer" } : u)));
+                      toast(`Deleted ${r.role}${n ? ` — ${n} moved to Viewer` : ""}`);
+                    }}><Trash2 className="size-3" /></Button></>}</div>,
                 ])}
               </div>
             </section>
+            {roleEdit && <RoleDialog initial={roleEdit === "new" ? undefined : ROLES.find((r) => r.role === roleEdit)} onClose={() => setRoleEdit(null)} onSave={(nr) => {
+              if (roleEdit === "new") { setRoles((all) => [...all, nr]); toast(`Role “${nr.role}” created`); }
+              else { setRoles((all) => all.map((x) => (x.role === roleEdit ? nr : x))); setUsers((all) => all.map((u) => (u.role === roleEdit ? { ...u, role: nr.role } : u))); toast("Role updated"); }
+              setRoleEdit(null);
+            }} />}
           </main>
 
           {editing && <EditPanel key={editing.id} user={editing} groups={groups} onClose={() => setEditId(null)} onSave={(p) => { patch(editing.id, p); toast("Changes saved"); }} onDelete={() => setConfirmDelete([editing.id])} />}
@@ -295,6 +321,7 @@ function Stat({ label, value, sub }: { label: string; value: number; sub: string
 }
 
 function EditPanel({ user, groups, onClose, onSave, onDelete }: { user: User; groups: Group[]; onClose: () => void; onSave: (p: Partial<User>) => void; onDelete: () => void }) {
+  const ROLES = useRoles();
   const [d, setD] = useState(user);
   const dirty = JSON.stringify(d) !== JSON.stringify(user);
   const isOwner = user.role === "Owner";
@@ -348,7 +375,37 @@ function EditPanel({ user, groups, onClose, onSave, onDelete }: { user: User; gr
 }
 
 type Draft = Omit<User, "id" | "status" | "lastActive" | "tone">;
+function RoleDialog({ initial, onClose, onSave }: { initial?: RoleDef | undefined; onClose: () => void; onSave: (r: RoleDef) => void }) {
+  const ROLES = useRoles();
+  const [name, setName] = useState(initial?.role ?? "");
+  const [desc, setDesc] = useState(initial?.desc ?? "");
+  const [perms, setPerms] = useState<boolean[]>(initial?.perms ?? [true, false, false, false, false]);
+  const taken = ROLES.some((r) => r.role.toLowerCase() === name.trim().toLowerCase() && r.role !== initial?.role);
+  const ok = name.trim().length > 1 && !taken;
+  return (
+    <div className="fixed inset-0 z-50 grid place-items-center bg-foreground/30 p-4" onClick={onClose}>
+      <div role="dialog" aria-label="Role builder" className="panel w-full max-w-md bg-card p-5" onClick={(e) => e.stopPropagation()}>
+        <div className="flex items-center justify-between"><h2 className="font-display text-lg font-semibold">{initial ? "Edit role" : "New role"}</h2><Button variant="ghost" size="icon" className="size-7" aria-label="Close" onClick={onClose}><X className="size-3.5" /></Button></div>
+        {!initial && <div className="mt-3"><span className="label-caps">Start from</span><div className="mt-1 flex flex-wrap gap-1">{ROLES.filter((r) => r.role !== "Owner").map((r) => (
+          <button key={r.role} onClick={() => { setPerms([...r.perms]); if (!desc) setDesc(r.desc); }} className="rounded-full border border-border px-2.5 py-0.5 text-xs hover:bg-surface">{r.role}</button>
+        ))}</div></div>}
+        <label className="mt-3 block"><span className="label-caps">Role name</span><Input autoFocus value={name} onChange={(e) => setName(e.target.value)} placeholder="e.g. Store manager" className="mt-1 h-8 text-sm" /></label>
+        {taken && <p className="mt-1 text-xs text-destructive">A role with this name already exists.</p>}
+        <label className="mt-3 block"><span className="label-caps">Description</span><Input value={desc} onChange={(e) => setDesc(e.target.value)} placeholder="What this role is for" className="mt-1 h-8 text-sm" /></label>
+        <div className="mt-3"><span className="label-caps">Permissions</span>
+          <div className="mt-1 divide-y divide-border rounded-md border border-border">{PERMS.map((p, i) => (
+            <label key={p} className="flex items-center justify-between px-3 py-2 text-sm"><span>{p}{i === 0 && <span className="ml-2 text-xs text-muted-foreground">always on</span>}</span>
+              <Switch aria-label={p} checked={!!perms[i]} disabled={i === 0} onCheckedChange={(v) => setPerms(perms.map((x, j) => (j === i ? v : x)))} /></label>
+          ))}</div>
+        </div>
+        <div className="mt-5 flex justify-end gap-2"><Button variant="outline" size="sm" onClick={onClose}>Cancel</Button><Button size="sm" disabled={!ok} onClick={() => onSave({ role: name.trim(), desc: desc.trim() || "Custom role", perms, custom: true })}>{initial ? "Save role" : "Create role"}</Button></div>
+      </div>
+    </div>
+  );
+}
+
 function InviteDialog({ groups, onClose, onInvite }: { groups: Group[]; onClose: () => void; onInvite: (l: Draft[]) => void }) {
+  const ROLES = useRoles();
   const [step, setStep] = useState(0);
   const [emails, setEmails] = useState("");
   const [role, setRole] = useState<Role>("Editor");
