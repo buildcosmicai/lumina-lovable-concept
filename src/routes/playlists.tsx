@@ -34,7 +34,7 @@ const NAV_ITEMS = [
   { label: "Playlists", icon: ListVideo, to: "/playlists" as const },
   { label: "Layouts", icon: Layers, to: "/layouts" as const },
   { label: "Licensing", icon: KeyRound },
-  { label: "Users", icon: Users },
+  { label: "Users", icon: Users, to: "/users" as const },
 ];
 
 const TONES = ["bg-zone-1", "bg-zone-2", "bg-zone-3", "bg-zone-4", "bg-zone-5"];

@@ -115,7 +115,7 @@ const NAV_ITEMS = [
   { label: "Playlists", icon: ListVideo, to: "/playlists" as const },
   { label: "Layouts", icon: Layers, active: true, to: "/layouts" as const },
   { label: "Licensing", icon: KeyRound },
-  { label: "Users", icon: Users },
+  { label: "Users", icon: Users, to: "/users" as const },
 ];
 
 const uid = () => Math.random().toString(36).slice(2, 9);

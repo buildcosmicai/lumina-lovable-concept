@@ -42,7 +42,7 @@ const NAV_ITEMS = [
   { label: "Screens", icon: Monitor, to: "/screens" as const }, { label: "Schedules", icon: CalendarDays, to: "/schedules" as const },
   { label: "Media", icon: Images, to: "/media" as const }, { label: "Playlists", icon: ListVideo, to: "/playlists" as const },
   { label: "Layouts", icon: Layers, to: "/layouts" as const }, { label: "Licensing", icon: KeyRound },
-  { label: "Users", icon: Users },
+  { label: "Users", icon: Users, to: "/users" as const },
 ];
 
 const START_MEDIA: MediaItem[] = [

@@ -58,7 +58,7 @@ const NAV_ITEMS = [
   { label: "Playlists", icon: ListVideo, to: "/playlists" as const },
   { label: "Layouts", icon: Layers, to: "/layouts" as const },
   { label: "Licensing", icon: KeyRound },
-  { label: "Users", icon: Users },
+  { label: "Users", icon: Users, to: "/users" as const },
 ];
 
 const HEALTH_POINTS = [58, 62, 61, 69, 66, 76, 72, 82, 78, 88, 86, 91, 89, 94, 92, 96, 95, 97];
