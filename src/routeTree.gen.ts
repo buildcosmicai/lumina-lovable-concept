@@ -18,6 +18,7 @@ import { Route as PulseRouteImport } from './routes/pulse'
 import { Route as SchedulesRouteImport } from './routes/schedules'
 import { Route as ScreensRouteImport } from './routes/screens'
 import { Route as SignInRouteImport } from './routes/sign-in'
+import { Route as UsersRouteImport } from './routes/users'
 import { Route as ScreensIndexRouteImport } from './routes/screens.index'
 import { Route as ScreensScreenIdRouteImport } from './routes/screens.$screenId'
 
@@ -66,6 +67,11 @@ const SignInRoute = SignInRouteImport.update({
   path: '/sign-in',
   getParentRoute: () => rootRouteImport,
 } as any)
+const UsersRoute = UsersRouteImport.update({
+  id: '/users',
+  path: '/users',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ScreensIndexRoute = ScreensIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -87,6 +93,7 @@ export interface FileRoutesByFullPath {
   '/schedules': typeof SchedulesRoute
   '/screens': typeof ScreensRouteWithChildren
   '/sign-in': typeof SignInRoute
+  '/users': typeof UsersRoute
   '/screens/$screenId': typeof ScreensScreenIdRoute
   '/screens/': typeof ScreensIndexRoute
 }
@@ -99,6 +106,7 @@ export interface FileRoutesByTo {
   '/pulse': typeof PulseRoute
   '/schedules': typeof SchedulesRoute
   '/sign-in': typeof SignInRoute
+  '/users': typeof UsersRoute
   '/screens/$screenId': typeof ScreensScreenIdRoute
   '/screens': typeof ScreensIndexRoute
 }
@@ -113,6 +121,7 @@ export interface FileRoutesById {
   '/schedules': typeof SchedulesRoute
   '/screens': typeof ScreensRouteWithChildren
   '/sign-in': typeof SignInRoute
+  '/users': typeof UsersRoute
   '/screens/$screenId': typeof ScreensScreenIdRoute
   '/screens/': typeof ScreensIndexRoute
 }
@@ -128,6 +137,7 @@ export interface FileRouteTypes {
     | '/schedules'
     | '/screens'
     | '/sign-in'
+    | '/users'
     | '/screens/$screenId'
     | '/screens/'
   fileRoutesByTo: FileRoutesByTo
@@ -140,6 +150,7 @@ export interface FileRouteTypes {
     | '/pulse'
     | '/schedules'
     | '/sign-in'
+    | '/users'
     | '/screens/$screenId'
     | '/screens'
   id:
@@ -153,6 +164,7 @@ export interface FileRouteTypes {
     | '/schedules'
     | '/screens'
     | '/sign-in'
+    | '/users'
     | '/screens/$screenId'
     | '/screens/'
   fileRoutesById: FileRoutesById
@@ -167,6 +179,7 @@ export interface RootRouteChildren {
   SchedulesRoute: typeof SchedulesRoute
   ScreensRoute: typeof ScreensRouteWithChildren
   SignInRoute: typeof SignInRoute
+  UsersRoute: typeof UsersRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -234,6 +247,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SignInRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/users': {
+      id: '/users'
+      path: '/users'
+      fullPath: '/users'
+      preLoaderRoute: typeof UsersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/screens/': {
       id: '/screens/'
       path: '/'
@@ -274,6 +294,7 @@ const rootRouteChildren: RootRouteChildren = {
   SchedulesRoute: SchedulesRoute,
   ScreensRoute: ScreensRouteWithChildren,
   SignInRoute: SignInRoute,
+  UsersRoute: UsersRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

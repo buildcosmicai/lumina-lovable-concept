@@ -29,7 +29,7 @@ const NAV_ITEMS = [
   { label: "Playlists", icon: ListVideo, to: "/playlists" as const },
   { label: "Layouts", icon: Layers, to: "/layouts" as const },
   { label: "Licensing", icon: KeyRound },
-  { label: "Users", icon: Users },
+  { label: "Users", icon: Users, to: "/users" as const },
 ];
 
 function ScreensPage() {
