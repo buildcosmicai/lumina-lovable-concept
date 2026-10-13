@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { Activity, ArrowLeft, CalendarDays, CheckCircle2, ChevronLeft, ChevronRight, CircleAlert, Clock3, Cpu, Gauge, HardDrive, Images, KeyRound, Layers, ListVideo, MapPin, MemoryStick, Monitor, MoreHorizontal, Pencil, Radio, RefreshCw, RotateCw, Settings, Signal, Thermometer, Users, WifiOff, Zap } from "lucide-react";
+import { Activity, ArrowLeft, CalendarDays, CheckCircle2, ChevronLeft, ChevronRight, CircleAlert, Clock3, Cpu, Gauge, HardDrive, Images, KeyRound, Layers, ListVideo, MapPin, MemoryStick, Monitor, MoreHorizontal, Pencil, Radio, RefreshCw, RotateCw, Settings, Signal, Thermometer, Users, WifiOff, Zap , Handshake } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Toaster } from "@/components/ui/sonner";
@@ -32,6 +32,7 @@ const NAV_ITEMS = [
   { label: "Layouts", icon: Layers, to: "/layouts" as const },
   { label: "Licensing", icon: KeyRound },
   { label: "Users", icon: Users, to: "/users" as const },
+  { label: "Partners", icon: Handshake, to: "/partners" as const },
 ];
 const SIGNAL_POINTS = [72, 78, 75, 84, 82, 88, 86, 93, 90, 95, 92, 97, 94, 99, 96, 98, 97, 99];
 

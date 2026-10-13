@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { Activity, CalendarDays, ChevronDown, ChevronLeft, ChevronRight, CircleAlert, Gauge, Grid2X2, Images, KeyRound, Layers, List, ListVideo, MapPin, Monitor, MoreHorizontal, Plus, RefreshCw, Search, Settings, Signal, SlidersHorizontal, Users, WifiOff } from "lucide-react";
+import { Activity, CalendarDays, ChevronDown, ChevronLeft, ChevronRight, CircleAlert, Gauge, Grid2X2, Images, KeyRound, Layers, List, ListVideo, MapPin, Monitor, MoreHorizontal, Plus, RefreshCw, Search, Settings, Signal, SlidersHorizontal, Users, WifiOff , Handshake } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Toaster } from "@/components/ui/sonner";
@@ -30,6 +30,7 @@ const NAV_ITEMS = [
   { label: "Layouts", icon: Layers, to: "/layouts" as const },
   { label: "Licensing", icon: KeyRound },
   { label: "Users", icon: Users, to: "/users" as const },
+  { label: "Partners", icon: Handshake, to: "/partners" as const },
 ];
 
 function ScreensPage() {

@@ -2,8 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useRef, useState } from "react";
 import {
   Activity, AlertTriangle, CalendarDays, ChevronLeft, ChevronRight, Clock, Copy, Gauge, Images, KeyRound,
-  Layers, ListVideo, Monitor, Plus, Repeat, Settings, Sparkles, Trash2, Users, Wand2,
-} from "lucide-react";
+  Layers, ListVideo, Monitor, Plus, Repeat, Settings, Sparkles, Trash2, Users, Wand2, Handshake } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Toaster } from "@/components/ui/sonner";
@@ -34,6 +33,7 @@ const NAV_ITEMS = [
   { label: "Layouts", icon: Layers, to: "/layouts" as const },
   { label: "Licensing", icon: KeyRound },
   { label: "Users", icon: Users, to: "/users" as const },
+  { label: "Partners", icon: Handshake, to: "/partners" as const },
 ];
 
 const START = 6;

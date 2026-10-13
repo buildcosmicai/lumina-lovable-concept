@@ -27,8 +27,7 @@ import {
   Users,
   WifiOff,
   X,
-  Zap,
-} from "lucide-react";
+  Zap, Handshake } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Toaster } from "@/components/ui/sonner";
@@ -59,6 +58,7 @@ const NAV_ITEMS = [
   { label: "Layouts", icon: Layers, to: "/layouts" as const },
   { label: "Licensing", icon: KeyRound },
   { label: "Users", icon: Users, to: "/users" as const },
+  { label: "Partners", icon: Handshake, to: "/partners" as const },
 ];
 
 const HEALTH_POINTS = [58, 62, 61, 69, 66, 76, 72, 82, 78, 88, 86, 91, 89, 94, 92, 96, 95, 97];

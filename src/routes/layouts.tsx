@@ -29,8 +29,7 @@ import {
   Type as TypeIcon,
   Users,
   Video,
-  X,
-} from "lucide-react";
+  X, Handshake } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Toaster } from "@/components/ui/sonner";
@@ -116,6 +115,7 @@ const NAV_ITEMS = [
   { label: "Layouts", icon: Layers, active: true, to: "/layouts" as const },
   { label: "Licensing", icon: KeyRound },
   { label: "Users", icon: Users, to: "/users" as const },
+  { label: "Partners", icon: Handshake, to: "/partners" as const },
 ];
 
 const uid = () => Math.random().toString(36).slice(2, 9);

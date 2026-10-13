@@ -4,8 +4,7 @@ import {
   Activity, CalendarDays, Check, ChevronLeft, ChevronRight, Download, FileImage,
   FileVideo, Folder as FolderIcon, FolderPlus, Gauge, Grid2X2, Image as ImageIcon,
   Images, Info, KeyRound, Layers, List, ListVideo, Monitor, MoreHorizontal, Pencil,
-  Play, Plus, Search, Settings, SlidersHorizontal, Trash2, Upload, Users, Video, X,
-} from "lucide-react";
+  Play, Plus, Search, Settings, SlidersHorizontal, Trash2, Upload, Users, Video, X, Handshake } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Toaster } from "@/components/ui/sonner";
@@ -43,6 +42,7 @@ const NAV_ITEMS = [
   { label: "Media", icon: Images, to: "/media" as const }, { label: "Playlists", icon: ListVideo, to: "/playlists" as const },
   { label: "Layouts", icon: Layers, to: "/layouts" as const }, { label: "Licensing", icon: KeyRound },
   { label: "Users", icon: Users, to: "/users" as const },
+  { label: "Partners", icon: Handshake, to: "/partners" as const },
 ];
 
 const START_MEDIA: MediaItem[] = [

@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ControlCenterRouteImport } from './routes/control-center'
 import { Route as LayoutsRouteImport } from './routes/layouts'
 import { Route as MediaRouteImport } from './routes/media'
+import { Route as PartnersRouteImport } from './routes/partners'
 import { Route as PlaylistsRouteImport } from './routes/playlists'
 import { Route as PulseRouteImport } from './routes/pulse'
 import { Route as SchedulesRouteImport } from './routes/schedules'
@@ -40,6 +41,11 @@ const LayoutsRoute = LayoutsRouteImport.update({
 const MediaRoute = MediaRouteImport.update({
   id: '/media',
   path: '/media',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PartnersRoute = PartnersRouteImport.update({
+  id: '/partners',
+  path: '/partners',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PlaylistsRoute = PlaylistsRouteImport.update({
@@ -88,6 +94,7 @@ export interface FileRoutesByFullPath {
   '/control-center': typeof ControlCenterRoute
   '/layouts': typeof LayoutsRoute
   '/media': typeof MediaRoute
+  '/partners': typeof PartnersRoute
   '/playlists': typeof PlaylistsRoute
   '/pulse': typeof PulseRoute
   '/schedules': typeof SchedulesRoute
@@ -102,6 +109,7 @@ export interface FileRoutesByTo {
   '/control-center': typeof ControlCenterRoute
   '/layouts': typeof LayoutsRoute
   '/media': typeof MediaRoute
+  '/partners': typeof PartnersRoute
   '/playlists': typeof PlaylistsRoute
   '/pulse': typeof PulseRoute
   '/schedules': typeof SchedulesRoute
@@ -116,6 +124,7 @@ export interface FileRoutesById {
   '/control-center': typeof ControlCenterRoute
   '/layouts': typeof LayoutsRoute
   '/media': typeof MediaRoute
+  '/partners': typeof PartnersRoute
   '/playlists': typeof PlaylistsRoute
   '/pulse': typeof PulseRoute
   '/schedules': typeof SchedulesRoute
@@ -132,6 +141,7 @@ export interface FileRouteTypes {
     | '/control-center'
     | '/layouts'
     | '/media'
+    | '/partners'
     | '/playlists'
     | '/pulse'
     | '/schedules'
@@ -146,6 +156,7 @@ export interface FileRouteTypes {
     | '/control-center'
     | '/layouts'
     | '/media'
+    | '/partners'
     | '/playlists'
     | '/pulse'
     | '/schedules'
@@ -159,6 +170,7 @@ export interface FileRouteTypes {
     | '/control-center'
     | '/layouts'
     | '/media'
+    | '/partners'
     | '/playlists'
     | '/pulse'
     | '/schedules'
@@ -174,6 +186,7 @@ export interface RootRouteChildren {
   ControlCenterRoute: typeof ControlCenterRoute
   LayoutsRoute: typeof LayoutsRoute
   MediaRoute: typeof MediaRoute
+  PartnersRoute: typeof PartnersRoute
   PlaylistsRoute: typeof PlaylistsRoute
   PulseRoute: typeof PulseRoute
   SchedulesRoute: typeof SchedulesRoute
@@ -210,6 +223,13 @@ declare module '@tanstack/react-router' {
       path: '/media'
       fullPath: '/media'
       preLoaderRoute: typeof MediaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/partners': {
+      id: '/partners'
+      path: '/partners'
+      fullPath: '/partners'
+      preLoaderRoute: typeof PartnersRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/playlists': {
@@ -289,6 +309,7 @@ const rootRouteChildren: RootRouteChildren = {
   ControlCenterRoute: ControlCenterRoute,
   LayoutsRoute: LayoutsRoute,
   MediaRoute: MediaRoute,
+  PartnersRoute: PartnersRoute,
   PlaylistsRoute: PlaylistsRoute,
   PulseRoute: PulseRoute,
   SchedulesRoute: SchedulesRoute,

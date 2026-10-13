@@ -3,8 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import {
   Activity, CalendarDays, ChevronLeft, ChevronRight, Clock, Copy, Film, Gauge, GripVertical, Image as ImageIcon, Images,
   KeyRound, Layers, ListVideo, Monitor, Pause, Play, Plus, Repeat, Search, Settings, Shuffle, SkipForward, Sparkles,
-  Trash2, Type, Users, Wand2,
-} from "lucide-react";
+  Trash2, Type, Users, Wand2, Handshake } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Toaster } from "@/components/ui/sonner";
@@ -35,6 +34,7 @@ const NAV_ITEMS = [
   { label: "Layouts", icon: Layers, to: "/layouts" as const },
   { label: "Licensing", icon: KeyRound },
   { label: "Users", icon: Users, to: "/users" as const },
+  { label: "Partners", icon: Handshake, to: "/partners" as const },
 ];
 
 const TONES = ["bg-zone-1", "bg-zone-2", "bg-zone-3", "bg-zone-4", "bg-zone-5"];
