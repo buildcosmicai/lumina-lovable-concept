@@ -43,6 +43,7 @@ const NAV_ITEMS = [
   { label: "Media", icon: Images, to: "/media" as const }, { label: "Playlists", icon: ListVideo, to: "/playlists" as const },
   { label: "Layouts", icon: Layers, to: "/layouts" as const }, { label: "Licensing", icon: KeyRound },
   { label: "Users", icon: Users, to: "/users" as const },
+  { label: "Partners", icon: Handshake, to: "/partners" as const },
 ];
 
 const START_MEDIA: MediaItem[] = [

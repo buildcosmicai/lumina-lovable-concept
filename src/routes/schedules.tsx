@@ -34,6 +34,7 @@ const NAV_ITEMS = [
   { label: "Layouts", icon: Layers, to: "/layouts" as const },
   { label: "Licensing", icon: KeyRound },
   { label: "Users", icon: Users, to: "/users" as const },
+  { label: "Partners", icon: Handshake, to: "/partners" as const },
 ];
 
 const START = 6;
