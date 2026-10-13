@@ -38,7 +38,7 @@ const NAV_ITEMS = [
 ];
 
 type PartnerType = "Distributor" | "Reseller";
-type Partner = { id: string; name: string; type: PartnerType; parent?: string; region: string; contact: string; status: "Active" | "Invited" };
+type Partner = { id: string; name: string; type: PartnerType; parent?: string | undefined; region: string; contact: string; status: "Active" | "Invited" };
 type Customer = { id: string; name: string; partner: string; screens: number; online: number; licences: number; renewal: string; support: "None" | "Requested" | "Granted" };
 type ReqStatus = "Pending" | "Approved" | "Rejected";
 type LicReq = { id: number; customer: string; partner: string; qty: number; po: string; status: ReqStatus; date: string };
