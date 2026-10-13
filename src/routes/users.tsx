@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import {
   Activity, CalendarDays, Check, ChevronLeft, ChevronRight, Gauge, Images, KeyRound, Layers, ListVideo, Mail, Monitor,
-  Plus, Search, Send, Settings, ShieldCheck, Trash2, UserPlus, Users, X, FolderPlus, Clock3, Sparkles,
+  Plus, Search, Send, Settings, ShieldCheck, Trash2, UserPlus, Users, X, Clock3, Sparkles,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -411,5 +411,3 @@ function InviteDialog({ groups, onClose, onInvite }: { groups: Group[]; onClose:
   );
 }
 
-// keep FolderPlus import referenced for future group templates
-void FolderPlus;
