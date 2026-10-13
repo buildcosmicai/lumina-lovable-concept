@@ -29,8 +29,7 @@ import {
   Type as TypeIcon,
   Users,
   Video,
-  X,
-, Handshake } from "lucide-react";
+  X, Handshake } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Toaster } from "@/components/ui/sonner";

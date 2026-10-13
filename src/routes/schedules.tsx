@@ -2,8 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useRef, useState } from "react";
 import {
   Activity, AlertTriangle, CalendarDays, ChevronLeft, ChevronRight, Clock, Copy, Gauge, Images, KeyRound,
-  Layers, ListVideo, Monitor, Plus, Repeat, Settings, Sparkles, Trash2, Users, Wand2,
-, Handshake } from "lucide-react";
+  Layers, ListVideo, Monitor, Plus, Repeat, Settings, Sparkles, Trash2, Users, Wand2, Handshake } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Toaster } from "@/components/ui/sonner";

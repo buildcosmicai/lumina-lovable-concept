@@ -3,8 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import {
   Activity, CalendarDays, ChevronLeft, ChevronRight, Clock, Copy, Film, Gauge, GripVertical, Image as ImageIcon, Images,
   KeyRound, Layers, ListVideo, Monitor, Pause, Play, Plus, Repeat, Search, Settings, Shuffle, SkipForward, Sparkles,
-  Trash2, Type, Users, Wand2,
-, Handshake } from "lucide-react";
+  Trash2, Type, Users, Wand2, Handshake } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Toaster } from "@/components/ui/sonner";

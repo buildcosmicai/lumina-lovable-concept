@@ -4,8 +4,7 @@ import {
   Activity, CalendarDays, Check, ChevronLeft, ChevronRight, Download, FileImage,
   FileVideo, Folder as FolderIcon, FolderPlus, Gauge, Grid2X2, Image as ImageIcon,
   Images, Info, KeyRound, Layers, List, ListVideo, Monitor, MoreHorizontal, Pencil,
-  Play, Plus, Search, Settings, SlidersHorizontal, Trash2, Upload, Users, Video, X,
-, Handshake } from "lucide-react";
+  Play, Plus, Search, Settings, SlidersHorizontal, Trash2, Upload, Users, Video, X, Handshake } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Toaster } from "@/components/ui/sonner";

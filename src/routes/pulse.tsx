@@ -28,8 +28,7 @@ import {
   TimerReset,
   Users,
   WifiOff,
-  Zap,
-, Handshake } from "lucide-react";
+  Zap, Handshake } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Toaster } from "@/components/ui/sonner";
