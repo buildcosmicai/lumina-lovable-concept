@@ -144,9 +144,9 @@ function PartnersPage() {
             ))}
           </nav>
           <section className="mt-5 border-t border-border pt-5">
-            <p className="label-caps px-2">Partner network</p>
+            <p className="label-caps px-2">Filter by partner</p>
             <ul className="mt-2 space-y-0.5 text-xs">
-              <li><button onClick={() => setFocus(null)} className={cn("flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left", !focus ? "bg-secondary font-semibold" : "text-muted-foreground hover:bg-secondary")}><Network className="size-3.5" />Everything visible</button></li>
+              <li><button onClick={() => setFocus(null)} className={cn("flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left", !focus ? "bg-secondary font-semibold" : "text-muted-foreground hover:bg-secondary")}><Network className="size-3.5" />All partners</button></li>
               {distributors.map((d) => (
                 <li key={d.id}>
                   <button onClick={() => setFocus(d.id)} className={cn("flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left", focus === d.id ? "bg-secondary font-semibold" : "text-muted-foreground hover:bg-secondary")}>
