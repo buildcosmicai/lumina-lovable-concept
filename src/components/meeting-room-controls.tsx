@@ -5,7 +5,7 @@ import { Switch } from "@/components/ui/switch";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { DEFAULT_MEETING, ROOMS, meetingConfig, type MeetingConfig } from "@/lib/meeting-rooms";
 
-export function MeetingRoomControls({ value, onChange }: { value?: Partial<MeetingConfig>; onChange: (config: MeetingConfig) => void }) {
+export function MeetingRoomControls({ value, onChange }: { value?: Partial<MeetingConfig> | undefined; onChange: (config: MeetingConfig) => void }) {
   const config = meetingConfig(value);
   const [help, setHelp] = useState(false);
   const [refreshed, setRefreshed] = useState("");

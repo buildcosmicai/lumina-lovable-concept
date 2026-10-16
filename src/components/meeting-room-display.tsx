@@ -3,7 +3,7 @@ import roomImage from "@/assets/meeting-room.jpg";
 import { getMeetingState, meetingTime, visibleMeetingTitle, visibleOrganizer, type MeetingConfig } from "@/lib/meeting-rooms";
 import { cn } from "@/lib/utils";
 
-export function MeetingRoomDisplay({ config: value }: { config?: Partial<MeetingConfig> }) {
+export function MeetingRoomDisplay({ config: value }: { config?: Partial<MeetingConfig> | undefined }) {
   const { config, room, now, current, upcoming, offline } = getMeetingState(value);
   const time = (minutes: number) => meetingTime(minutes, config.use24h);
   const available = !current;
