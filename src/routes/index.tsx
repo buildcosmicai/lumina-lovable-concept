@@ -1,6 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
+  CalendarDays,
+  X,
   Check,
   Clock,
   CloudSun,
@@ -27,6 +29,10 @@ import { Switch } from "@/components/ui/switch";
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { DEFAULT_MEETING, type MeetingConfig } from "@/lib/meeting-rooms";
+import { MeetingRoomDisplay } from "@/components/meeting-room-display";
+import { MeetingRoomControls } from "@/components/meeting-room-controls";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -50,7 +56,7 @@ export const Route = createFileRoute("/")({
   component: LayoutEditor,
 });
 
-type ZoneKind = "video" | "image" | "ticker" | "clock" | "weather" | "web";
+type ZoneKind = "video" | "image" | "ticker" | "clock" | "weather" | "web" | "meeting";
 
 type Zone = {
   id: string;
@@ -62,6 +68,7 @@ type Zone = {
   h: number;
   locked: boolean;
   opacity: number;
+  meeting?: MeetingConfig;
 };
 
 const KINDS: { kind: ZoneKind; label: string; icon: typeof Video }[] = [
@@ -71,6 +78,7 @@ const KINDS: { kind: ZoneKind; label: string; icon: typeof Video }[] = [
   { kind: "clock", label: "Clock", icon: Clock },
   { kind: "weather", label: "Weather", icon: CloudSun },
   { kind: "web", label: "Web page", icon: Monitor },
+  { kind: "meeting", label: "Meeting room", icon: CalendarDays },
 ];
 
 const ZONE_TONE: Record<ZoneKind, string> = {
@@ -80,6 +88,7 @@ const ZONE_TONE: Record<ZoneKind, string> = {
   clock: "var(--zone-4)",
   weather: "var(--zone-5)",
   web: "var(--zone-2)",
+  meeting: "var(--zone-4)",
 };
 
 type Preset = { id: string; label: string; ratio: number; icon: typeof RectangleHorizontal };
@@ -128,7 +137,7 @@ type Gap = { axis: "v" | "h"; from: number; to: number; at: number; value: numbe
 function LayoutEditor() {
   const [zones, setZones] = useState<Zone[]>(START);
   const [selectedIds, setSelectedIds] = useState<string[]>(START[0] ? [START[0].id] : []);
-  const [preset, setPreset] = useState<Preset>(PRESETS[0]!);
+  const [preset, setPreset] = useState<Preset>(PRESETS[0] ?? { id: "landscape", label: "16:9 Landscape", ratio: 16 / 9, icon: RectangleHorizontal });
   const [name, setName] = useState("Lobby — Morning loop");
   const [settings, setSettings] = useState<Settings>({
     snapToGrid: true,
@@ -143,6 +152,7 @@ function LayoutEditor() {
   const [loaded, setLoaded] = useState(false);
   const [savedAt, setSavedAt] = useState<string | null>(null);
   const stageRef = useRef<HTMLDivElement>(null);
+  const [previewOpen, setPreviewOpen] = useState(false);
 
   // ---- persistence -------------------------------------------------------
   useEffect(() => {
@@ -300,7 +310,8 @@ function LayoutEditor() {
       const tol = (settings.threshold / rect.width) * 100;
       let dx = ((ev.clientX - startX) / rect.width) * 100;
       let dy = ((ev.clientY - startY) / rect.height) * 100;
-      const base = bases.get(zone.id)!;
+      const base = bases.get(zone.id);
+      if (!base) return;
       const nextGuides: Guide[] = [];
 
       if (mode === "move") {
@@ -391,8 +402,8 @@ function LayoutEditor() {
 
   const startLibraryDrag = (e: React.PointerEvent, kind: ZoneKind, label: string) => {
     e.preventDefault();
-    const W = 30;
-    const H = 25;
+    const W = kind === "meeting" ? 80 : 30;
+    const H = kind === "meeting" ? 80 : 25;
     let created: Zone | null = null;
     let overStage = false;
 
@@ -425,7 +436,7 @@ function LayoutEditor() {
         return;
       }
       if (!created) {
-        const zone: Zone = { id: uid(), name: label, kind, x: pos.x, y: pos.y, w: W, h: H, locked: false, opacity: 100 };
+        const zone: Zone = { id: uid(), name: label, kind, x: pos.x, y: pos.y, w: W, h: H, locked: false, opacity: 100, ...(kind === "meeting" ? { meeting: { ...DEFAULT_MEETING } } : {}) };
         created = zone;
         setZones((p) => [...p, zone]);
         setSelectedIds([zone.id]);
@@ -452,7 +463,7 @@ function LayoutEditor() {
   };
 
   const addZone = (kind: ZoneKind, label: string) => {
-    const zone: Zone = { id: uid(), name: label, kind, x: 10, y: 10, w: 30, h: 25, locked: false, opacity: 100 };
+    const zone: Zone = { id: uid(), name: label, kind, x: 10, y: 10, w: kind === "meeting" ? 80 : 30, h: kind === "meeting" ? 80 : 25, locked: false, opacity: 100, ...(kind === "meeting" ? { meeting: { ...DEFAULT_MEETING } } : {}) };
     setZones((p) => [...p, zone]);
     setSelectedIds([zone.id]);
   };
@@ -501,7 +512,8 @@ function LayoutEditor() {
   return (
     <div className="flex h-screen flex-col overflow-hidden bg-surface text-foreground">
       <Toaster />
-      <header className="flex shrink-0 items-center gap-3 border-b border-border bg-card px-4 py-2.5">
+      <Dialog open={previewOpen} onOpenChange={setPreviewOpen}><DialogContent className="w-[94vw] max-w-6xl sm:max-w-6xl"><DialogTitle>{name} · Preview</DialogTitle><div className="relative w-full overflow-hidden bg-background" style={{ aspectRatio: String(preset.ratio) }}>{zones.map((zone) => <div key={zone.id} className="absolute overflow-hidden" style={{ left: `${zone.x}%`, top: `${zone.y}%`, width: `${zone.w}%`, height: `${zone.h}%`, opacity: zone.opacity / 100 }}>{zone.kind === "meeting" ? <MeetingRoomDisplay config={zone.meeting} /> : <div className="grid h-full place-items-center bg-secondary text-muted-foreground">{zone.name}</div>}</div>)}</div></DialogContent></Dialog>
+      <header className="flex shrink-0 flex-wrap items-center gap-3 border-b border-border bg-card px-4 py-2.5">
         <div className="flex items-center gap-2">
           <span className="grid size-8 place-items-center rounded-md bg-primary text-primary-foreground">
             <Layers className="size-4" />
@@ -537,11 +549,20 @@ function LayoutEditor() {
           <Button
             variant="secondary"
             size="sm"
-            onClick={() => toast("Preview started", { description: `${zones.length} zones · ${preset.label}` })}
+            onClick={() => setPreviewOpen(true)}
           >
             <Play className="size-4" /> Preview
           </Button>
-          <Button size="sm" onClick={() => toast.success("Layout saved", { description: name })}>
+          <Button size="sm" onClick={() => {
+            try {
+              const key = "signage-layout-editor:layouts:v1";
+              const list = JSON.parse(localStorage.getItem(key) ?? "[]") as { id: string; name: string; folderId?: string | null }[];
+              const existing = list.find((entry) => entry.name === name);
+              const entry = { id: existing?.id ?? uid(), name, zones, presetId: preset.id, savedAt: new Date().toISOString(), folderId: existing?.folderId };
+              localStorage.setItem(key, JSON.stringify([entry, ...list.filter((item) => item.id !== entry.id)]));
+              toast.success("Layout saved", { description: name });
+            } catch { toast.error("Could not save this layout"); }
+          }}>
             <Save className="size-4" /> Save layout
           </Button>
         </div>
@@ -663,7 +684,7 @@ function LayoutEditor() {
               )}
               {zones.map((z) => {
                 const active = selectedIds.includes(z.id);
-                const Icon = KINDS.find((k) => k.kind === z.kind)!.icon;
+                const Icon = KINDS.find((k) => k.kind === z.kind)?.icon ?? Monitor;
                 return (
                   <div
                     key={z.id}
@@ -683,13 +704,14 @@ function LayoutEditor() {
                       opacity: z.opacity / 100,
                     }}
                   >
-                    <div className="pointer-events-none flex h-full flex-col items-center justify-center gap-1 overflow-hidden p-1 text-center">
+                    {z.kind === "meeting" ? <div className="pointer-events-none h-full w-full overflow-hidden"><MeetingRoomDisplay config={z.meeting} /></div> : <div className="pointer-events-none flex h-full flex-col items-center justify-center gap-1 overflow-hidden p-1 text-center">
                       <Icon className="size-4" style={{ color: ZONE_TONE[z.kind] }} />
                       <span className="truncate text-[11px] font-medium">{z.name}</span>
                       <span className="font-mono text-[9px] text-muted-foreground">
                         {Math.round(z.w)}×{Math.round(z.h)}
                       </span>
                     </div>
+                    }
                     {active && !z.locked && (
                       <span
                         onPointerDown={(e) => startDrag(e, z, "resize")}
@@ -803,6 +825,7 @@ function LayoutEditor() {
                   onChange={(e) => update(selected.id, { name: e.target.value })}
                   className="h-8 bg-secondary text-sm"
                 />
+                {selected.kind === "meeting" && <MeetingRoomControls value={selected.meeting} onChange={(meeting) => update(selected.id, { meeting })} />}
                 <div className="grid grid-cols-2 gap-2">
                   {(["x", "y", "w", "h"] as const).map((k) => (
                     <label key={k} className="space-y-1">
