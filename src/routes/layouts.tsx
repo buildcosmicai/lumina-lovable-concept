@@ -43,6 +43,8 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { MEETING_TEMPLATES, type MeetingConfig } from "@/lib/meeting-rooms";
+import { MeetingRoomDisplay } from "@/components/meeting-room-display";
 
 export const Route = createFileRoute("/layouts")({
   head: () => ({
@@ -65,7 +67,7 @@ export const Route = createFileRoute("/layouts")({
   component: LayoutsPage,
 });
 
-type ZoneKind = "video" | "image" | "ticker" | "clock" | "weather" | "web";
+type ZoneKind = "video" | "image" | "ticker" | "clock" | "weather" | "web" | "meeting";
 
 type Zone = {
   id: string;
@@ -77,6 +79,7 @@ type Zone = {
   h: number;
   locked: boolean;
   opacity: number;
+  meeting?: MeetingConfig;
 };
 
 const KIND_ICON: Record<ZoneKind, typeof Video> = {
@@ -86,6 +89,7 @@ const KIND_ICON: Record<ZoneKind, typeof Video> = {
   clock: Clock,
   weather: CloudSun,
   web: Monitor,
+  meeting: CalendarDays,
 };
 
 const ZONE_TONE: Record<ZoneKind, string> = {
@@ -95,6 +99,7 @@ const ZONE_TONE: Record<ZoneKind, string> = {
   clock: "var(--zone-4)",
   weather: "var(--zone-5)",
   web: "var(--zone-2)",
+  meeting: "var(--zone-4)",
 };
 
 type Preset = { id: string; label: string; ratio: number; icon: typeof RectangleHorizontal };
@@ -239,6 +244,7 @@ function timeAgo(iso: string) {
 
 function MiniPreview({ entry }: { entry: LayoutEntry }) {
   const preset = PRESETS.find((p) => p.id === entry.presetId) ?? PRESETS[0]!;
+  if (entry.zones.length === 1 && entry.zones[0]?.kind === "meeting") return <div className="aspect-video overflow-hidden border-b border-border"><MeetingRoomDisplay config={entry.zones[0].meeting} /></div>;
   return (
     <div className="flex h-36 items-center justify-center border-b border-border bg-surface px-6 py-3">
       <div
@@ -260,7 +266,7 @@ function MiniPreview({ entry }: { entry: LayoutEntry }) {
                 boxShadow: `inset 0 0 0 1px color-mix(in oklch, ${ZONE_TONE[zone.kind]} 55%, transparent)`,
               }}
             >
-              <Icon className="size-3 opacity-70" style={{ color: ZONE_TONE[zone.kind] }} />
+              {zone.kind === "meeting" ? <MeetingRoomDisplay config={zone.meeting} /> : <Icon className="size-3 opacity-70" style={{ color: ZONE_TONE[zone.kind] }} />}
             </div>
           );
         })}
@@ -278,6 +284,7 @@ function LayoutsPage() {
   const [creatingFolder, setCreatingFolder] = useState(false);
   const [folderName, setFolderName] = useState("");
   const [query, setQuery] = useState("");
+  const [tab, setTab] = useState<"saved" | "library">("saved");
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
@@ -373,6 +380,12 @@ function LayoutsPage() {
       /* ignore */
     }
     navigate({ to: "/" });
+  };
+
+  const useTemplate = (template: (typeof MEETING_TEMPLATES)[number]) => {
+    const entry: LayoutEntry = { id: uid(), name: template.name, presetId: "landscape", savedAt: new Date().toISOString(), zones: [{ id: uid(), name: "Meeting room", kind: "meeting", x: 0, y: 0, w: 100, h: 100, locked: false, opacity: 100, meeting: { ...template.config } }] };
+    persist([entry, ...layouts]);
+    openInEditor(entry);
   };
 
   const duplicate = (entry: LayoutEntry) => {
@@ -540,7 +553,7 @@ function LayoutsPage() {
       </aside>
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="flex shrink-0 items-center gap-3 border-b border-border bg-card px-5 py-3">
+        <header className="flex shrink-0 flex-wrap items-center gap-3 border-b border-border bg-card px-5 py-3">
           <div>
             <h1 className="font-display text-base font-semibold leading-tight">Layouts</h1>
             <p className="text-xs text-muted-foreground">Create and manage screen compositions</p>
@@ -564,7 +577,20 @@ function LayoutsPage() {
           </p>
         </div>
 
-        {!loaded ? null : filtered.length === 0 ? (
+        <div role="tablist" aria-label="Layout collections" className="mb-6 flex gap-4 border-b border-border">
+          <Button role="tab" aria-selected={tab === "saved"} variant="ghost" className={cn("rounded-none border-b-2 border-transparent px-1", tab === "saved" && "border-accent text-accent")} onClick={() => setTab("saved")}><Layers className="size-4" /> My layouts</Button>
+          <Button role="tab" aria-selected={tab === "library"} variant="ghost" className={cn("rounded-none border-b-2 border-transparent px-1", tab === "library" && "border-accent text-accent")} onClick={() => setTab("library")}><CalendarDays className="size-4" /> Layout library</Button>
+        </div>
+        {tab === "library" ? <section aria-label="Meeting room layout library">
+          <div className="mb-6 flex items-end justify-between gap-4"><div><p className="label-caps mb-2">WORKPLACE COLLECTION / 01</p><h2 className="text-2xl font-semibold">Meeting rooms, reimagined.</h2></div><span className="text-xs text-muted-foreground">2 designs · 16:9 · Sample calendars</span></div>
+          <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
+            {MEETING_TEMPLATES.filter((template) => !query || `${template.name} meeting room`.toLowerCase().includes(query.toLowerCase())).map((template, index) => <article key={template.id} className="overflow-hidden rounded-md border border-border bg-card">
+              <div className="aspect-video overflow-hidden"><MeetingRoomDisplay config={template.config} /></div>
+              <div className="space-y-4 p-5"><div className="flex items-start justify-between gap-3"><div><p className="label-caps mb-2">DESIGN 0{index + 1} / {template.config.provider === "microsoft" ? "MICROSOFT 365" : "GOOGLE WORKSPACE"}</p><h3 className="text-lg font-semibold">{template.name}</h3></div><CalendarDays className="size-5 shrink-0 text-accent" /></div><p className="text-sm text-muted-foreground">{template.subtitle}</p><div className="flex flex-wrap items-center justify-between gap-3 border-t border-border pt-4"><span className="text-xs text-muted-foreground">Room status · Current meeting · Agenda</span><Button size="sm" onClick={() => useTemplate(template)}><Plus className="size-4" /> Use {template.id === "atelier" ? "Atelier" : "Panorama"}</Button></div></div>
+            </article>)}
+          </div>
+          {query && !MEETING_TEMPLATES.some((t) => `${t.name} meeting room`.toLowerCase().includes(query.toLowerCase())) && <p className="py-10 text-sm text-muted-foreground">No library designs match “{query}”.</p>}
+        </section> : !loaded ? null : filtered.length === 0 ? (
           <div className="panel grid place-items-center gap-3 py-20 text-center">
             <p className="text-sm text-muted-foreground">No layouts match “{query}”.</p>
             <Button variant="secondary" size="sm" onClick={() => setQuery("")}>
