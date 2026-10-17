@@ -34,16 +34,23 @@ describe("meeting room signage", () => {
     expect(state.current).toBeUndefined();
   });
   test("library preserves existing designs and adds two futuristic designs", () => {
-    expect(MEETING_TEMPLATES.length).toBe(4);
-    expect(MEETING_TEMPLATES.map((entry) => entry.config.design)).toEqual(["atelier", "panorama", "signal", "prism"]);
+    expect(MEETING_TEMPLATES.length).toBe(6);
+    expect(MEETING_TEMPLATES.map((entry) => entry.config.design)).toEqual(["atelier", "panorama", "signal", "prism", "orbit", "vector"]);
   });
   test("new designs preserve calendar privacy and offline safety", () => {
-    for (const design of ["signal", "prism"]) {
+    for (const design of ["signal", "prism", "orbit", "vector"]) {
       const state = getMeetingState({ design, hideTitles: true });
       expect(state.config.design).toBe(design);
       expect(visibleMeetingTitle(state.current, state.config)).toBe("Reserved meeting");
       expect(visibleOrganizer(state.current, state.config)).toBe("");
       expect(getMeetingState({ design, demoState: "offline" }).events).toEqual([]);
+    }
+  });
+  test("both Forum-inspired templates retain the Forum room", () => {
+    for (const id of ["orbit", "vector"]) {
+      const template = MEETING_TEMPLATES.find(entry => entry.id === id);
+      expect(template.config.roomId).toBe("ms-forum");
+      expect(getMeetingState(template.config).room.name).toBe("Forum");
     }
   });
 });
