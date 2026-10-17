@@ -8,3 +8,5 @@
 - [x] Verify new templates and explain customer room-photo support (possible; upload option not yet added).
 - [x] Add one adaptive room template with three selectable states and a moving day ribbon.
 - [x] Verify library state transitions and template-to-editor preview.
+- [ ] Add customer room-photo upload, replacement and removal for Panorama and Prism.
+- [ ] Verify photo previews, saved layouts and room-specific photo selection.

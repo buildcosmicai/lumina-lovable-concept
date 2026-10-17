@@ -1,3 +1,4 @@
+import type { RoomPhoto } from "./room-photos";
 export type CalendarProvider = "microsoft" | "google";
 export type MeetingConfig = {
   provider: CalendarProvider;
@@ -10,6 +11,7 @@ export type MeetingConfig = {
   upcomingCount: number;
   demoState: "busy" | "available" | "soon" | "empty" | "offline";
   refreshSeconds: number;
+  roomPhotos?: Record<string, RoomPhoto>;
 };
 
 export const ROOMS = [

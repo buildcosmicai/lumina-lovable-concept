@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { FuturisticMeetingDisplay } from "@/components/futuristic-meeting-display";
 import { InstrumentMeetingDisplay } from "@/components/instrument-meeting-display";
 import { TempoMeetingDisplay } from "@/components/tempo-meeting-display";
+import { RoomPhotoImage } from "@/components/room-photo-image";
 
 export function MeetingRoomDisplay({ config: value }: { config?: Partial<MeetingConfig> | undefined }) {
   const { config, room, now, current, upcoming, offline } = getMeetingState(value);
@@ -23,7 +24,7 @@ export function MeetingRoomDisplay({ config: value }: { config?: Partial<Meeting
         </header>
         <div className="meeting-body">
           <section className={cn("meeting-spotlight", current ? "meeting-busy" : "meeting-free")}>
-            {config.design === "panorama" && <img src={roomImage} alt="Bright meeting room with a round table and garden views" width={1280} height={720} loading="lazy" className="meeting-photo" />}
+            {config.design === "panorama" && <RoomPhotoImage photo={config.roomPhotos?.[room.id]} fallback={roomImage} alt={`${room.name} meeting room`} width={1280} height={720} loading="lazy" className="meeting-photo" />}
             <div className="meeting-room-name"><span>{room.location}</span><h2>{room.name}</h2><span className="meeting-capacity"><Users /> {room.capacity} people · Display · Video call</span></div>
             <div className="meeting-availability"><span className="meeting-status-dot" />{offline ? "Calendar unavailable" : current ? "In a meeting" : "Available"}<ArrowUpRight /></div>
             <div className="meeting-focus">
