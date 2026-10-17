@@ -4,3 +4,5 @@
 - [x] Verify template-to-editor, controls, preview and saved settings.
 - [x] Add two futuristic meeting-room designs in the library and editor controls.
 - [x] Verify both new designs, privacy, availability states and template-to-editor flow.
+- [ ] Add two photo-free, Forum-inspired meeting-room designs.
+- [ ] Verify new templates and explain customer room-photo support.
