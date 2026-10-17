@@ -16,3 +16,5 @@
 - Photo-free instrument meeting-room styles share a dedicated display module with data-driven SVG gauges, so status and time visuals remain consistent across the library and editor.
 - Adaptive meeting-room displays derive their visual phase from shared calendar state; library simulations reuse the same display so editor and preview transitions stay consistent.
 - Customer room photos use owner-scoped private Cloud Storage paths keyed by room in zone configuration; shared image rendering renews signed URLs rather than persisting expiring URLs or image bytes in layouts.
+- Settings uses nested TanStack layouts with an integrations module so setup pages remain independently shareable.
+- Room connection metadata is owner-scoped through RLS; credentials live encrypted in a server-only table and provider access runs in authenticated server functions, preventing browser or cross-account credential reads.

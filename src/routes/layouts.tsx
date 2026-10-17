@@ -450,8 +450,8 @@ function LayoutsPage() {
               <Button key={item.label} variant="ghost" size="icon" title={item.label} aria-label={item.label} onClick={() => toast(item.label, { description: "This section is not connected yet." })} className="size-9 text-muted-foreground"><item.icon className="size-4" /></Button>
             ))}
           </nav>
-          <Button variant="ghost" size="icon" title="Settings" aria-label="Settings" className="mt-auto size-9 text-muted-foreground" onClick={() => toast("Settings", { description: "This section is not connected yet." })}>
-            <Settings className="size-4" />
+          <Button asChild variant="ghost" size="icon" title="Settings" aria-label="Settings" className="mt-auto size-9 text-muted-foreground">
+            <Link to="/settings"><Settings className="size-4" /></Link>
           </Button>
         </div>
 

@@ -14,7 +14,74 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      room_connection_credentials: {
+        Row: {
+          ciphertext: string
+          connection_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          ciphertext: string
+          connection_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          ciphertext?: string
+          connection_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "room_connection_credentials_connection_id_fkey"
+            columns: ["connection_id"]
+            isOneToOne: true
+            referencedRelation: "room_connections"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      room_connections: {
+        Row: {
+          created_at: string
+          id: string
+          last_error: string | null
+          name: string
+          provider: string
+          reader_email: string
+          rooms: Json
+          status: string
+          user_id: string
+          verified_at: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          last_error?: string | null
+          name: string
+          provider: string
+          reader_email: string
+          rooms?: Json
+          status?: string
+          user_id: string
+          verified_at?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          last_error?: string | null
+          name?: string
+          provider?: string
+          reader_email?: string
+          rooms?: Json
+          status?: string
+          user_id?: string
+          verified_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

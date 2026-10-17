@@ -10,3 +10,9 @@
 - [x] Verify library state transitions and template-to-editor preview.
 - [x] Add customer room-photo upload, replacement and removal for Panorama and Prism.
 - [x] Verify photo previews, saved layouts and room-specific photo selection.
+
+# Room connectors
+- [x] Add Settings → Integrations → Room Connectors with Google and Microsoft setup guides.
+- [x] Add private saved credentials, verification, room discovery and managed-room selection.
+- [x] Add connection status, key replacement and removal; verify navigation and provider forms.
+- [ ] Verify authenticated live connection, discovery, key replacement and removal — blocked by no signed-up account or customer Google/Microsoft credentials.
