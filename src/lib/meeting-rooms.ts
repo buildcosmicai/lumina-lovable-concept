@@ -2,7 +2,7 @@ export type CalendarProvider = "microsoft" | "google";
 export type MeetingConfig = {
   provider: CalendarProvider;
   roomId: string;
-  design: "atelier" | "panorama";
+  design: "atelier" | "panorama" | "signal" | "prism";
   timezone: string;
   use24h: boolean;
   showOrganizer: boolean;
@@ -72,4 +72,6 @@ export function meetingTime(minutes: number, use24h: boolean) {
 export const MEETING_TEMPLATES = [
   { id: "atelier", name: "Atelier — The room companion", subtitle: "A clear status signal, a generous meeting spotlight and an at-a-glance day plan.", config: DEFAULT_MEETING },
   { id: "panorama", name: "Panorama — Space to think", subtitle: "An architectural room portrait with open-space availability and a calm meeting agenda.", config: { ...DEFAULT_MEETING, provider: "google", roomId: "g-garden", design: "panorama", demoState: "available" } as MeetingConfig },
+  { id: "signal", name: "Signal — Ahead of time", subtitle: "A luminous status dial, oversized room identity and a precision day timeline on a graphite canvas.", config: { ...DEFAULT_MEETING, roomId: "ms-forum", design: "signal" } as MeetingConfig },
+  { id: "prism", name: "Prism — A clearer dimension", subtitle: "Light-filled architecture meets crystalline calendar panels and an unmistakable availability signal.", config: { ...DEFAULT_MEETING, provider: "google", roomId: "g-horizon", design: "prism", demoState: "available" } as MeetingConfig },
 ] as const;
