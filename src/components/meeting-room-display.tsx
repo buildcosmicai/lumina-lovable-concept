@@ -4,11 +4,13 @@ import { getMeetingState, meetingTime, visibleMeetingTitle, visibleOrganizer, ty
 import { cn } from "@/lib/utils";
 import { FuturisticMeetingDisplay } from "@/components/futuristic-meeting-display";
 import { InstrumentMeetingDisplay } from "@/components/instrument-meeting-display";
+import { TempoMeetingDisplay } from "@/components/tempo-meeting-display";
 
 export function MeetingRoomDisplay({ config: value }: { config?: Partial<MeetingConfig> | undefined }) {
   const { config, room, now, current, upcoming, offline } = getMeetingState(value);
   const time = (minutes: number) => meetingTime(minutes, config.use24h);
   const available = !current;
+  if (config.design === "tempo") return <TempoMeetingDisplay config={config} />;
   if (config.design === "orbit" || config.design === "vector") return <InstrumentMeetingDisplay config={config} />;
   if (config.design === "signal" || config.design === "prism") return <FuturisticMeetingDisplay config={config} />;
   return (

@@ -2,13 +2,13 @@ export type CalendarProvider = "microsoft" | "google";
 export type MeetingConfig = {
   provider: CalendarProvider;
   roomId: string;
-  design: "atelier" | "panorama" | "signal" | "prism" | "orbit" | "vector";
+  design: "atelier" | "panorama" | "signal" | "prism" | "orbit" | "vector" | "tempo";
   timezone: string;
   use24h: boolean;
   showOrganizer: boolean;
   hideTitles: boolean;
   upcomingCount: number;
-  demoState: "busy" | "available" | "empty" | "offline";
+  demoState: "busy" | "available" | "soon" | "empty" | "offline";
   refreshSeconds: number;
 };
 
@@ -45,7 +45,7 @@ export function meetingConfig(value?: Partial<MeetingConfig>): MeetingConfig {
 export function getMeetingState(value?: Partial<MeetingConfig>) {
   const config = meetingConfig(value);
   const room = ROOMS.find((r) => r.id === config.roomId) ?? ROOMS[0];
-  const now = config.demoState === "available" ? 675 : config.demoState === "empty" ? 1050 : 615;
+  const now = config.demoState === "available" ? 675 : config.demoState === "soon" ? 685 : config.demoState === "empty" ? 1050 : 615;
   const events = config.demoState === "empty" || config.demoState === "offline" ? [] : EVENTS.map((event, i) => ({
     ...event,
     title: room.id === "ms-forum" && i === 0 ? "Team all-hands" : room.id === "g-garden" && i === 0 ? "Ideas in bloom" : event.title,
@@ -57,6 +57,14 @@ export function getMeetingState(value?: Partial<MeetingConfig>) {
 
 export function visibleMeetingTitle(event: MeetingEvent, config: MeetingConfig) {
   return event.private || config.hideTitles ? "Reserved meeting" : event.title;
+}
+
+export function getRoomPhase(value?: Partial<MeetingConfig>) {
+  const state = getMeetingState(value);
+  if (state.offline) return "offline";
+  if (state.current) return "busy";
+  const next = state.upcoming[0];
+  return next && next.start - state.now <= 5 ? "soon" : "available";
 }
 
 export function visibleOrganizer(event: MeetingEvent, config: MeetingConfig) {
@@ -76,4 +84,5 @@ export const MEETING_TEMPLATES = [
   { id: "prism", name: "Prism — A clearer dimension", subtitle: "Light-filled architecture meets crystalline calendar panels and an unmistakable availability signal.", config: { ...DEFAULT_MEETING, provider: "google", roomId: "g-horizon", design: "prism", demoState: "available" } as MeetingConfig },
   { id: "orbit", name: "Orbit — Mission control", subtitle: "A precision orbital instrument, live session countdown and a vertical day-ahead manifest. No photography, just pure signal.", config: { ...DEFAULT_MEETING, roomId: "ms-forum", design: "orbit" } as MeetingConfig },
   { id: "vector", name: "Vector — A new trajectory", subtitle: "An electric-blue time instrument on a crisp porcelain canvas, with a numbered meeting runway and an open-space signal.", config: { ...DEFAULT_MEETING, roomId: "ms-forum", design: "vector", demoState: "available" } as MeetingConfig },
+  { id: "tempo", name: "Tempo — One room. Three rhythms.", subtitle: "An adaptive room display with open, handover and focus states.", config: { ...DEFAULT_MEETING, roomId: "ms-forum", design: "tempo", demoState: "available" } as MeetingConfig },
 ] as const;

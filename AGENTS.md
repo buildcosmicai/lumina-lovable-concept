@@ -14,3 +14,4 @@
 - Meeting-room zones store optional calendar configuration on the existing zone payload; shared client-safe meeting data and display modules keep editor previews and library templates consistent without breaking older layouts.
 - Futuristic meeting-room styles use a dedicated display module routed through the shared meeting-room display, so library thumbnails and editor previews render the same calendar and privacy state.
 - Photo-free instrument meeting-room styles share a dedicated display module with data-driven SVG gauges, so status and time visuals remain consistent across the library and editor.
+- Adaptive meeting-room displays derive their visual phase from shared calendar state; library simulations reuse the same display so editor and preview transitions stay consistent.

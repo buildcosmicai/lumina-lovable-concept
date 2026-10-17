@@ -6,3 +6,5 @@
 - [x] Verify both new designs, privacy, availability states and template-to-editor flow.
 - [x] Add two photo-free, Forum-inspired meeting-room designs.
 - [x] Verify new templates and explain customer room-photo support (possible; upload option not yet added).
+- [x] Add one adaptive room template with three selectable states and a moving day ribbon.
+- [x] Verify library state transitions and template-to-editor preview.
