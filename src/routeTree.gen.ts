@@ -18,10 +18,14 @@ import { Route as PlaylistsRouteImport } from './routes/playlists'
 import { Route as PulseRouteImport } from './routes/pulse'
 import { Route as SchedulesRouteImport } from './routes/schedules'
 import { Route as ScreensRouteImport } from './routes/screens'
+import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as SignInRouteImport } from './routes/sign-in'
 import { Route as UsersRouteImport } from './routes/users'
 import { Route as ScreensIndexRouteImport } from './routes/screens.index'
 import { Route as ScreensScreenIdRouteImport } from './routes/screens.$screenId'
+import { Route as SettingsIndexRouteImport } from './routes/settings.index'
+import { Route as SettingsIntegrationsRouteImport } from './routes/settings.integrations'
+import { Route as SettingsIntegrationsIndexRouteImport } from './routes/settings.integrations.index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -68,6 +72,11 @@ const ScreensRoute = ScreensRouteImport.update({
   path: '/screens',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SignInRoute = SignInRouteImport.update({
   id: '/sign-in',
   path: '/sign-in',
@@ -88,6 +97,22 @@ const ScreensScreenIdRoute = ScreensScreenIdRouteImport.update({
   path: '/$screenId',
   getParentRoute: () => ScreensRoute,
 } as any)
+const SettingsIndexRoute = SettingsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => SettingsRoute,
+} as any)
+const SettingsIntegrationsRoute = SettingsIntegrationsRouteImport.update({
+  id: '/integrations',
+  path: '/integrations',
+  getParentRoute: () => SettingsRoute,
+} as any)
+const SettingsIntegrationsIndexRoute =
+  SettingsIntegrationsIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => SettingsIntegrationsRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -99,10 +124,14 @@ export interface FileRoutesByFullPath {
   '/pulse': typeof PulseRoute
   '/schedules': typeof SchedulesRoute
   '/screens': typeof ScreensRouteWithChildren
+  '/settings': typeof SettingsRouteWithChildren
   '/sign-in': typeof SignInRoute
   '/users': typeof UsersRoute
   '/screens/$screenId': typeof ScreensScreenIdRoute
+  '/settings/integrations': typeof SettingsIntegrationsRouteWithChildren
   '/screens/': typeof ScreensIndexRoute
+  '/settings/': typeof SettingsIndexRoute
+  '/settings/integrations/': typeof SettingsIntegrationsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -117,6 +146,8 @@ export interface FileRoutesByTo {
   '/users': typeof UsersRoute
   '/screens/$screenId': typeof ScreensScreenIdRoute
   '/screens': typeof ScreensIndexRoute
+  '/settings': typeof SettingsIndexRoute
+  '/settings/integrations': typeof SettingsIntegrationsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -129,10 +160,14 @@ export interface FileRoutesById {
   '/pulse': typeof PulseRoute
   '/schedules': typeof SchedulesRoute
   '/screens': typeof ScreensRouteWithChildren
+  '/settings': typeof SettingsRouteWithChildren
   '/sign-in': typeof SignInRoute
   '/users': typeof UsersRoute
   '/screens/$screenId': typeof ScreensScreenIdRoute
+  '/settings/integrations': typeof SettingsIntegrationsRouteWithChildren
   '/screens/': typeof ScreensIndexRoute
+  '/settings/': typeof SettingsIndexRoute
+  '/settings/integrations/': typeof SettingsIntegrationsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -146,10 +181,14 @@ export interface FileRouteTypes {
     | '/pulse'
     | '/schedules'
     | '/screens'
+    | '/settings'
     | '/sign-in'
     | '/users'
     | '/screens/$screenId'
+    | '/settings/integrations'
     | '/screens/'
+    | '/settings/'
+    | '/settings/integrations/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -164,6 +203,8 @@ export interface FileRouteTypes {
     | '/users'
     | '/screens/$screenId'
     | '/screens'
+    | '/settings'
+    | '/settings/integrations'
   id:
     | '__root__'
     | '/'
@@ -175,10 +216,14 @@ export interface FileRouteTypes {
     | '/pulse'
     | '/schedules'
     | '/screens'
+    | '/settings'
     | '/sign-in'
     | '/users'
     | '/screens/$screenId'
+    | '/settings/integrations'
     | '/screens/'
+    | '/settings/'
+    | '/settings/integrations/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -191,6 +236,7 @@ export interface RootRouteChildren {
   PulseRoute: typeof PulseRoute
   SchedulesRoute: typeof SchedulesRoute
   ScreensRoute: typeof ScreensRouteWithChildren
+  SettingsRoute: typeof SettingsRouteWithChildren
   SignInRoute: typeof SignInRoute
   UsersRoute: typeof UsersRoute
 }
@@ -260,6 +306,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ScreensRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sign-in': {
       id: '/sign-in'
       path: '/sign-in'
@@ -288,6 +341,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ScreensScreenIdRouteImport
       parentRoute: typeof ScreensRoute
     }
+    '/settings/': {
+      id: '/settings/'
+      path: '/'
+      fullPath: '/settings/'
+      preLoaderRoute: typeof SettingsIndexRouteImport
+      parentRoute: typeof SettingsRoute
+    }
+    '/settings/integrations': {
+      id: '/settings/integrations'
+      path: '/integrations'
+      fullPath: '/settings/integrations'
+      preLoaderRoute: typeof SettingsIntegrationsRouteImport
+      parentRoute: typeof SettingsRoute
+    }
+    '/settings/integrations/': {
+      id: '/settings/integrations/'
+      path: '/'
+      fullPath: '/settings/integrations/'
+      preLoaderRoute: typeof SettingsIntegrationsIndexRouteImport
+      parentRoute: typeof SettingsIntegrationsRoute
+    }
   }
 }
 
@@ -304,6 +378,31 @@ const ScreensRouteChildren: ScreensRouteChildren = {
 const ScreensRouteWithChildren =
   ScreensRoute._addFileChildren(ScreensRouteChildren)
 
+interface SettingsIntegrationsRouteChildren {
+  SettingsIntegrationsIndexRoute: typeof SettingsIntegrationsIndexRoute
+}
+
+const SettingsIntegrationsRouteChildren: SettingsIntegrationsRouteChildren = {
+  SettingsIntegrationsIndexRoute: SettingsIntegrationsIndexRoute,
+}
+
+const SettingsIntegrationsRouteWithChildren =
+  SettingsIntegrationsRoute._addFileChildren(SettingsIntegrationsRouteChildren)
+
+interface SettingsRouteChildren {
+  SettingsIntegrationsRoute: typeof SettingsIntegrationsRouteWithChildren
+  SettingsIndexRoute: typeof SettingsIndexRoute
+}
+
+const SettingsRouteChildren: SettingsRouteChildren = {
+  SettingsIntegrationsRoute: SettingsIntegrationsRouteWithChildren,
+  SettingsIndexRoute: SettingsIndexRoute,
+}
+
+const SettingsRouteWithChildren = SettingsRoute._addFileChildren(
+  SettingsRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ControlCenterRoute: ControlCenterRoute,
@@ -314,6 +413,7 @@ const rootRouteChildren: RootRouteChildren = {
   PulseRoute: PulseRoute,
   SchedulesRoute: SchedulesRoute,
   ScreensRoute: ScreensRouteWithChildren,
+  SettingsRoute: SettingsRouteWithChildren,
   SignInRoute: SignInRoute,
   UsersRoute: UsersRoute,
 }
