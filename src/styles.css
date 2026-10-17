@@ -495,16 +495,16 @@
 .tempo-equipment { display: flex; gap: 1.3cqw; font-size: 0.8cqw; color: var(--tempo-dim); }
 .tempo-equipment span { display: flex; align-items: center; gap: 0.4cqw; }
 .tempo-equipment svg { width: 1cqw; height: 1cqw; }
-.tempo-message { margin-top: auto; padding: 2cqw 0 1.6cqw; }
+.tempo-message { margin-top: auto; padding: 1.2cqw 0; }
 .tempo-status { display: flex; align-items: center; gap: 0.7cqw; color: var(--tempo-accent); font-size: 1.5cqw; font-weight: 600; }
 .tempo-status i { width: 0.7cqw; height: 0.7cqw; background: var(--tempo-accent); border-radius: 50%; }
 .tempo-message h3 { font-size: 4.2cqw; font-weight: 500; line-height: 1.12; max-width: 48cqw; margin: 0.8cqw 0; }
 .tempo-message > p:last-child { font-size: 1.05cqw; color: var(--tempo-dim); }
-.tempo-focus { padding-top: 1.2cqw; border-top: 1px solid color-mix(in oklch, var(--tempo-fg) 18%, transparent); }
+.tempo-focus { padding-top: 0.8cqw; border-top: 1px solid color-mix(in oklch, var(--tempo-fg) 18%, transparent); }
 .tempo-focus h4 { font-size: 1.8cqw; font-weight: 500; margin: 0.5cqw 0; overflow-wrap: anywhere; }
 .tempo-focus p { font-size: 0.95cqw; color: var(--tempo-dim); min-height: 1.3cqw; }
 .tempo-portal { position: relative; display: flex; align-items: center; justify-content: center; min-width: 0; }
-.tempo-portal > svg { width: 36cqw; height: 34cqw; fill: none; overflow: visible; }
+.tempo-portal > svg { position: absolute; width: 32cqw; height: 29cqw; fill: none; overflow: visible; }
 .tempo-door { stroke: var(--tempo-accent); stroke-width: 0.7; opacity: 0.4; transform-origin: 180px 170px; transition: transform 1400ms ease, stroke 1000ms ease; }
 .tempo-door:nth-child(2n) { opacity: 0.2; }
 .tempo-available .tempo-door { transform: scaleX(1.12); }
