@@ -84,4 +84,5 @@ export const MEETING_TEMPLATES = [
   { id: "prism", name: "Prism — A clearer dimension", subtitle: "Light-filled architecture meets crystalline calendar panels and an unmistakable availability signal.", config: { ...DEFAULT_MEETING, provider: "google", roomId: "g-horizon", design: "prism", demoState: "available" } as MeetingConfig },
   { id: "orbit", name: "Orbit — Mission control", subtitle: "A precision orbital instrument, live session countdown and a vertical day-ahead manifest. No photography, just pure signal.", config: { ...DEFAULT_MEETING, roomId: "ms-forum", design: "orbit" } as MeetingConfig },
   { id: "vector", name: "Vector — A new trajectory", subtitle: "An electric-blue time instrument on a crisp porcelain canvas, with a numbered meeting runway and an open-space signal.", config: { ...DEFAULT_MEETING, roomId: "ms-forum", design: "vector", demoState: "available" } as MeetingConfig },
+  { id: "tempo", name: "Tempo — One room. Three rhythms.", subtitle: "An adaptive room display with open, handover and focus states.", config: { ...DEFAULT_MEETING, roomId: "ms-forum", design: "tempo", demoState: "available" } as MeetingConfig },
 ] as const;
