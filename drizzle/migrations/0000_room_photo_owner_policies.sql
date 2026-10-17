@@ -1,0 +1,3 @@
+CREATE POLICY "Owners read room photos" ON storage.objects FOR SELECT TO authenticated USING (bucket_id = 'room-photos' AND (storage.foldername(name))[1] = (SELECT auth.uid())::text);
+CREATE POLICY "Owners upload room photos" ON storage.objects FOR INSERT TO authenticated WITH CHECK (bucket_id = 'room-photos' AND (storage.foldername(name))[1] = (SELECT auth.uid())::text AND lower(storage.extension(name)) IN ('jpg', 'jpeg', 'png', 'webp'));
+CREATE POLICY "Owners delete room photos" ON storage.objects FOR DELETE TO authenticated USING (bucket_id = 'room-photos' AND (storage.foldername(name))[1] = (SELECT auth.uid())::text);

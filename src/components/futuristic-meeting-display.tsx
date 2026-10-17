@@ -2,6 +2,7 @@ import { ArrowUpRight, CalendarDays, Monitor, Users, Video, WifiOff } from "luci
 import prismImage from "@/assets/meeting-prism.jpg";
 import { getMeetingState, meetingTime, visibleMeetingTitle, visibleOrganizer, type MeetingConfig } from "@/lib/meeting-rooms";
 import { cn } from "@/lib/utils";
+import { RoomPhotoImage } from "@/components/room-photo-image";
 
 export function FuturisticMeetingDisplay({ config: value }: { config?: Partial<MeetingConfig> }) {
   const { config, room, now, current, upcoming, offline, events } = getMeetingState(value);
@@ -13,7 +14,7 @@ export function FuturisticMeetingDisplay({ config: value }: { config?: Partial<M
   const title = offline ? "Calendar unavailable" : current ? visibleMeetingTitle(current, config) : "Your next big idea starts here.";
   const subtitle = offline ? "Availability cannot be confirmed" : current ? `${time(current.start)} — ${time(current.end)}` : upcoming[0] ? `Open until ${time(upcoming[0].start)}` : "Clear for the rest of today";
   return <div className={cn("future-display", prism ? "future-prism" : "future-signal", offline ? "future-offline" : current ? "future-occupied" : "future-available")} data-testid="meeting-display">
-    {prism && <img className="future-architecture" src={prismImage} alt="Futuristic glass meeting room overlooking the city" width={1536} height={1024} loading="lazy" />}
+    {prism && <RoomPhotoImage className="future-architecture" photo={config.roomPhotos?.[room.id]} fallback={prismImage} alt={`${room.name} meeting room`} width={1536} height={1024} loading="lazy" />}
     <div className="future-shell">
       <header className="future-header"><span className="future-wordmark"><span className="future-mark" aria-hidden="true" />{prism ? "PRISM" : "SIGNAL"}<small>WORKPLACE / {prism ? "04" : "03"}</small></span><span className="future-clock"><strong>{time(now)}</strong><small>16 OCT · {config.timezone.split("/").at(-1)?.replaceAll("_", " ")}</small></span></header>
       <div className="future-main">
