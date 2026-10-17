@@ -435,7 +435,7 @@ function LayoutsPage() {
   return (
     <div className="flex min-h-screen bg-surface text-foreground">
       <Toaster />
-      <aside className={cn("sticky top-0 flex h-screen shrink-0 border-r border-border bg-card transition-[width] duration-200", sidebarOpen ? "w-72" : "w-16")}>
+      <aside className={cn("sticky top-0 hidden h-screen shrink-0 border-r border-border bg-card transition-[width] duration-200 md:flex", sidebarOpen ? "w-72" : "w-16")}>
         <div className="flex w-16 shrink-0 flex-col items-center border-r border-border bg-surface py-3">
           <Link to="/layouts" aria-label="Layouts home" className="mb-5 grid size-9 place-items-center rounded-md bg-primary text-primary-foreground shadow-sm">
             <Layers className="size-4" />
@@ -559,10 +559,10 @@ function LayoutsPage() {
             <p className="text-xs text-muted-foreground">Create and manage screen compositions</p>
           </div>
           <Link to="/" className="ml-3 rounded-md px-2.5 py-1 text-sm text-muted-foreground hover:bg-secondary hover:text-foreground">Editor</Link>
-          <div className="ml-auto flex items-center gap-2">
-            <div className="relative">
+          <div className="flex w-full items-center gap-2 sm:ml-auto sm:w-auto">
+            <div className="relative min-w-0 flex-1">
               <Search className="pointer-events-none absolute left-2.5 top-1/2 size-3.5 -translate-y-1/2 text-muted-foreground" />
-              <Input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search layouts" aria-label="Search layouts" className="h-8 w-56 bg-secondary pl-8 text-sm" />
+              <Input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search layouts" aria-label="Search layouts" className="h-8 w-full bg-secondary pl-8 text-sm sm:w-56" />
             </div>
             <Button size="sm" onClick={createNew}><Plus className="size-4" /> New layout</Button>
           </div>
@@ -582,7 +582,7 @@ function LayoutsPage() {
           <Button role="tab" aria-selected={tab === "library"} variant="ghost" className={cn("rounded-none border-b-2 border-transparent px-1", tab === "library" && "border-accent text-accent")} onClick={() => setTab("library")}><CalendarDays className="size-4" /> Layout library</Button>
         </div>
         {tab === "library" ? <section aria-label="Meeting room layout library">
-          <div className="mb-6 flex items-end justify-between gap-4"><div><p className="label-caps mb-2">WORKPLACE COLLECTION / 01</p><h2 className="text-2xl font-semibold">Meeting rooms, reimagined.</h2></div><span className="text-xs text-muted-foreground">{MEETING_TEMPLATES.length} designs · 16:9 · Sample calendars</span></div>
+          <div className="mb-6 flex flex-wrap items-end justify-between gap-4"><div><p className="label-caps mb-2">WORKPLACE COLLECTION / 01</p><h2 className="text-2xl font-semibold">Meeting rooms, reimagined.</h2></div><span className="text-xs text-muted-foreground">{MEETING_TEMPLATES.length} designs · 16:9 · Sample calendars</span></div>
           <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
             {MEETING_TEMPLATES.filter((template) => !query || `${template.name} meeting room`.toLowerCase().includes(query.toLowerCase())).map((template, index) => <article key={template.id} className="overflow-hidden rounded-md border border-border bg-card">
               <div className="aspect-video overflow-hidden"><MeetingRoomDisplay config={template.config} /></div>
