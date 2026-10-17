@@ -7,7 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable/index";
 import { ROOM_PHOTO_BUCKET, roomPhotoError, type RoomPhoto } from "@/lib/room-photos";
 
-export function RoomPhotoControls({ roomId, photo, onChange }: { roomId: string; photo?: RoomPhoto; onChange: (photo?: RoomPhoto) => void }) {
+export function RoomPhotoControls({ roomId, photo, onChange }: { roomId: string; photo?: RoomPhoto | undefined; onChange: (photo?: RoomPhoto) => void }) {
   const input = useRef<HTMLInputElement>(null);
   const [signedIn, setSignedIn] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);

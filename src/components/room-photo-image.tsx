@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { ROOM_PHOTO_BUCKET, type RoomPhoto } from "@/lib/room-photos";
 
-export function RoomPhotoImage({ photo, fallback, ...props }: { photo?: RoomPhoto; fallback: string; className: string; alt: string; width?: number; height?: number; loading?: "lazy" | "eager" }) {
+export function RoomPhotoImage({ photo, fallback, ...props }: { photo?: RoomPhoto | undefined; fallback: string; className: string; alt: string; width?: number; height?: number; loading?: "lazy" | "eager" }) {
   const [resolved, setResolved] = useState<{ path: string; url: string }>();
   useEffect(() => {
     if (!photo) return;
