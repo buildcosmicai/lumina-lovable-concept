@@ -26,6 +26,7 @@ import { Route as ScreensScreenIdRouteImport } from './routes/screens.$screenId'
 import { Route as SettingsIndexRouteImport } from './routes/settings.index'
 import { Route as SettingsIntegrationsRouteImport } from './routes/settings.integrations'
 import { Route as SettingsIntegrationsIndexRouteImport } from './routes/settings.integrations.index'
+import { Route as SettingsIntegrationsRoomConnectorsRouteImport } from './routes/settings.integrations.room-connectors'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -113,6 +114,12 @@ const SettingsIntegrationsIndexRoute =
     path: '/',
     getParentRoute: () => SettingsIntegrationsRoute,
   } as any)
+const SettingsIntegrationsRoomConnectorsRoute =
+  SettingsIntegrationsRoomConnectorsRouteImport.update({
+    id: '/room-connectors',
+    path: '/room-connectors',
+    getParentRoute: () => SettingsIntegrationsRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -131,6 +138,7 @@ export interface FileRoutesByFullPath {
   '/settings/integrations': typeof SettingsIntegrationsRouteWithChildren
   '/screens/': typeof ScreensIndexRoute
   '/settings/': typeof SettingsIndexRoute
+  '/settings/integrations/room-connectors': typeof SettingsIntegrationsRoomConnectorsRoute
   '/settings/integrations/': typeof SettingsIntegrationsIndexRoute
 }
 export interface FileRoutesByTo {
@@ -147,6 +155,7 @@ export interface FileRoutesByTo {
   '/screens/$screenId': typeof ScreensScreenIdRoute
   '/screens': typeof ScreensIndexRoute
   '/settings': typeof SettingsIndexRoute
+  '/settings/integrations/room-connectors': typeof SettingsIntegrationsRoomConnectorsRoute
   '/settings/integrations': typeof SettingsIntegrationsIndexRoute
 }
 export interface FileRoutesById {
@@ -167,6 +176,7 @@ export interface FileRoutesById {
   '/settings/integrations': typeof SettingsIntegrationsRouteWithChildren
   '/screens/': typeof ScreensIndexRoute
   '/settings/': typeof SettingsIndexRoute
+  '/settings/integrations/room-connectors': typeof SettingsIntegrationsRoomConnectorsRoute
   '/settings/integrations/': typeof SettingsIntegrationsIndexRoute
 }
 export interface FileRouteTypes {
@@ -188,6 +198,7 @@ export interface FileRouteTypes {
     | '/settings/integrations'
     | '/screens/'
     | '/settings/'
+    | '/settings/integrations/room-connectors'
     | '/settings/integrations/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -204,6 +215,7 @@ export interface FileRouteTypes {
     | '/screens/$screenId'
     | '/screens'
     | '/settings'
+    | '/settings/integrations/room-connectors'
     | '/settings/integrations'
   id:
     | '__root__'
@@ -223,6 +235,7 @@ export interface FileRouteTypes {
     | '/settings/integrations'
     | '/screens/'
     | '/settings/'
+    | '/settings/integrations/room-connectors'
     | '/settings/integrations/'
   fileRoutesById: FileRoutesById
 }
@@ -362,6 +375,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SettingsIntegrationsIndexRouteImport
       parentRoute: typeof SettingsIntegrationsRoute
     }
+    '/settings/integrations/room-connectors': {
+      id: '/settings/integrations/room-connectors'
+      path: '/room-connectors'
+      fullPath: '/settings/integrations/room-connectors'
+      preLoaderRoute: typeof SettingsIntegrationsRoomConnectorsRouteImport
+      parentRoute: typeof SettingsIntegrationsRoute
+    }
   }
 }
 
@@ -379,10 +399,13 @@ const ScreensRouteWithChildren =
   ScreensRoute._addFileChildren(ScreensRouteChildren)
 
 interface SettingsIntegrationsRouteChildren {
+  SettingsIntegrationsRoomConnectorsRoute: typeof SettingsIntegrationsRoomConnectorsRoute
   SettingsIntegrationsIndexRoute: typeof SettingsIntegrationsIndexRoute
 }
 
 const SettingsIntegrationsRouteChildren: SettingsIntegrationsRouteChildren = {
+  SettingsIntegrationsRoomConnectorsRoute:
+    SettingsIntegrationsRoomConnectorsRoute,
   SettingsIntegrationsIndexRoute: SettingsIntegrationsIndexRoute,
 }
 
