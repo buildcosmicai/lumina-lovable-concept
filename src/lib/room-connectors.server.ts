@@ -21,7 +21,7 @@ async function request(url: string, provider: RoomCredential["provider"], operat
   const body = await response.json().catch(() => ({}));
   if (!response.ok) {
     // Never persist or return unfiltered responses: token errors may echo credentials.
-    const code = typeof body.error === "string" ? body.error : String(body.error?.code ?? "unknown");
+    const code = typeof body['error'] === "string" ? body['error'] : String(body['error']?.code ?? "unknown");
     throw new Error(providerProblem(provider, response.status, code, operation));
   }
   return body;
@@ -36,12 +36,12 @@ export async function accessToken(credential: RoomCredential, reader: string, di
     try { const sign = createSign("RSA-SHA256"); sign.update(payload); signature = sign.sign(key.private_key, "base64url"); }
     catch { throw new Error("The service-account private key is invalid. Upload a new JSON key downloaded from Google Cloud."); }
     const body = await request("https://oauth2.googleapis.com/token", "google", "delegated authorisation", { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: new URLSearchParams({ grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer", assertion: `${payload}.${signature}` }) });
-    if (typeof body.access_token !== "string") throw new Error("Google did not issue an access token. Check domain-wide delegation.");
-    return body.access_token;
+    if (typeof body['access_token'] !== "string") throw new Error("Google did not issue an access token. Check domain-wide delegation.");
+    return body['access_token'];
   }
   const body = await request(`https://login.microsoftonline.com/${credential.tenantId}/oauth2/v2.0/token`, "microsoft", "app authorisation", { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: new URLSearchParams({ client_id: credential.clientId, client_secret: credential.clientSecret, scope: "https://graph.microsoft.com/.default", grant_type: "client_credentials" }) });
-  if (typeof body.access_token !== "string") throw new Error("Microsoft did not issue an access token. Check app registration and admin consent.");
-  return body.access_token;
+  if (typeof body['access_token'] !== "string") throw new Error("Microsoft did not issue an access token. Check app registration and admin consent.");
+  return body['access_token'];
 }
 export async function checkCalendar(credential: RoomCredential, token: string, email: string, primary = false) {
   const url = credential.provider === "google"
@@ -61,15 +61,15 @@ export async function discoverProviderRooms(credential: RoomCredential, reader: 
     const expected = credential.provider === "google" ? "admin.googleapis.com" : "graph.microsoft.com";
     if (url.hostname !== expected || url.protocol !== "https:") throw new Error("The provider returned an invalid room-directory continuation.");
     const body = await request(next, credential.provider, "room discovery", { headers: { Authorization: `Bearer ${token}` } });
-    const items: ProviderResponse[] = credential.provider === "google" ? body.items ?? [] : body.value ?? [];
+    const items: ProviderResponse[] = credential.provider === "google" ? body['items'] ?? [] : body['value'] ?? [];
     for (const room of items) {
-      if (credential.provider === "google" && room.resourceCategory && room.resourceCategory !== "CONFERENCE_ROOM") continue;
-      const email = credential.provider === "google" ? room.resourceEmail : room.emailAddress;
+      if (credential.provider === "google" && room['resourceCategory'] && room['resourceCategory'] !== "CONFERENCE_ROOM") continue;
+      const email = credential.provider === "google" ? room['resourceEmail'] : room['emailAddress'];
       if (typeof email !== "string" || !email.includes("@")) continue;
-      rooms.push({ id: String(room.resourceId ?? room.id ?? email), name: String(room.resourceName ?? room.displayName ?? email), email, capacity: Number(room.capacity) || null, location: credential.provider === "google" ? [room.buildingId, room.floorName].filter(Boolean).join(" · ") : [room.building, room.floorLabel].filter(Boolean).join(" · ") });
+      rooms.push({ id: String(room['resourceId'] ?? room['id'] ?? email), name: String(room['resourceName'] ?? room['displayName'] ?? email), email, capacity: Number(room['capacity']) || null, location: credential.provider === "google" ? [room['buildingId'], room['floorName']].filter(Boolean).join(" · ") : [room['building'], room['floorLabel']].filter(Boolean).join(" · ") });
     }
     next = credential.provider === "google"
-      ? body.nextPageToken ? `https://admin.googleapis.com/admin/directory/v1/customer/my_customer/resources/calendars?maxResults=100&pageToken=${encodeURIComponent(body.nextPageToken)}` : undefined
+      ? body['nextPageToken'] ? `https://admin.googleapis.com/admin/directory/v1/customer/my_customer/resources/calendars?maxResults=100&pageToken=${encodeURIComponent(body['nextPageToken'])}` : undefined
       : body["@odata.nextLink"];
   }
   if (next) throw new Error("More than 2,000 rooms were found. Narrow the directory scope before importing rooms.");
