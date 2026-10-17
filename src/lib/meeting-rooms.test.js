@@ -1,5 +1,5 @@
 import { describe, expect, test } from "bun:test";
-import { DEFAULT_MEETING, getMeetingState, meetingConfig, visibleMeetingTitle, visibleOrganizer, MEETING_TEMPLATES } from "./meeting-rooms";
+import { DEFAULT_MEETING, getMeetingState, getRoomPhase, meetingConfig, visibleMeetingTitle, visibleOrganizer, MEETING_TEMPLATES } from "./meeting-rooms";
 
 describe("meeting room signage", () => {
   test("selecting a Microsoft room displays its own meeting", () => {
@@ -34,11 +34,11 @@ describe("meeting room signage", () => {
     expect(state.current).toBeUndefined();
   });
   test("library preserves existing designs and adds two futuristic designs", () => {
-    expect(MEETING_TEMPLATES.length).toBe(6);
-    expect(MEETING_TEMPLATES.map((entry) => entry.config.design)).toEqual(["atelier", "panorama", "signal", "prism", "orbit", "vector"]);
+    expect(MEETING_TEMPLATES.length).toBe(7);
+    expect(MEETING_TEMPLATES.map((entry) => entry.config.design)).toEqual(["atelier", "panorama", "signal", "prism", "orbit", "vector", "tempo"]);
   });
   test("new designs preserve calendar privacy and offline safety", () => {
-    for (const design of ["signal", "prism", "orbit", "vector"]) {
+    for (const design of ["signal", "prism", "orbit", "vector", "tempo"]) {
       const state = getMeetingState({ design, hideTitles: true });
       expect(state.config.design).toBe(design);
       expect(visibleMeetingTitle(state.current, state.config)).toBe("Reserved meeting");
@@ -52,5 +52,18 @@ describe("meeting room signage", () => {
       expect(template.config.roomId).toBe("ms-forum");
       expect(getMeetingState(template.config).room.name).toBe("Forum");
     }
+  });
+  test("one room has available, starting-soon and occupied calendar phases", () => {
+    for (const [demoState, expected] of [["available", "available"], ["soon", "soon"], ["busy", "busy"]]) {
+      expect(getRoomPhase({ roomId: "ms-forum", design: "tempo", demoState })).toBe(expected);
+      expect(getMeetingState({ roomId: "ms-forum", demoState }).room.name).toBe("Forum");
+    }
+    const soon = getMeetingState({ demoState: "soon" });
+    expect(soon.current).toBeUndefined();
+    expect(soon.upcoming[0].start - soon.now).toBe(5);
+  });
+  test("unknown and empty calendars do not become starting-soon or busy", () => {
+    expect(getRoomPhase({ demoState: "offline" })).toBe("offline");
+    expect(getRoomPhase({ demoState: "empty" })).toBe("available");
   });
 });

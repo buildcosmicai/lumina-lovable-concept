@@ -461,3 +461,74 @@
 .instrument-runway-events h4 { font-size: 1.1cqw; letter-spacing: 0; font-weight: 500; margin: 0.4cqw 0; overflow-wrap: anywhere; }
 .instrument-runway-events small { font-size: 0.65cqw; color: var(--instrument-dim); }
 .instrument-runway-events svg { width: 1.2cqw; height: 1.2cqw; color: var(--instrument-status); flex-shrink: 0; }
+
+:root, .dark {
+  --tempo-paper: oklch(0.97 0.012 165);
+  --tempo-ink: oklch(0.23 0.024 165);
+  --tempo-muted: oklch(0.46 0.025 165);
+  --tempo-open: oklch(0.46 0.13 165);
+  --tempo-soon: oklch(0.53 0.12 70);
+  --tempo-soon-paper: oklch(0.97 0.028 85);
+  --tempo-busy-paper: oklch(0.21 0.005 250);
+  --tempo-busy-ink: oklch(0.96 0.005 250);
+  --tempo-busy-muted: oklch(0.74 0.01 250);
+  --tempo-busy-accent: oklch(0.8 0.15 30);
+}
+.tempo-display { container-type: inline-size; width: 100%; height: 100%; overflow: hidden; --tempo-bg: var(--tempo-paper); --tempo-fg: var(--tempo-ink); --tempo-dim: var(--tempo-muted); --tempo-accent: var(--tempo-open); background: var(--tempo-bg); color: var(--tempo-fg); transition: background-color 1000ms ease, color 1000ms ease; }
+.tempo-soon { --tempo-bg: var(--tempo-soon-paper); --tempo-accent: var(--tempo-soon); }
+.tempo-busy { --tempo-bg: var(--tempo-busy-paper); --tempo-fg: var(--tempo-busy-ink); --tempo-dim: var(--tempo-busy-muted); --tempo-accent: var(--tempo-busy-accent); }
+.tempo-offline { --tempo-accent: var(--tempo-muted); }
+.tempo-shell { display: flex; flex-direction: column; height: 100%; padding: 2.5cqw 3.5cqw 1.6cqw; font-size: 1cqw; line-height: 1.3; border-top: 0.35cqw solid var(--tempo-accent); }
+.tempo-display h2, .tempo-display h3, .tempo-display h4 { letter-spacing: 0; }
+.tempo-header { display: flex; justify-content: space-between; align-items: flex-start; }
+.tempo-brand { display: flex; align-items: center; gap: 0.8cqw; font-family: var(--font-display); font-size: 1.6cqw; font-weight: 600; }
+.tempo-brand > span { font-size: 2.8cqw; color: var(--tempo-accent); line-height: 1; }
+.tempo-brand small { font-family: var(--font-mono); font-size: 0.65cqw; margin-left: 0.9cqw; color: var(--tempo-dim); }
+.tempo-clock { display: flex; flex-direction: column; align-items: flex-end; }
+.tempo-clock strong { font-family: var(--font-display); font-size: 2.8cqw; font-weight: 500; }
+.tempo-clock small { font-size: 0.7cqw; color: var(--tempo-dim); }
+.tempo-label { font-family: var(--font-mono); font-size: 0.75cqw; color: var(--tempo-dim); text-transform: uppercase; }
+.tempo-main { flex: 1; min-height: 0; display: grid; grid-template-columns: 1.3fr 1fr; gap: 4cqw; padding: 2.2cqw 0 1.5cqw; }
+.tempo-identity { display: flex; flex-direction: column; min-width: 0; }
+.tempo-identity h2 { display: flex; align-items: flex-start; gap: 1.5cqw; font-size: 6.6cqw; line-height: 1.1; font-weight: 500; margin: 0.5cqw 0 0.8cqw; overflow-wrap: anywhere; }
+.tempo-identity h2 svg { width: 2.6cqw; height: 2.6cqw; margin-top: 0.8cqw; color: var(--tempo-accent); }
+.tempo-equipment { display: flex; gap: 1.3cqw; font-size: 0.8cqw; color: var(--tempo-dim); }
+.tempo-equipment span { display: flex; align-items: center; gap: 0.4cqw; }
+.tempo-equipment svg { width: 1cqw; height: 1cqw; }
+.tempo-message { margin-top: auto; padding: 2cqw 0 1.6cqw; }
+.tempo-status { display: flex; align-items: center; gap: 0.7cqw; color: var(--tempo-accent); font-size: 1.5cqw; font-weight: 600; }
+.tempo-status i { width: 0.7cqw; height: 0.7cqw; background: var(--tempo-accent); border-radius: 50%; }
+.tempo-message h3 { font-size: 4.2cqw; font-weight: 500; line-height: 1.12; max-width: 48cqw; margin: 0.8cqw 0; }
+.tempo-message > p:last-child { font-size: 1.05cqw; color: var(--tempo-dim); }
+.tempo-focus { padding-top: 1.2cqw; border-top: 1px solid color-mix(in oklch, var(--tempo-fg) 18%, transparent); }
+.tempo-focus h4 { font-size: 1.8cqw; font-weight: 500; margin: 0.5cqw 0; overflow-wrap: anywhere; }
+.tempo-focus p { font-size: 0.95cqw; color: var(--tempo-dim); min-height: 1.3cqw; }
+.tempo-portal { position: relative; display: flex; align-items: center; justify-content: center; min-width: 0; }
+.tempo-portal > svg { width: 36cqw; height: 34cqw; fill: none; overflow: visible; }
+.tempo-door { stroke: var(--tempo-accent); stroke-width: 0.7; opacity: 0.4; transform-origin: 180px 170px; transition: transform 1400ms ease, stroke 1000ms ease; }
+.tempo-door:nth-child(2n) { opacity: 0.2; }
+.tempo-available .tempo-door { transform: scaleX(1.12); }
+.tempo-soon .tempo-door { transform: scaleX(0.88); animation: tempo-handover 4s ease-in-out infinite; }
+.tempo-busy .tempo-door { transform: scaleX(0.72); stroke-width: 1.3; }
+.tempo-axis { stroke: var(--tempo-accent); stroke-width: 0.4; stroke-dasharray: 2 8; opacity: 0.3; }
+.tempo-readout { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 0.6cqw; }
+.tempo-readout strong { font-family: var(--font-display); font-size: 9cqw; font-weight: 400; line-height: 1; color: var(--tempo-accent); }
+.tempo-readout > svg { width: 6cqw; height: 6cqw; }
+.tempo-portal > p { position: absolute; bottom: 0; font-size: 0.85cqw; color: var(--tempo-dim); }
+.tempo-portal > p span { padding: 0 0.6cqw; }
+.tempo-day { border-top: 1px solid color-mix(in oklch, var(--tempo-fg) 18%, transparent); padding-top: 1cqw; }
+.tempo-day-heading { display: flex; justify-content: space-between; font-family: var(--font-mono); color: var(--tempo-dim); font-size: 0.65cqw; }
+.tempo-ribbon { position: relative; height: 3.2cqw; margin: 1.6cqw 0 0.9cqw; overflow: hidden; background: color-mix(in oklch, var(--tempo-accent) 7%, var(--tempo-bg)); }
+.tempo-booking { position: absolute; height: 100%; min-width: 0; background: color-mix(in oklch, var(--tempo-fg) 12%, var(--tempo-bg)); border-left: 1px solid var(--tempo-dim); color: var(--tempo-fg); transition: left 1400ms ease, background-color 1000ms ease; padding: 1.2cqw 0.6cqw 0; font-family: var(--font-mono); font-size: 0.7cqw; white-space: nowrap; overflow: hidden; }
+.tempo-booking-current { background: color-mix(in oklch, var(--tempo-accent) 30%, var(--tempo-bg)); }
+.tempo-now-line { position: absolute; top: 0; height: 100%; width: 0.2cqw; left: 22%; background: var(--tempo-accent); }
+.tempo-now { position: absolute; z-index: 1; left: 22%; top: 0.1cqw; transform: translateX(-50%); padding: 0.15cqw 0.4cqw; background: var(--tempo-accent); color: var(--tempo-bg); font-family: var(--font-mono); font-size: 0.6cqw; }
+.tempo-agenda { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2cqw; min-height: 3cqw; }
+.tempo-agenda > div { display: flex; align-items: baseline; gap: 0.7cqw; min-width: 0; }
+.tempo-agenda span { font-family: var(--font-mono); font-size: 0.8cqw; color: var(--tempo-dim); flex-shrink: 0; }
+.tempo-agenda h4 { font-size: 1cqw; font-weight: 500; overflow-wrap: anywhere; }
+.tempo-agenda svg { width: 1cqw; height: 1cqw; flex-shrink: 0; margin-left: auto; color: var(--tempo-dim); }
+.tempo-agenda > p { grid-column: 1 / -1; font-size: 1cqw; color: var(--tempo-dim); }
+.tempo-footer { display: flex; justify-content: space-between; font-family: var(--font-mono); color: var(--tempo-dim); font-size: 0.6cqw; padding-top: 1cqw; }
+@keyframes tempo-handover { 0%, 100% { stroke-opacity: 0.6; } 50% { stroke-opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .tempo-display, .tempo-door, .tempo-booking { transition: none; animation: none; } }
