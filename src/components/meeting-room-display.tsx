@@ -2,11 +2,13 @@ import { ArrowUpRight, CalendarDays, Users, WifiOff } from "lucide-react";
 import roomImage from "@/assets/meeting-room.jpg";
 import { getMeetingState, meetingTime, visibleMeetingTitle, visibleOrganizer, type MeetingConfig } from "@/lib/meeting-rooms";
 import { cn } from "@/lib/utils";
+import { FuturisticMeetingDisplay } from "@/components/futuristic-meeting-display";
 
 export function MeetingRoomDisplay({ config: value }: { config?: Partial<MeetingConfig> | undefined }) {
   const { config, room, now, current, upcoming, offline } = getMeetingState(value);
   const time = (minutes: number) => meetingTime(minutes, config.use24h);
   const available = !current;
+  if (config.design === "signal" || config.design === "prism") return <FuturisticMeetingDisplay config={config} />;
   return (
     <div className={cn("meeting-display", config.design === "panorama" && "meeting-panorama")} data-testid="meeting-display">
       <div className="meeting-content">
