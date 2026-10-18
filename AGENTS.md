@@ -18,3 +18,4 @@
 - Customer room photos use owner-scoped private Cloud Storage paths keyed by room in zone configuration; shared image rendering renews signed URLs rather than persisting expiring URLs or image bytes in layouts.
 - Settings uses nested TanStack layouts with an integrations module so setup pages remain independently shareable.
 - Room connection metadata is owner-scoped through RLS; credentials live encrypted in a server-only table and provider access runs in authenticated server functions, preventing browser or cross-account credential reads.
+- Room-viewer proposals use standalone sample routes and shared client-safe agenda records, keeping approval previews isolated from existing editor templates.
