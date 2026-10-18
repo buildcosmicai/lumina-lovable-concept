@@ -21,5 +21,5 @@
 - [x] Build a separate photo-free room display sample without search or check-in.
 - [x] Add a timetable page with day, week and month agendas and a room information dialog.
 - [x] Verify sample navigation, timetable views and layout before presenting for approval.
-- [ ] Promote the approved sample as Meridian with shared room settings, adaptive states and a room-specific timetable.
-- [ ] Verify Meridian library playback, template-to-editor, privacy, offline state and saved settings.
+- [x] Promote the approved sample as Meridian with shared room settings, adaptive states and a room-specific timetable.
+- [x] Verify Meridian library playback, template-to-editor, privacy, offline state and saved settings.
