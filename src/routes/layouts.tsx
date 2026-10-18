@@ -584,6 +584,7 @@ function LayoutsPage() {
         </div>
         {tab === "library" ? <section aria-label="Meeting room layout library">
           <div className="mb-6 flex flex-wrap items-end justify-between gap-4"><div><p className="label-caps mb-2">WORKPLACE COLLECTION / 01</p><h2 className="text-2xl font-semibold">Meeting rooms, reimagined.</h2></div><span className="text-xs text-muted-foreground">{MEETING_TEMPLATES.length} designs · 16:9 · Sample calendars</span></div>
+          <TempoTemplatePreview design="meridian" onUse={() => { const template = MEETING_TEMPLATES.find(t => t.id === "meridian"); if (template) useTemplate(template); }} />
           <TempoTemplatePreview />
           <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
             {MEETING_TEMPLATES.filter((template) => !query || `${template.name} meeting room`.toLowerCase().includes(query.toLowerCase())).map((template, index) => <article key={template.id} className="overflow-hidden rounded-md border border-border bg-card">

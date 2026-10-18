@@ -6,11 +6,13 @@ import { FuturisticMeetingDisplay } from "@/components/futuristic-meeting-displa
 import { InstrumentMeetingDisplay } from "@/components/instrument-meeting-display";
 import { TempoMeetingDisplay } from "@/components/tempo-meeting-display";
 import { RoomPhotoImage } from "@/components/room-photo-image";
+import { MeridianMeetingDisplay } from "@/components/meridian-meeting-display";
 
 export function MeetingRoomDisplay({ config: value }: { config?: Partial<MeetingConfig> | undefined }) {
   const { config, room, now, current, upcoming, offline } = getMeetingState(value);
   const time = (minutes: number) => meetingTime(minutes, config.use24h);
   const available = !current;
+  if (config.design === "meridian") return <MeridianMeetingDisplay config={config} />;
   if (config.design === "tempo") return <TempoMeetingDisplay config={config} />;
   if (config.design === "orbit" || config.design === "vector") return <InstrumentMeetingDisplay config={config} />;
   if (config.design === "signal" || config.design === "prism") return <FuturisticMeetingDisplay config={config} />;

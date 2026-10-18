@@ -19,3 +19,4 @@
 - Settings uses nested TanStack layouts with an integrations module so setup pages remain independently shareable.
 - Room connection metadata is owner-scoped through RLS; credentials live encrypted in a server-only table and provider access runs in authenticated server functions, preventing browser or cross-account credential reads.
 - Room-viewer proposals use standalone sample routes and shared client-safe agenda records, keeping approval previews isolated from existing editor templates.
+- Approved room-viewer designs use the shared meeting-state display in the library and editor; their timetable dialogs reuse the selected room's events and privacy settings to avoid unrelated sample agendas.
