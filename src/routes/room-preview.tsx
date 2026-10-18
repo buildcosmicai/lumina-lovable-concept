@@ -33,6 +33,6 @@ function RoomPreview() {
         <div className="room-concept-instrument-caption"><span>13:50 / NOW</span><span>14:00 / START</span></div>
       </div>
     </section>
-    <section className="room-concept-runway"><div className="room-concept-runway-heading"><span className="room-concept-label">THE REST OF TODAY</span><span>3 meetings · 2h 30m of open space</span></div><div className="room-concept-runway-events">{upcoming.map((event, i) => <article key={event.id}><span className="room-concept-event-index">0{i + 1}</span><div><p>{event.start}<span>— {event.end}</span></p><h3>{agendaTitle(event)}</h3><small>{agendaOrganizer(event)}</small></div><span className={`room-concept-event-line ${i === 0 ? "next" : ""}`} /></article>)}</div></section>
+    <section className="room-concept-runway"><div className="room-concept-runway-heading"><span className="room-concept-label">THE REST OF TODAY</span><span>3 meetings · 2h 30m scheduled</span></div><div className="room-concept-runway-events">{upcoming.map((event, i) => <article key={event.id}><span className="room-concept-event-index">0{i + 1}</span><div><p>{event.start}<span>— {event.end}</span></p><h3>{agendaTitle(event)}</h3><small>{agendaOrganizer(event)}</small></div><span className={`room-concept-event-line ${i === 0 ? "next" : ""}`} /></article>)}</div></section>
   </RoomViewerShell>;
 }

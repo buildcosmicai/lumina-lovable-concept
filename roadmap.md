@@ -18,6 +18,6 @@
 - [ ] Verify authenticated live connection, discovery, key replacement and removal — blocked by no signed-up account or customer Google/Microsoft credentials.
 
 # Room viewer sample
-- [ ] Build a separate photo-free room display sample without search or check-in.
-- [ ] Add a timetable page with day, week and month agendas and a room information dialog.
-- [ ] Verify sample navigation, timetable views and layout before presenting for approval.
+- [x] Build a separate photo-free room display sample without search or check-in.
+- [x] Add a timetable page with day, week and month agendas and a room information dialog.
+- [x] Verify sample navigation, timetable views and layout before presenting for approval.
