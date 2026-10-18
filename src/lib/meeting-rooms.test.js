@@ -34,11 +34,11 @@ describe("meeting room signage", () => {
     expect(state.current).toBeUndefined();
   });
   test("library preserves existing designs and adds two futuristic designs", () => {
-    expect(MEETING_TEMPLATES.length).toBe(7);
-    expect(MEETING_TEMPLATES.map((entry) => entry.config.design)).toEqual(["atelier", "panorama", "signal", "prism", "orbit", "vector", "tempo"]);
+    expect(MEETING_TEMPLATES.length).toBe(8);
+    expect(MEETING_TEMPLATES.map((entry) => entry.config.design)).toEqual(["atelier", "panorama", "signal", "prism", "orbit", "vector", "tempo", "meridian"]);
   });
   test("new designs preserve calendar privacy and offline safety", () => {
-    for (const design of ["signal", "prism", "orbit", "vector", "tempo"]) {
+    for (const design of ["signal", "prism", "orbit", "vector", "tempo", "meridian"]) {
       const state = getMeetingState({ design, hideTitles: true });
       expect(state.config.design).toBe(design);
       expect(visibleMeetingTitle(state.current, state.config)).toBe("Reserved meeting");
@@ -65,5 +65,12 @@ describe("meeting room signage", () => {
   test("unknown and empty calendars do not become starting-soon or busy", () => {
     expect(getRoomPhase({ demoState: "offline" })).toBe("offline");
     expect(getRoomPhase({ demoState: "empty" })).toBe("available");
+  });
+  test("Meridian uses one selected room across all three adaptive states", () => {
+    for (const [demoState, phase] of [["available", "available"], ["soon", "soon"], ["busy", "busy"]]) {
+      const config = { design: "meridian", roomId: "g-horizon", provider: "google", demoState };
+      expect(getRoomPhase(config)).toBe(phase);
+      expect(getMeetingState(config).room.name).toBe("Horizon");
+    }
   });
 });

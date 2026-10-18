@@ -3,7 +3,7 @@ export type CalendarProvider = "microsoft" | "google";
 export type MeetingConfig = {
   provider: CalendarProvider;
   roomId: string;
-  design: "atelier" | "panorama" | "signal" | "prism" | "orbit" | "vector" | "tempo";
+  design: "atelier" | "panorama" | "signal" | "prism" | "orbit" | "vector" | "tempo" | "meridian";
   timezone: string;
   use24h: boolean;
   showOrganizer: boolean;
@@ -87,4 +87,5 @@ export const MEETING_TEMPLATES = [
   { id: "orbit", name: "Orbit — Mission control", subtitle: "A precision orbital instrument, live session countdown and a vertical day-ahead manifest. No photography, just pure signal.", config: { ...DEFAULT_MEETING, roomId: "ms-forum", design: "orbit" } as MeetingConfig },
   { id: "vector", name: "Vector — A new trajectory", subtitle: "An electric-blue time instrument on a crisp porcelain canvas, with a numbered meeting runway and an open-space signal.", config: { ...DEFAULT_MEETING, roomId: "ms-forum", design: "vector", demoState: "available" } as MeetingConfig },
   { id: "tempo", name: "Tempo — One room. Three rhythms.", subtitle: "An adaptive room display with open, handover and focus states.", config: { ...DEFAULT_MEETING, roomId: "ms-forum", design: "tempo", demoState: "available" } as MeetingConfig },
+  { id: "meridian", name: "Meridian — A little space. A bigger idea.", subtitle: "A sculpted countdown dial, a clear day-ahead agenda and three adaptive room states.", config: { ...DEFAULT_MEETING, roomId: "ms-forum", design: "meridian", demoState: "available" } as MeetingConfig },
 ] as const;
