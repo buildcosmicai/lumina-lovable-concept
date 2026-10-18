@@ -16,11 +16,13 @@ import { Route as MediaRouteImport } from './routes/media'
 import { Route as PartnersRouteImport } from './routes/partners'
 import { Route as PlaylistsRouteImport } from './routes/playlists'
 import { Route as PulseRouteImport } from './routes/pulse'
+import { Route as RoomPreviewRouteImport } from './routes/room-preview'
 import { Route as SchedulesRouteImport } from './routes/schedules'
 import { Route as ScreensRouteImport } from './routes/screens'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as SignInRouteImport } from './routes/sign-in'
 import { Route as UsersRouteImport } from './routes/users'
+import { Route as RoomPreviewTimetableRouteImport } from './routes/room-preview_.timetable'
 import { Route as ScreensIndexRouteImport } from './routes/screens.index'
 import { Route as ScreensScreenIdRouteImport } from './routes/screens.$screenId'
 import { Route as SettingsIndexRouteImport } from './routes/settings.index'
@@ -63,6 +65,11 @@ const PulseRoute = PulseRouteImport.update({
   path: '/pulse',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RoomPreviewRoute = RoomPreviewRouteImport.update({
+  id: '/room-preview',
+  path: '/room-preview',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SchedulesRoute = SchedulesRouteImport.update({
   id: '/schedules',
   path: '/schedules',
@@ -86,6 +93,11 @@ const SignInRoute = SignInRouteImport.update({
 const UsersRoute = UsersRouteImport.update({
   id: '/users',
   path: '/users',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RoomPreviewTimetableRoute = RoomPreviewTimetableRouteImport.update({
+  id: '/room-preview_/timetable',
+  path: '/room-preview/timetable',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ScreensIndexRoute = ScreensIndexRouteImport.update({
@@ -129,11 +141,13 @@ export interface FileRoutesByFullPath {
   '/partners': typeof PartnersRoute
   '/playlists': typeof PlaylistsRoute
   '/pulse': typeof PulseRoute
+  '/room-preview': typeof RoomPreviewRoute
   '/schedules': typeof SchedulesRoute
   '/screens': typeof ScreensRouteWithChildren
   '/settings': typeof SettingsRouteWithChildren
   '/sign-in': typeof SignInRoute
   '/users': typeof UsersRoute
+  '/room-preview/timetable': typeof RoomPreviewTimetableRoute
   '/screens/$screenId': typeof ScreensScreenIdRoute
   '/settings/integrations': typeof SettingsIntegrationsRouteWithChildren
   '/screens/': typeof ScreensIndexRoute
@@ -149,9 +163,11 @@ export interface FileRoutesByTo {
   '/partners': typeof PartnersRoute
   '/playlists': typeof PlaylistsRoute
   '/pulse': typeof PulseRoute
+  '/room-preview': typeof RoomPreviewRoute
   '/schedules': typeof SchedulesRoute
   '/sign-in': typeof SignInRoute
   '/users': typeof UsersRoute
+  '/room-preview/timetable': typeof RoomPreviewTimetableRoute
   '/screens/$screenId': typeof ScreensScreenIdRoute
   '/screens': typeof ScreensIndexRoute
   '/settings': typeof SettingsIndexRoute
@@ -167,11 +183,13 @@ export interface FileRoutesById {
   '/partners': typeof PartnersRoute
   '/playlists': typeof PlaylistsRoute
   '/pulse': typeof PulseRoute
+  '/room-preview': typeof RoomPreviewRoute
   '/schedules': typeof SchedulesRoute
   '/screens': typeof ScreensRouteWithChildren
   '/settings': typeof SettingsRouteWithChildren
   '/sign-in': typeof SignInRoute
   '/users': typeof UsersRoute
+  '/room-preview_/timetable': typeof RoomPreviewTimetableRoute
   '/screens/$screenId': typeof ScreensScreenIdRoute
   '/settings/integrations': typeof SettingsIntegrationsRouteWithChildren
   '/screens/': typeof ScreensIndexRoute
@@ -189,11 +207,13 @@ export interface FileRouteTypes {
     | '/partners'
     | '/playlists'
     | '/pulse'
+    | '/room-preview'
     | '/schedules'
     | '/screens'
     | '/settings'
     | '/sign-in'
     | '/users'
+    | '/room-preview/timetable'
     | '/screens/$screenId'
     | '/settings/integrations'
     | '/screens/'
@@ -209,9 +229,11 @@ export interface FileRouteTypes {
     | '/partners'
     | '/playlists'
     | '/pulse'
+    | '/room-preview'
     | '/schedules'
     | '/sign-in'
     | '/users'
+    | '/room-preview/timetable'
     | '/screens/$screenId'
     | '/screens'
     | '/settings'
@@ -226,11 +248,13 @@ export interface FileRouteTypes {
     | '/partners'
     | '/playlists'
     | '/pulse'
+    | '/room-preview'
     | '/schedules'
     | '/screens'
     | '/settings'
     | '/sign-in'
     | '/users'
+    | '/room-preview_/timetable'
     | '/screens/$screenId'
     | '/settings/integrations'
     | '/screens/'
@@ -247,11 +271,13 @@ export interface RootRouteChildren {
   PartnersRoute: typeof PartnersRoute
   PlaylistsRoute: typeof PlaylistsRoute
   PulseRoute: typeof PulseRoute
+  RoomPreviewRoute: typeof RoomPreviewRoute
   SchedulesRoute: typeof SchedulesRoute
   ScreensRoute: typeof ScreensRouteWithChildren
   SettingsRoute: typeof SettingsRouteWithChildren
   SignInRoute: typeof SignInRoute
   UsersRoute: typeof UsersRoute
+  RoomPreviewTimetableRoute: typeof RoomPreviewTimetableRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -305,6 +331,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PulseRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/room-preview': {
+      id: '/room-preview'
+      path: '/room-preview'
+      fullPath: '/room-preview'
+      preLoaderRoute: typeof RoomPreviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/schedules': {
       id: '/schedules'
       path: '/schedules'
@@ -338,6 +371,13 @@ declare module '@tanstack/react-router' {
       path: '/users'
       fullPath: '/users'
       preLoaderRoute: typeof UsersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/room-preview_/timetable': {
+      id: '/room-preview_/timetable'
+      path: '/room-preview/timetable'
+      fullPath: '/room-preview/timetable'
+      preLoaderRoute: typeof RoomPreviewTimetableRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/screens/': {
@@ -434,11 +474,13 @@ const rootRouteChildren: RootRouteChildren = {
   PartnersRoute: PartnersRoute,
   PlaylistsRoute: PlaylistsRoute,
   PulseRoute: PulseRoute,
+  RoomPreviewRoute: RoomPreviewRoute,
   SchedulesRoute: SchedulesRoute,
   ScreensRoute: ScreensRouteWithChildren,
   SettingsRoute: SettingsRouteWithChildren,
   SignInRoute: SignInRoute,
   UsersRoute: UsersRoute,
+  RoomPreviewTimetableRoute: RoomPreviewTimetableRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
