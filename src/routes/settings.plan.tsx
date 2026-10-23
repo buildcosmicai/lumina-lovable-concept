@@ -119,10 +119,10 @@ function PlanContent({ summary }: { summary: LicensingSummary }) {
           role="alert"
           className={cn(
             "flex items-start gap-3 rounded-xl border p-4 text-sm",
-            summary.state === "EXPIRED" ? "border-destructive/40 bg-destructive/10" : "border-accent/40 bg-accent/10",
+            summary.state === "EXPIRED" ? "border-destructive/40 bg-destructive/10" : "border-warning/40 bg-warning/10",
           )}
         >
-          <AlertTriangle className={cn("mt-0.5 size-5 shrink-0", summary.state === "EXPIRED" ? "text-destructive" : "text-accent")} />
+          <AlertTriangle className={cn("mt-0.5 size-5 shrink-0", summary.state === "EXPIRED" ? "text-destructive" : "text-warning")} />
           <p>
             {summary.state === "EXPIRING" && nextExpiry && (
               <>Your licence expires in {daysUntil(nextExpiry)} days ({formatDate(nextExpiry)}). Contact your provider to renew.</>
@@ -176,7 +176,9 @@ function PlanContent({ summary }: { summary: LicensingSummary }) {
           {nextExpiry ? (
             <>
               <p className="mt-3 font-display text-2xl font-semibold">{formatDate(nextExpiry)}</p>
-              <p className="mt-1 text-sm text-muted-foreground">in {daysUntil(nextExpiry)} days</p>
+              <p className="mt-1 text-sm text-muted-foreground">
+                {daysUntil(nextExpiry) < 0 ? "Expired" : daysUntil(nextExpiry) === 0 ? "Expires today" : `in ${daysUntil(nextExpiry)} days`}
+              </p>
             </>
           ) : (
             <p className="mt-3 font-display text-2xl font-semibold">No expiry</p>
