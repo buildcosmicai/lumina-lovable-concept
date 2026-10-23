@@ -28,6 +28,7 @@ import { Route as ScreensIndexRouteImport } from './routes/screens.index'
 import { Route as ScreensScreenIdRouteImport } from './routes/screens.$screenId'
 import { Route as SettingsIndexRouteImport } from './routes/settings.index'
 import { Route as SettingsIntegrationsRouteImport } from './routes/settings.integrations'
+import { Route as SettingsPlanRouteImport } from './routes/settings.plan'
 import { Route as SettingsIntegrationsIndexRouteImport } from './routes/settings.integrations.index'
 import { Route as SettingsIntegrationsRoomConnectorsRouteImport } from './routes/settings.integrations.room-connectors'
 
@@ -126,6 +127,11 @@ const SettingsIntegrationsRoute = SettingsIntegrationsRouteImport.update({
   path: '/integrations',
   getParentRoute: () => SettingsRoute,
 } as any)
+const SettingsPlanRoute = SettingsPlanRouteImport.update({
+  id: '/plan',
+  path: '/plan',
+  getParentRoute: () => SettingsRoute,
+} as any)
 const SettingsIntegrationsIndexRoute =
   SettingsIntegrationsIndexRouteImport.update({
     id: '/',
@@ -157,6 +163,7 @@ export interface FileRoutesByFullPath {
   '/room-preview/timetable': typeof RoomPreviewTimetableRoute
   '/screens/$screenId': typeof ScreensScreenIdRoute
   '/settings/integrations': typeof SettingsIntegrationsRouteWithChildren
+  '/settings/plan': typeof SettingsPlanRoute
   '/screens/': typeof ScreensIndexRoute
   '/settings/': typeof SettingsIndexRoute
   '/settings/integrations/room-connectors': typeof SettingsIntegrationsRoomConnectorsRoute
@@ -177,6 +184,7 @@ export interface FileRoutesByTo {
   '/users': typeof UsersRoute
   '/room-preview/timetable': typeof RoomPreviewTimetableRoute
   '/screens/$screenId': typeof ScreensScreenIdRoute
+  '/settings/plan': typeof SettingsPlanRoute
   '/screens': typeof ScreensIndexRoute
   '/settings': typeof SettingsIndexRoute
   '/settings/integrations/room-connectors': typeof SettingsIntegrationsRoomConnectorsRoute
@@ -201,6 +209,7 @@ export interface FileRoutesById {
   '/room-preview_/timetable': typeof RoomPreviewTimetableRoute
   '/screens/$screenId': typeof ScreensScreenIdRoute
   '/settings/integrations': typeof SettingsIntegrationsRouteWithChildren
+  '/settings/plan': typeof SettingsPlanRoute
   '/screens/': typeof ScreensIndexRoute
   '/settings/': typeof SettingsIndexRoute
   '/settings/integrations/room-connectors': typeof SettingsIntegrationsRoomConnectorsRoute
@@ -226,6 +235,7 @@ export interface FileRouteTypes {
     | '/room-preview/timetable'
     | '/screens/$screenId'
     | '/settings/integrations'
+    | '/settings/plan'
     | '/screens/'
     | '/settings/'
     | '/settings/integrations/room-connectors'
@@ -246,6 +256,7 @@ export interface FileRouteTypes {
     | '/users'
     | '/room-preview/timetable'
     | '/screens/$screenId'
+    | '/settings/plan'
     | '/screens'
     | '/settings'
     | '/settings/integrations/room-connectors'
@@ -269,6 +280,7 @@ export interface FileRouteTypes {
     | '/room-preview_/timetable'
     | '/screens/$screenId'
     | '/settings/integrations'
+    | '/settings/plan'
     | '/screens/'
     | '/settings/'
     | '/settings/integrations/room-connectors'
@@ -428,6 +440,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SettingsIntegrationsRouteImport
       parentRoute: typeof SettingsRoute
     }
+    '/settings/plan': {
+      id: '/settings/plan'
+      path: '/plan'
+      fullPath: '/settings/plan'
+      preLoaderRoute: typeof SettingsPlanRouteImport
+      parentRoute: typeof SettingsRoute
+    }
     '/settings/integrations/': {
       id: '/settings/integrations/'
       path: '/'
@@ -474,11 +493,13 @@ const SettingsIntegrationsRouteWithChildren =
 
 interface SettingsRouteChildren {
   SettingsIntegrationsRoute: typeof SettingsIntegrationsRouteWithChildren
+  SettingsPlanRoute: typeof SettingsPlanRoute
   SettingsIndexRoute: typeof SettingsIndexRoute
 }
 
 const SettingsRouteChildren: SettingsRouteChildren = {
   SettingsIntegrationsRoute: SettingsIntegrationsRouteWithChildren,
+  SettingsPlanRoute: SettingsPlanRoute,
   SettingsIndexRoute: SettingsIndexRoute,
 }
 

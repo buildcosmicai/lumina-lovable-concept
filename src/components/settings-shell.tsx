@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
-import { Activity, CalendarDays, Gauge, Handshake, Images, Layers, ListVideo, Monitor, Plug, Settings, UserRound, Users } from "lucide-react";
+import { Activity, CalendarDays, CreditCard, Gauge, Handshake, Images, Layers, ListVideo, Monitor, Plug, Settings, UserRound, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 type Crumb = { label: string; to?: string };
