@@ -17,9 +17,10 @@ import { cn } from "@/lib/utils";
 type PlanSearch = { state?: string };
 
 export const Route = createFileRoute("/settings/plan")({
-  validateSearch: (search: Record<string, unknown>): PlanSearch => ({
-    state: typeof search.state === "string" ? search.state : undefined,
-  }),
+  validateSearch: (search: Record<string, unknown>): PlanSearch => {
+    const raw = search["state"];
+    return typeof raw === "string" ? { state: raw } : {};
+  },
   head: () => ({
     meta: [
       { title: "Plan & licences — Signage CMS" },

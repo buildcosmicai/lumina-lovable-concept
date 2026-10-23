@@ -205,6 +205,6 @@ export function getMockSummary(state: string | undefined): {
 } {
   if (state === "loading") return { summary: null, mode: "loading" };
   if (state === "error") return { summary: null, mode: "error" };
-  const summary = MOCK_SUMMARIES[state ?? "paid-ok"] ?? MOCK_SUMMARIES["paid-ok"];
+  const summary = (state && MOCK_SUMMARIES[state]) || MOCK_SUMMARIES["paid-ok"];
   return { summary, mode: "data" };
 }
