@@ -15,6 +15,7 @@ import { Route as LayoutsRouteImport } from './routes/layouts'
 import { Route as MediaRouteImport } from './routes/media'
 import { Route as PartnersRouteImport } from './routes/partners'
 import { Route as PlaylistsRouteImport } from './routes/playlists'
+import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as PulseRouteImport } from './routes/pulse'
 import { Route as RoomPreviewRouteImport } from './routes/room-preview'
 import { Route as SchedulesRouteImport } from './routes/schedules'
@@ -58,6 +59,11 @@ const PartnersRoute = PartnersRouteImport.update({
 const PlaylistsRoute = PlaylistsRouteImport.update({
   id: '/playlists',
   path: '/playlists',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PulseRoute = PulseRouteImport.update({
@@ -140,6 +146,7 @@ export interface FileRoutesByFullPath {
   '/media': typeof MediaRoute
   '/partners': typeof PartnersRoute
   '/playlists': typeof PlaylistsRoute
+  '/profile': typeof ProfileRoute
   '/pulse': typeof PulseRoute
   '/room-preview': typeof RoomPreviewRoute
   '/schedules': typeof SchedulesRoute
@@ -162,6 +169,7 @@ export interface FileRoutesByTo {
   '/media': typeof MediaRoute
   '/partners': typeof PartnersRoute
   '/playlists': typeof PlaylistsRoute
+  '/profile': typeof ProfileRoute
   '/pulse': typeof PulseRoute
   '/room-preview': typeof RoomPreviewRoute
   '/schedules': typeof SchedulesRoute
@@ -182,6 +190,7 @@ export interface FileRoutesById {
   '/media': typeof MediaRoute
   '/partners': typeof PartnersRoute
   '/playlists': typeof PlaylistsRoute
+  '/profile': typeof ProfileRoute
   '/pulse': typeof PulseRoute
   '/room-preview': typeof RoomPreviewRoute
   '/schedules': typeof SchedulesRoute
@@ -206,6 +215,7 @@ export interface FileRouteTypes {
     | '/media'
     | '/partners'
     | '/playlists'
+    | '/profile'
     | '/pulse'
     | '/room-preview'
     | '/schedules'
@@ -228,6 +238,7 @@ export interface FileRouteTypes {
     | '/media'
     | '/partners'
     | '/playlists'
+    | '/profile'
     | '/pulse'
     | '/room-preview'
     | '/schedules'
@@ -247,6 +258,7 @@ export interface FileRouteTypes {
     | '/media'
     | '/partners'
     | '/playlists'
+    | '/profile'
     | '/pulse'
     | '/room-preview'
     | '/schedules'
@@ -270,6 +282,7 @@ export interface RootRouteChildren {
   MediaRoute: typeof MediaRoute
   PartnersRoute: typeof PartnersRoute
   PlaylistsRoute: typeof PlaylistsRoute
+  ProfileRoute: typeof ProfileRoute
   PulseRoute: typeof PulseRoute
   RoomPreviewRoute: typeof RoomPreviewRoute
   SchedulesRoute: typeof SchedulesRoute
@@ -322,6 +335,13 @@ declare module '@tanstack/react-router' {
       path: '/playlists'
       fullPath: '/playlists'
       preLoaderRoute: typeof PlaylistsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/pulse': {
@@ -473,6 +493,7 @@ const rootRouteChildren: RootRouteChildren = {
   MediaRoute: MediaRoute,
   PartnersRoute: PartnersRoute,
   PlaylistsRoute: PlaylistsRoute,
+  ProfileRoute: ProfileRoute,
   PulseRoute: PulseRoute,
   RoomPreviewRoute: RoomPreviewRoute,
   SchedulesRoute: SchedulesRoute,
