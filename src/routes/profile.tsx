@@ -43,13 +43,17 @@ function ProfilePage() {
       if (!active || !data.user) return;
       const user = data.user;
       const meta = (user.user_metadata ?? {}) as Record<string, unknown>;
-      const displayName = typeof meta.name === "string" ? meta.name : typeof meta.full_name === "string" ? meta.full_name : "";
+      const metaName = meta["name"];
+      const metaFullName = meta["full_name"];
+      const displayName = typeof metaName === "string" ? metaName : typeof metaFullName === "string" ? metaFullName : "";
+      const metaRole = meta["role"];
+      const metaWorkspace = meta["workspace"];
       setEmail(user.email ?? null);
       setLastSignIn(user.last_sign_in_at ?? null);
       setName(displayName);
       setSavedName(displayName);
-      if (typeof meta.role === "string") setRole(meta.role);
-      if (typeof meta.workspace === "string") setWorkspace(meta.workspace);
+      if (typeof metaRole === "string") setRole(metaRole);
+      if (typeof metaWorkspace === "string") setWorkspace(metaWorkspace);
     });
     return () => {
       active = false;
