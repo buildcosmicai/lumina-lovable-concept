@@ -1,7 +1,12 @@
 import type { ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
-import { Activity, CalendarDays, Gauge, Handshake, Images, Layers, ListVideo, Monitor, Plug, Settings, Users } from "lucide-react";
+import { Activity, CalendarDays, Gauge, Handshake, Images, Layers, ListVideo, Monitor, Plug, Settings, UserRound, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
+
+type Crumb = { label: string; to?: string };
+const defaultCrumbs: Crumb[] = [
+  { label: "Settings", to: "/settings" }, { label: "Integrations", to: "/settings/integrations" }, { label: "Room Connectors" },
+];
 
 const items = [
   { label: "Control Center", to: "/control-center", icon: Gauge }, { label: "Pulse", to: "/pulse", icon: Activity },
