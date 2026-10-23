@@ -14,13 +14,14 @@ const items = [
   { label: "Media", to: "/media", icon: Images }, { label: "Playlists", to: "/playlists", icon: ListVideo },
   { label: "Layouts", to: "/layouts", icon: Layers }, { label: "Users", to: "/users", icon: Users }, { label: "Partners", to: "/partners", icon: Handshake },
 ] as const;
-export function SettingsShell({ children }: { children: ReactNode }) {
+export function SettingsShell({ children, crumbs = defaultCrumbs }: { children: ReactNode; crumbs?: Crumb[] }) {
   return <div className="flex min-h-screen bg-surface text-foreground">
     <aside className="sticky top-0 hidden h-screen w-64 shrink-0 border-r border-border bg-card md:flex">
       <div className="flex w-16 shrink-0 flex-col items-center border-r border-border bg-surface py-3">
         <Button asChild size="icon" className="mb-5 size-9"><Link to="/layouts" aria-label="Layouts home"><Layers className="size-4" /></Link></Button>
         <nav aria-label="Primary navigation" className="flex flex-col gap-0.5">{items.map(item => <Button asChild key={item.label} variant="ghost" size="icon" className="size-9 text-muted-foreground"><Link to={item.to} title={item.label} aria-label={item.label}><item.icon className="size-4" /></Link></Button>)}</nav>
-        <Button asChild variant="ghost" size="icon" className="mt-auto size-9 bg-primary/15 text-primary"><Link to="/settings" title="Settings" aria-label="Settings"><Settings className="size-4" /></Link></Button>
+        <Button asChild variant="ghost" size="icon" className="mt-auto size-9 text-muted-foreground"><Link to="/profile" title="Profile" aria-label="Profile"><UserRound className="size-4" /></Link></Button>
+        <Button asChild variant="ghost" size="icon" className="mt-1 size-9 bg-primary/15 text-primary"><Link to="/settings" title="Settings" aria-label="Settings"><Settings className="size-4" /></Link></Button>
       </div>
       <div className="flex min-w-0 flex-1 flex-col p-4"><p className="mb-6 flex h-9 items-center font-display text-sm font-semibold">Signage CMS</p><p className="label-caps mb-3">SETTINGS</p><Button asChild variant="secondary" className="justify-start text-sm"><Link to="/settings/integrations"><Plug className="size-4" />Integrations</Link></Button><Button asChild variant="ghost" className="mt-1 justify-start pl-5 text-xs text-accent"><Link to="/settings/integrations/room-connectors"><CalendarDays className="size-3.5" />Room Connectors</Link></Button></div>
     </aside>
