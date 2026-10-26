@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Toaster } from "@/components/ui/sonner";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import { PublishTargetsDialog } from "@/components/publish-targets-dialog";
 
 export const Route = createFileRoute("/playlists")({
   head: () => ({
@@ -68,6 +69,7 @@ const fmt = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "
 
 function PlaylistsPage() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [publishOpen, setPublishOpen] = useState(false);
   const [lists, setLists] = useState(SEED);
   const [activeId, setActiveId] = useState(1);
   const [selectedUid, setSelectedUid] = useState<number | null>(null);
@@ -190,7 +192,8 @@ function PlaylistsPage() {
           <div className="ml-auto flex items-center gap-2">
             <Button variant={list.loop ? "secondary" : "outline"} size="sm" className="h-8" onClick={() => patchList({ loop: !list.loop })}><Repeat className="size-3.5" />Loop {list.loop ? "on" : "off"}</Button>
             <Button variant={list.shuffle ? "secondary" : "outline"} size="sm" className="h-8" onClick={() => patchList({ shuffle: !list.shuffle })}><Shuffle className="size-3.5" />Shuffle {list.shuffle ? "on" : "off"}</Button>
-            <Button size="sm" className="h-8" onClick={() => toast("Playlist published", { description: `Pushed to ${list.screens} screens.` })}>Publish</Button>
+            <Button size="sm" className="h-8" onClick={() => setPublishOpen(true)}>Publish</Button>
+            <PublishTargetsDialog open={publishOpen} onOpenChange={setPublishOpen} itemName={list.name} onPublish={(n, off) => toast("Playlist published", { description: `Sent to ${n} screens${off ? ` (${off} offline)` : ""}.` })} />
           </div>
         </header>
 
