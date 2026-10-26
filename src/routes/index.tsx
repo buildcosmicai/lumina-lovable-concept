@@ -565,6 +565,10 @@ function LayoutEditor() {
           }}>
             <Save className="size-4" /> Save layout
           </Button>
+          <Button size="sm" variant="outline" onClick={() => setPublishOpen(true)}>
+            <Send className="size-4" /> Publish
+          </Button>
+          <PublishTargetsDialog open={publishOpen} onOpenChange={setPublishOpen} itemName={name} onPublish={(n, off) => toast.success("Layout published", { description: `Sent to ${n} screens${off ? ` (${off} offline)` : ""}.` })} />
         </div>
       </header>
 
