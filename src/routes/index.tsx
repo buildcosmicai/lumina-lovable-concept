@@ -21,7 +21,9 @@ import {
   Type as TypeIcon,
   Unlock,
   Video,
+  Send,
 } from "lucide-react";
+import { PublishTargetsDialog } from "@/components/publish-targets-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
@@ -151,6 +153,7 @@ function LayoutEditor() {
   const [marquee, setMarquee] = useState<{ x: number; y: number; w: number; h: number } | null>(null);
   const [loaded, setLoaded] = useState(false);
   const [savedAt, setSavedAt] = useState<string | null>(null);
+  const [publishOpen, setPublishOpen] = useState(false);
   const stageRef = useRef<HTMLDivElement>(null);
   const [previewOpen, setPreviewOpen] = useState(false);
 

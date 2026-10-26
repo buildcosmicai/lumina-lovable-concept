@@ -69,6 +69,7 @@ const fmt = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "
 
 function PlaylistsPage() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [publishOpen, setPublishOpen] = useState(false);
   const [lists, setLists] = useState(SEED);
   const [activeId, setActiveId] = useState(1);
   const [selectedUid, setSelectedUid] = useState<number | null>(null);
