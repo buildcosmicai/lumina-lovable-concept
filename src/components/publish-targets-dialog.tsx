@@ -23,6 +23,8 @@ export function PublishTargetsDialog({ open, onOpenChange, itemName, onPublish }
   const [q, setQ] = useState("");
   const [status, setStatus] = useState<"all" | ScreenStatus>("all");
   const [site, setSite] = useState("all");
+  const [gq, setGq] = useState("");
+  const [sq, setSq] = useState("");
 
   const filtered = useMemo(() => SCREENS.filter((s) =>
     (status === "all" || s.status === status) && (site === "all" || s.location === site) &&
@@ -69,8 +71,9 @@ export function PublishTargetsDialog({ open, onOpenChange, itemName, onPublish }
           </TabsContent>
 
           <TabsContent value="groups">
+            <div className="relative mb-3"><Search className="absolute left-2.5 top-2.5 size-4 text-muted-foreground" /><Input aria-label="Search groups" placeholder="Search groups" className="pl-8" value={gq} onChange={(e) => setGq(e.target.value)} /></div>
             <ul className="grid grid-cols-2 gap-2">
-              {SCREEN_GROUPS.map((g) => (
+              {SCREEN_GROUPS.filter((g) => g.name.toLowerCase().includes(gq.toLowerCase())).map((g) => (
                 <li key={g.id}><label className={cn("flex cursor-pointer items-center gap-3 rounded-md border px-3 py-2.5", groupIds.includes(g.id) ? "border-accent bg-accent/5" : "border-border")}>
                   <Checkbox checked={groupIds.includes(g.id)} onCheckedChange={() => setGroupIds(toggle(groupIds, g.id))} aria-label={g.name} />
                   <span className="text-sm">{g.name}<span className="block text-xs text-muted-foreground">{g.screenIds.length} screen{g.screenIds.length > 1 ? "s" : ""}</span></span>
@@ -80,8 +83,9 @@ export function PublishTargetsDialog({ open, onOpenChange, itemName, onPublish }
           </TabsContent>
 
           <TabsContent value="sites" className="space-y-3">
+            <div className="relative mb-3"><Search className="absolute left-2.5 top-2.5 size-4 text-muted-foreground" /><Input aria-label="Search sites" placeholder="Search sites" className="pl-8" value={sq} onChange={(e) => setSq(e.target.value)} /></div>
             <ul className="grid grid-cols-3 gap-2">
-              {SITES.map((s) => (
+              {SITES.filter((s) => s.toLowerCase().includes(sq.toLowerCase())).map((s) => (
                 <li key={s}><label className={cn("flex cursor-pointer items-center gap-3 rounded-md border px-3 py-2.5", sites.includes(s) ? "border-accent bg-accent/5" : "border-border")}>
                   <Checkbox checked={sites.includes(s)} onCheckedChange={() => setSites(toggle(sites, s))} aria-label={s} />
                   <span className="text-sm">{s}<span className="block text-xs text-muted-foreground">{SCREENS.filter((x) => x.location === s).length} screens</span></span>
