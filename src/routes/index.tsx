@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
+  MessageSquare,
   CalendarDays,
   X,
   Check,
@@ -546,6 +547,7 @@ function LayoutEditor() {
           </span>
         )}
         <div className="ml-auto flex items-center gap-2">
+          <Button asChild variant="ghost" size="icon" title="AI Assistant"><Link to="/assistant" aria-label="AI Assistant"><MessageSquare className="size-4" /></Link></Button>
           <Button variant="ghost" size="sm" onClick={resetLayout}>
             <RotateCcw className="size-4" /> Reset
           </Button>

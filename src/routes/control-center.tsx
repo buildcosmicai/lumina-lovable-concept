@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import {
-  Activity,
+  MessageSquare,  Activity,
   ArrowRight,
   CalendarDays,
   CheckCircle2,
@@ -59,6 +59,7 @@ const NAV_ITEMS = [
   { label: "Licensing", icon: KeyRound },
   { label: "Users", icon: Users, to: "/users" as const },
   { label: "Partners", icon: Handshake, to: "/partners" as const },
+  { label: "AI Assistant", icon: MessageSquare, to: "/assistant" as const },
 ];
 
 const HEALTH_POINTS = [58, 62, 61, 69, 66, 76, 72, 82, 78, 88, 86, 91, 89, 94, 92, 96, 95, 97];

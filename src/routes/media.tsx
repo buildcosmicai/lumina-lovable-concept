@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useRef, useState, type ChangeEvent } from "react";
 import {
-  Activity, CalendarDays, Check, ChevronLeft, ChevronRight, Download, FileImage,
+  MessageSquare,  Activity, CalendarDays, Check, ChevronLeft, ChevronRight, Download, FileImage,
   FileVideo, Folder as FolderIcon, FolderPlus, Gauge, Grid2X2, Image as ImageIcon,
   Images, Info, KeyRound, Layers, List, ListVideo, Monitor, MoreHorizontal, Pencil,
   Play, Plus, Search, Settings, SlidersHorizontal, Trash2, Upload, Users, Video, X, Handshake } from "lucide-react";
@@ -43,6 +43,7 @@ const NAV_ITEMS = [
   { label: "Layouts", icon: Layers, to: "/layouts" as const }, { label: "Licensing", icon: KeyRound },
   { label: "Users", icon: Users, to: "/users" as const },
   { label: "Partners", icon: Handshake, to: "/partners" as const },
+  { label: "AI Assistant", icon: MessageSquare, to: "/assistant" as const },
 ];
 
 const START_MEDIA: MediaItem[] = [
