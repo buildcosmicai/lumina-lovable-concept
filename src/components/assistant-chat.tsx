@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport, type UIMessage } from "ai";
 import { useServerFn } from "@tanstack/react-start";
@@ -74,7 +74,7 @@ export function AssistantThreadPage({ threadId }: { threadId: string }) {
   const getThread = useServerFn(getAssistantThread);
   const [thread, setThread] = useState<{ messages: UIMessage[] } | null>(null);
   const [error, setError] = useState("");
-  const load = async () => {
+  const load = useCallback(async () => {
     setError("");
     try {
       const result = await getThread({ data: { id: threadId } });
@@ -82,11 +82,11 @@ export function AssistantThreadPage({ threadId }: { threadId: string }) {
     } catch (error) {
       setError(error instanceof Error ? error.message : "Conversation unavailable.");
     }
-  };
+  }, [getThread, threadId]);
   useEffect(() => {
     if (signedIn) void load();
     else setThread(null);
-  }, [signedIn, threadId]);
+  }, [signedIn, threadId, load]);
   if (!ready || (signedIn && !thread && !error))
     return (
       <div className="grid flex-1 place-items-center">
@@ -162,8 +162,7 @@ export function AssistantChat({
     }
   }, [
     threadId,
-    workspace.pendingPrompt,
-    workspace.setPendingPrompt,
+    workspace,
     initialMessages.length,
     sendMessage,
   ]);

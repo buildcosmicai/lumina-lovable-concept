@@ -25,6 +25,7 @@
 - [x] Verify Meridian library playback, template-to-editor, privacy, offline state and saved settings.
 
 # AI assistant
-- [ ] Design the assistant workspace with separate conversation URLs and account-saved history.
-- [ ] Connect authenticated streaming chat and owner-only conversation storage.
-- [ ] Verify chat, follow-up context, conversation switching, reload and error states.
+- [x] Design the assistant workspace with separate conversation URLs and account-saved history.
+- [x] Connect authenticated streaming chat and owner-only conversation storage.
+- [x] Verify opening screen, suggested prompts, sign-in dialog, real AI streaming and follow-up context.
+- [ ] Verify account conversation switching and reload restoration — blocked by no signed-up account; sign in with Google or Lovable first.

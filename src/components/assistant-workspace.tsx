@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { createContext, useContext, useCallback, useEffect, useState, type ReactNode } from "react";
 import { Link, useNavigate, useLocation } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import {
@@ -110,14 +110,14 @@ export function AssistantWorkspace({ children }: { children: ReactNode }) {
   const list = useServerFn(listAssistantThreads);
   const create = useServerFn(createAssistantThread);
   const edit = useServerFn(editAssistantThread);
-  const refresh = async () => {
+  const refresh = useCallback(async () => {
     try {
       setThreads(await list());
       setLoadError("");
     } catch {
       setLoadError("Conversations could not be loaded.");
     }
-  };
+  }, [list]);
   useEffect(() => {
     let active = true;
     void supabase.auth.getSession().then(({ data }) => {
@@ -141,7 +141,14 @@ export function AssistantWorkspace({ children }: { children: ReactNode }) {
   }, []);
   useEffect(() => {
     if (signedIn) void refresh();
-  }, [signedIn, pathname]);
+  }, [signedIn, pathname, refresh]);
+  useEffect(() => {
+    if (!signedIn) return;
+    const returnPath = sessionStorage.getItem("relay:return");
+    sessionStorage.removeItem("relay:return");
+    const match = returnPath?.match(/^\/assistant\/([0-9a-f-]{36})$/i);
+    if (match?.[1]) void navigate({ to: "/assistant/$threadId", params: { threadId: match[1] } });
+  }, [signedIn, navigate]);
   const newThread = async () => {
     if (!signedIn) {
       setAuthOpen(true);
