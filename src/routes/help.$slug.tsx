@@ -1,0 +1,137 @@
+import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { ArrowLeft, ArrowRight, Clock3, Info } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { HelpShell } from "@/components/help-shell";
+import { HELP_TOPICS, getHelpArticle } from "@/lib/help-articles";
+
+export const Route = createFileRoute("/help/$slug")({
+  loader: ({ params }) => {
+    const article = getHelpArticle(params.slug);
+    if (!article) throw notFound();
+    return article;
+  },
+  head: ({ loaderData }) => {
+    const title = loaderData
+      ? `${loaderData.title} — Lumina Help`
+      : "Article unavailable — Lumina Help";
+    const description = loaderData?.summary ?? "Browse Lumina platform guides.";
+    return {
+      meta: [
+        { title },
+        { name: "description", content: description },
+        { property: "og:title", content: title },
+        { property: "og:description", content: description },
+        { property: "og:type", content: "article" },
+        { name: "twitter:card", content: "summary_large_image" },
+      ],
+    };
+  },
+  component: ArticlePage,
+  notFoundComponent: () => (
+    <HelpShell>
+      <div className="p-10">
+        <h1 className="font-display text-2xl font-semibold">Article not found</h1>
+        <Button asChild variant="outline" className="mt-5">
+          <Link to="/help" search={{ q: "", topic: "all" }}>
+            Browse Help
+          </Link>
+        </Button>
+      </div>
+    </HelpShell>
+  ),
+});
+function ArticlePage() {
+  const article = Route.useLoaderData();
+  const topic = HELP_TOPICS.find((t) => t.id === article.topic);
+  return (
+    <HelpShell topic={article.topic} articleTitle={article.title}>
+      <main className="mx-auto max-w-[1120px] px-5 py-8 md:px-10">
+        <Button asChild variant="ghost" size="sm" className="mb-7 pl-0 text-muted-foreground">
+          <Link to="/help" search={{ topic: article.topic, q: "" }}>
+            <ArrowLeft className="size-3.5" />
+            {topic?.name}
+          </Link>
+        </Button>
+        <div className="grid gap-10 xl:grid-cols-[minmax(0,1fr)_200px]">
+          <article>
+            <p className="label-caps text-accent">LUMINA PLATFORM GUIDE</p>
+            <h1 className="mt-4 max-w-2xl font-display text-3xl font-semibold leading-tight">
+              {article.title}
+            </h1>
+            <p className="mt-4 text-sm leading-6 text-muted-foreground">{article.summary}</p>
+            <p className="mt-4 flex items-center gap-2 border-b border-border pb-6 text-[11px] text-muted-foreground">
+              <Clock3 className="size-3.5" />
+              {article.minutes} min read<span>·</span>
+              {topic?.name}
+            </p>
+            {article.note && (
+              <div className="mt-6 flex gap-3 border-l-2 border-warning bg-warning/5 p-4">
+                <Info className="mt-0.5 size-4 shrink-0 text-warning" />
+                <p className="text-xs leading-6">{article.note}</p>
+              </div>
+            )}
+            {article.sections.map((section, index) => (
+              <section key={section.title} id={`section-${index}`} className="scroll-mt-8 pt-8">
+                <h2 className="font-display text-lg font-semibold">{section.title}</h2>
+                {section.paragraphs?.map((paragraph) => (
+                  <p key={paragraph} className="mt-3 text-sm leading-7 text-muted-foreground">
+                    {paragraph}
+                  </p>
+                ))}
+                {section.steps && (
+                  <ol className="mt-4 space-y-4">
+                    {section.steps.map((step, i) => (
+                      <li key={step} className="flex gap-3 text-sm leading-6">
+                        <span className="mt-0.5 grid size-6 shrink-0 place-items-center rounded-sm bg-accent/10 font-mono text-[10px] text-accent">
+                          {i + 1}
+                        </span>
+                        <span className="text-muted-foreground">{step}</span>
+                      </li>
+                    ))}
+                  </ol>
+                )}
+              </section>
+            ))}
+            <section className="mt-10 border-t border-border pt-6">
+              <h2 className="font-display text-base font-semibold">Keep exploring</h2>
+              <div className="mt-3 divide-y divide-border">
+                {article.related.map((slug) => {
+                  const related = getHelpArticle(slug);
+                  return (
+                    related && (
+                      <Link
+                        key={slug}
+                        to="/help/$slug"
+                        params={{ slug }}
+                        className="flex items-center justify-between gap-4 py-4 text-sm hover:text-accent"
+                      >
+                        {related.title}
+                        <ArrowRight className="size-4 shrink-0" />
+                      </Link>
+                    )
+                  );
+                })}
+              </div>
+            </section>
+          </article>
+          <aside className="hidden xl:block">
+            <div className="sticky top-8 border-l border-border pl-5">
+              <p className="label-caps mb-4">IN THIS ARTICLE</p>
+              <nav aria-label="Article contents" className="space-y-3">
+                {article.sections.map((section, i) => (
+                  <a
+                    key={section.title}
+                    href={`#section-${i}`}
+                    className="block text-xs leading-5 text-muted-foreground hover:text-accent"
+                  >
+                    {section.title}
+                  </a>
+                ))}
+              </nav>
+            </div>
+          </aside>
+        </div>
+      </main>
+    </HelpShell>
+  );
+}

@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import {
-  MessageSquare,  Activity,
+  BookOpen, MessageSquare,  Activity,
   ArrowDownRight,
   ArrowRight,
   ArrowUpRight,
@@ -61,6 +61,7 @@ const NAV_ITEMS = [
   { label: "Users", icon: Users, to: "/users" as const },
   { label: "Partners", icon: Handshake, to: "/partners" as const },
   { label: "AI Assistant", icon: MessageSquare, to: "/assistant" as const },
+  { label: "Help", icon: BookOpen, to: "/help" as const },
 ];
 
 const PULSE_POINTS = [42, 45, 44, 51, 48, 56, 61, 58, 67, 63, 72, 78, 74, 82, 79, 87, 84, 90, 92, 88, 95, 91, 97, 94, 96, 92, 98, 95];

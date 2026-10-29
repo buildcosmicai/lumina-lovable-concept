@@ -2,6 +2,7 @@ import { createContext, useContext, useCallback, useEffect, useState, type React
 import { Link, useNavigate, useLocation } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import {
+  BookOpen,
   Activity,
   ArrowUpRight,
   CalendarDays,
@@ -90,6 +91,7 @@ const nav = [
   { label: "Users", to: "/users", icon: UserRound },
   { label: "Partners", to: "/partners", icon: Handshake },
   { label: "AI Assistant", to: "/assistant", icon: MessageSquare },
+  { label: "Help", to: "/help", icon: BookOpen },
 ] as const;
 
 export function AssistantWorkspace({ children }: { children: ReactNode }) {

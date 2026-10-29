@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import {
-  MessageSquare,  Activity,
+  BookOpen, MessageSquare,  Activity,
   CalendarDays,
   Check,
   ChevronLeft,
@@ -123,6 +123,7 @@ const NAV_ITEMS = [
   { label: "Users", icon: Users, to: "/users" as const },
   { label: "Partners", icon: Handshake, to: "/partners" as const },
   { label: "AI Assistant", icon: MessageSquare, to: "/assistant" as const },
+  { label: "Help", icon: BookOpen, to: "/help" as const },
 ];
 
 const uid = () => Math.random().toString(36).slice(2, 9);

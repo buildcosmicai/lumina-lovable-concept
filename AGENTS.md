@@ -10,6 +10,7 @@
 <!-- LOVABLE:END -->
 
 - Keep each major CMS workspace module as its own top-level TanStack route so navigation remains type-safe, shareable, and independently testable.
+- Help articles share a client-safe typed catalogue for search, topic collections and dedicated article routes; documentation explicitly distinguishes demo workflows from connected services to avoid claiming unsupported platform capabilities.
 - AI assistant pages use route-derived conversation IDs, AI Elements and account-owned UIMessage arrays; authenticated server boundaries authorize every read and streamed write so histories cannot cross accounts.
 - Screen inventory and detail pages share typed demo records from a client-safe library so status and assignments stay consistent across routes.
 - Meeting-room zones store optional calendar configuration on the existing zone payload; shared client-safe meeting data and display modules keep editor previews and library templates consistent without breaking older layouts.
