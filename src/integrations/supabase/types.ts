@@ -14,6 +14,54 @@ export type Database = {
   }
   public: {
     Tables: {
+      assistant_access_blocks: {
+        Row: {
+          created_at: string
+          id: string
+          reason: string
+          status: number
+        }
+        Insert: {
+          created_at?: string
+          id: string
+          reason: string
+          status: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          reason?: string
+          status?: number
+        }
+        Relationships: []
+      }
+      assistant_threads: {
+        Row: {
+          created_at: string
+          id: string
+          messages: Json
+          owner_id: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          messages?: Json
+          owner_id: string
+          title?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          messages?: Json
+          owner_id?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       room_connection_credentials: {
         Row: {
           ciphertext: string
