@@ -29,3 +29,7 @@
 - [x] Connect authenticated streaming chat and owner-only conversation storage.
 - [x] Verify opening screen, suggested prompts, sign-in dialog, real AI streaming and follow-up context.
 - [ ] Verify account conversation switching and reload restoration — blocked by no signed-up account; sign in with Google or Lovable first.
+
+# Lumina Help
+- [ ] Add searchable platform articles, topic filtering and dedicated article pages.
+- [ ] Add Help navigation and verify search, article reading and return navigation.
