@@ -71,9 +71,11 @@ export async function handleAssistant(request: Request): Promise<Response> {
         const { error: persistError } = await client.from("assistant_threads").update({ messages: completed as unknown as Json, updated_at: new Date().toISOString() }).eq("id", thread.id).eq("owner_id", auth.user.id);
         if (persistError) throw new Error("Your answer could not be saved. Keep this page open and copy the answer.");
       },
-    }), { getRunId: () => undefined, waitForRunId: async () => undefined }, { "Cache-Control": "no-store" }, { waitForUpstreamHeaders: false });
-    // The Responses helper starts its upstream call eagerly; the SDK streams safe failures.
-    if (upstreamFailure) return fail(upstreamFailure.message, upstreamFailure.status);
+    }), call.gateway, { "Cache-Control": "no-store" });
+    if (upstreamFailure) {
+      void response.body?.cancel();
+      return fail(upstreamFailure.message, upstreamFailure.status);
+    }
     return response;
   } catch (error) {
     if (request.signal.aborted) return fail("Stopped.", 499);
