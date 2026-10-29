@@ -35,7 +35,7 @@ export const editAssistantThread = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => z.object({ id: z.string().uuid(), action: z.enum(["rename", "delete"]), title: z.string().trim().min(1).max(120).optional() }).parse(input))
   .handler(async ({ data, context }) => {
     if (data.action === "rename" && !data.title) throw new Error("Enter a conversation name.");
-    const query = data.action === "delete" ? context.supabase.from("assistant_threads").delete() : context.supabase.from("assistant_threads").update({ title: data.title, updated_at: new Date().toISOString() });
+    const query = data.action === "delete" ? context.supabase.from("assistant_threads").delete() : context.supabase.from("assistant_threads").update({ title: data.title ?? "New conversation", updated_at: new Date().toISOString() });
     const { error } = await query.eq("id", data.id).eq("owner_id", context.userId);
     if (error) throw new Error("The conversation could not be updated.");
     return { ok: true };
