@@ -56,12 +56,10 @@ export const editAssistantThread = createServerFn({ method: "POST" })
     const query =
       data.action === "delete"
         ? context.supabase.from("assistant_threads").delete()
-        : context.supabase
-            .from("assistant_threads")
-            .update({
-              title: data.title ?? "New conversation",
-              updated_at: new Date().toISOString(),
-            });
+        : context.supabase.from("assistant_threads").update({
+            title: data.title ?? "New conversation",
+            updated_at: new Date().toISOString(),
+          });
     const { error } = await query.eq("id", data.id).eq("owner_id", context.userId);
     if (error) throw new Error("The conversation could not be updated.");
     return { ok: true };
