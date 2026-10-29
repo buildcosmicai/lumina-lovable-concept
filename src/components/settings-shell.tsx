@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { Link, useLocation } from "@tanstack/react-router";
-import { MessageSquare, Activity, CalendarDays, CreditCard, Gauge, Handshake, Images, Layers, ListVideo, Monitor, Plug, Settings, UserRound, Users } from "lucide-react";
+import { BookOpen, MessageSquare, Activity, CalendarDays, CreditCard, Gauge, Handshake, Images, Layers, ListVideo, Monitor, Plug, Settings, UserRound, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 type Crumb = { label: string; to?: string };
@@ -9,6 +9,7 @@ const defaultCrumbs: Crumb[] = [
 ];
 
 const items = [
+  { label: "Help", to: "/help", icon: BookOpen },
   { label: "AI Assistant", to: "/assistant", icon: MessageSquare },
   { label: "Control Center", to: "/control-center", icon: Gauge }, { label: "Pulse", to: "/pulse", icon: Activity },
   { label: "Screens", to: "/screens", icon: Monitor }, { label: "Schedules", to: "/schedules", icon: CalendarDays },

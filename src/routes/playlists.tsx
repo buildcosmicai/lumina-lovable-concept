@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import {
-  MessageSquare,  Activity, CalendarDays, ChevronLeft, ChevronRight, Clock, Copy, Film, Gauge, GripVertical, Image as ImageIcon, Images,
+  BookOpen, MessageSquare,  Activity, CalendarDays, ChevronLeft, ChevronRight, Clock, Copy, Film, Gauge, GripVertical, Image as ImageIcon, Images,
   KeyRound, Layers, ListVideo, Monitor, Pause, Play, Plus, Repeat, Search, Settings, Shuffle, SkipForward, Sparkles,
   Trash2, Type, Users, Wand2, Handshake } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -37,6 +37,7 @@ const NAV_ITEMS = [
   { label: "Users", icon: Users, to: "/users" as const },
   { label: "Partners", icon: Handshake, to: "/partners" as const },
   { label: "AI Assistant", icon: MessageSquare, to: "/assistant" as const },
+  { label: "Help", icon: BookOpen, to: "/help" as const },
 ];
 
 const TONES = ["bg-zone-1", "bg-zone-2", "bg-zone-3", "bg-zone-4", "bg-zone-5"];

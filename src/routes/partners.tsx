@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import {
-  MessageSquare,  Activity, Building2, CalendarDays, Check, ChevronLeft, ChevronRight, FileUp, Gauge, Handshake, Images, KeyRound, Layers,
+  BookOpen, MessageSquare,  Activity, Building2, CalendarDays, Check, ChevronLeft, ChevronRight, FileUp, Gauge, Handshake, Images, KeyRound, Layers,
   LifeBuoy, ListVideo, Monitor, Network, Plus, Search, Settings, Users, X, Eye, ShieldCheck,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -36,6 +36,7 @@ const NAV_ITEMS = [
   { label: "Users", icon: Users, to: "/users" as const },
   { label: "Partners", icon: Handshake, to: "/partners" as const },
   { label: "AI Assistant", icon: MessageSquare, to: "/assistant" as const },
+  { label: "Help", icon: BookOpen, to: "/help" as const },
 ];
 
 type PartnerType = "Distributor" | "Reseller";

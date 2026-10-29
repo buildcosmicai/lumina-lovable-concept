@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AssistantRouteImport } from './routes/assistant'
 import { Route as ControlCenterRouteImport } from './routes/control-center'
+import { Route as HelpRouteImport } from './routes/help'
 import { Route as LayoutsRouteImport } from './routes/layouts'
 import { Route as MediaRouteImport } from './routes/media'
 import { Route as PartnersRouteImport } from './routes/partners'
@@ -27,6 +28,8 @@ import { Route as UsersRouteImport } from './routes/users'
 import { Route as ApiAssistantRouteImport } from './routes/api/assistant'
 import { Route as AssistantIndexRouteImport } from './routes/assistant.index'
 import { Route as AssistantThreadIdRouteImport } from './routes/assistant.$threadId'
+import { Route as HelpIndexRouteImport } from './routes/help.index'
+import { Route as HelpSlugRouteImport } from './routes/help.$slug'
 import { Route as RoomPreviewTimetableRouteImport } from './routes/room-preview_.timetable'
 import { Route as ScreensIndexRouteImport } from './routes/screens.index'
 import { Route as ScreensScreenIdRouteImport } from './routes/screens.$screenId'
@@ -49,6 +52,11 @@ const AssistantRoute = AssistantRouteImport.update({
 const ControlCenterRoute = ControlCenterRouteImport.update({
   id: '/control-center',
   path: '/control-center',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HelpRoute = HelpRouteImport.update({
+  id: '/help',
+  path: '/help',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LayoutsRoute = LayoutsRouteImport.update({
@@ -126,6 +134,16 @@ const AssistantThreadIdRoute = AssistantThreadIdRouteImport.update({
   path: '/$threadId',
   getParentRoute: () => AssistantRoute,
 } as any)
+const HelpIndexRoute = HelpIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => HelpRoute,
+} as any)
+const HelpSlugRoute = HelpSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => HelpRoute,
+} as any)
 const RoomPreviewTimetableRoute = RoomPreviewTimetableRouteImport.update({
   id: '/room-preview_/timetable',
   path: '/room-preview/timetable',
@@ -173,6 +191,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/assistant': typeof AssistantRouteWithChildren
   '/control-center': typeof ControlCenterRoute
+  '/help': typeof HelpRouteWithChildren
   '/layouts': typeof LayoutsRoute
   '/media': typeof MediaRoute
   '/partners': typeof PartnersRoute
@@ -187,11 +206,13 @@ export interface FileRoutesByFullPath {
   '/users': typeof UsersRoute
   '/api/assistant': typeof ApiAssistantRoute
   '/assistant/$threadId': typeof AssistantThreadIdRoute
+  '/help/$slug': typeof HelpSlugRoute
   '/room-preview/timetable': typeof RoomPreviewTimetableRoute
   '/screens/$screenId': typeof ScreensScreenIdRoute
   '/settings/integrations': typeof SettingsIntegrationsRouteWithChildren
   '/settings/plan': typeof SettingsPlanRoute
   '/assistant/': typeof AssistantIndexRoute
+  '/help/': typeof HelpIndexRoute
   '/screens/': typeof ScreensIndexRoute
   '/settings/': typeof SettingsIndexRoute
   '/settings/integrations/room-connectors': typeof SettingsIntegrationsRoomConnectorsRoute
@@ -212,10 +233,12 @@ export interface FileRoutesByTo {
   '/users': typeof UsersRoute
   '/api/assistant': typeof ApiAssistantRoute
   '/assistant/$threadId': typeof AssistantThreadIdRoute
+  '/help/$slug': typeof HelpSlugRoute
   '/room-preview/timetable': typeof RoomPreviewTimetableRoute
   '/screens/$screenId': typeof ScreensScreenIdRoute
   '/settings/plan': typeof SettingsPlanRoute
   '/assistant': typeof AssistantIndexRoute
+  '/help': typeof HelpIndexRoute
   '/screens': typeof ScreensIndexRoute
   '/settings': typeof SettingsIndexRoute
   '/settings/integrations/room-connectors': typeof SettingsIntegrationsRoomConnectorsRoute
@@ -226,6 +249,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/assistant': typeof AssistantRouteWithChildren
   '/control-center': typeof ControlCenterRoute
+  '/help': typeof HelpRouteWithChildren
   '/layouts': typeof LayoutsRoute
   '/media': typeof MediaRoute
   '/partners': typeof PartnersRoute
@@ -240,11 +264,13 @@ export interface FileRoutesById {
   '/users': typeof UsersRoute
   '/api/assistant': typeof ApiAssistantRoute
   '/assistant/$threadId': typeof AssistantThreadIdRoute
+  '/help/$slug': typeof HelpSlugRoute
   '/room-preview_/timetable': typeof RoomPreviewTimetableRoute
   '/screens/$screenId': typeof ScreensScreenIdRoute
   '/settings/integrations': typeof SettingsIntegrationsRouteWithChildren
   '/settings/plan': typeof SettingsPlanRoute
   '/assistant/': typeof AssistantIndexRoute
+  '/help/': typeof HelpIndexRoute
   '/screens/': typeof ScreensIndexRoute
   '/settings/': typeof SettingsIndexRoute
   '/settings/integrations/room-connectors': typeof SettingsIntegrationsRoomConnectorsRoute
@@ -256,6 +282,7 @@ export interface FileRouteTypes {
     | '/'
     | '/assistant'
     | '/control-center'
+    | '/help'
     | '/layouts'
     | '/media'
     | '/partners'
@@ -270,11 +297,13 @@ export interface FileRouteTypes {
     | '/users'
     | '/api/assistant'
     | '/assistant/$threadId'
+    | '/help/$slug'
     | '/room-preview/timetable'
     | '/screens/$screenId'
     | '/settings/integrations'
     | '/settings/plan'
     | '/assistant/'
+    | '/help/'
     | '/screens/'
     | '/settings/'
     | '/settings/integrations/room-connectors'
@@ -295,10 +324,12 @@ export interface FileRouteTypes {
     | '/users'
     | '/api/assistant'
     | '/assistant/$threadId'
+    | '/help/$slug'
     | '/room-preview/timetable'
     | '/screens/$screenId'
     | '/settings/plan'
     | '/assistant'
+    | '/help'
     | '/screens'
     | '/settings'
     | '/settings/integrations/room-connectors'
@@ -308,6 +339,7 @@ export interface FileRouteTypes {
     | '/'
     | '/assistant'
     | '/control-center'
+    | '/help'
     | '/layouts'
     | '/media'
     | '/partners'
@@ -322,11 +354,13 @@ export interface FileRouteTypes {
     | '/users'
     | '/api/assistant'
     | '/assistant/$threadId'
+    | '/help/$slug'
     | '/room-preview_/timetable'
     | '/screens/$screenId'
     | '/settings/integrations'
     | '/settings/plan'
     | '/assistant/'
+    | '/help/'
     | '/screens/'
     | '/settings/'
     | '/settings/integrations/room-connectors'
@@ -337,6 +371,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AssistantRoute: typeof AssistantRouteWithChildren
   ControlCenterRoute: typeof ControlCenterRoute
+  HelpRoute: typeof HelpRouteWithChildren
   LayoutsRoute: typeof LayoutsRoute
   MediaRoute: typeof MediaRoute
   PartnersRoute: typeof PartnersRoute
@@ -374,6 +409,13 @@ declare module '@tanstack/react-router' {
       path: '/control-center'
       fullPath: '/control-center'
       preLoaderRoute: typeof ControlCenterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/help': {
+      id: '/help'
+      path: '/help'
+      fullPath: '/help'
+      preLoaderRoute: typeof HelpRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/layouts': {
@@ -481,6 +523,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AssistantThreadIdRouteImport
       parentRoute: typeof AssistantRoute
     }
+    '/help/': {
+      id: '/help/'
+      path: '/'
+      fullPath: '/help/'
+      preLoaderRoute: typeof HelpIndexRouteImport
+      parentRoute: typeof HelpRoute
+    }
+    '/help/$slug': {
+      id: '/help/$slug'
+      path: '/$slug'
+      fullPath: '/help/$slug'
+      preLoaderRoute: typeof HelpSlugRouteImport
+      parentRoute: typeof HelpRoute
+    }
     '/room-preview_/timetable': {
       id: '/room-preview_/timetable'
       path: '/room-preview/timetable'
@@ -554,6 +610,18 @@ const AssistantRouteWithChildren = AssistantRoute._addFileChildren(
   AssistantRouteChildren,
 )
 
+interface HelpRouteChildren {
+  HelpSlugRoute: typeof HelpSlugRoute
+  HelpIndexRoute: typeof HelpIndexRoute
+}
+
+const HelpRouteChildren: HelpRouteChildren = {
+  HelpSlugRoute: HelpSlugRoute,
+  HelpIndexRoute: HelpIndexRoute,
+}
+
+const HelpRouteWithChildren = HelpRoute._addFileChildren(HelpRouteChildren)
+
 interface ScreensRouteChildren {
   ScreensScreenIdRoute: typeof ScreensScreenIdRoute
   ScreensIndexRoute: typeof ScreensIndexRoute
@@ -601,6 +669,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AssistantRoute: AssistantRouteWithChildren,
   ControlCenterRoute: ControlCenterRoute,
+  HelpRoute: HelpRouteWithChildren,
   LayoutsRoute: LayoutsRoute,
   MediaRoute: MediaRoute,
   PartnersRoute: PartnersRoute,
