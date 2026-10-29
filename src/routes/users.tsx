@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState, useSyncExternalStore } from "react";
 import {
-  Activity, CalendarDays, Check, ChevronLeft, ChevronRight, Gauge, Images, KeyRound, Layers, ListVideo, Mail, Monitor,
+  MessageSquare,  Activity, CalendarDays, Check, ChevronLeft, ChevronRight, Gauge, Images, KeyRound, Layers, ListVideo, Mail, Monitor,
   Plus, Search, Send, Settings, ShieldCheck, Trash2, UserPlus, Users, X, Clock3, Sparkles, Handshake } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -35,6 +35,7 @@ const NAV_ITEMS = [
   { label: "Licensing", icon: KeyRound },
   { label: "Users", icon: Users, to: "/users" as const },
   { label: "Partners", icon: Handshake, to: "/partners" as const },
+  { label: "AI Assistant", icon: MessageSquare, to: "/assistant" as const },
 ];
 
 type Role = string;

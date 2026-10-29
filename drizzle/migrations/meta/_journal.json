@@ -15,6 +15,13 @@
       "when": 1792240760126,
       "tag": "0001_room_connectors",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1793310171270,
+      "tag": "0002_assistant_conversations",
+      "breakpoints": true
     }
   ]
 }

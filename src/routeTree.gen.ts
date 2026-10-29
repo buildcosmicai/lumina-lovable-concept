@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AssistantRouteImport } from './routes/assistant'
 import { Route as ControlCenterRouteImport } from './routes/control-center'
 import { Route as LayoutsRouteImport } from './routes/layouts'
 import { Route as MediaRouteImport } from './routes/media'
@@ -23,6 +24,9 @@ import { Route as ScreensRouteImport } from './routes/screens'
 import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as SignInRouteImport } from './routes/sign-in'
 import { Route as UsersRouteImport } from './routes/users'
+import { Route as ApiAssistantRouteImport } from './routes/api/assistant'
+import { Route as AssistantIndexRouteImport } from './routes/assistant.index'
+import { Route as AssistantThreadIdRouteImport } from './routes/assistant.$threadId'
 import { Route as RoomPreviewTimetableRouteImport } from './routes/room-preview_.timetable'
 import { Route as ScreensIndexRouteImport } from './routes/screens.index'
 import { Route as ScreensScreenIdRouteImport } from './routes/screens.$screenId'
@@ -35,6 +39,11 @@ import { Route as SettingsIntegrationsRoomConnectorsRouteImport } from './routes
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AssistantRoute = AssistantRouteImport.update({
+  id: '/assistant',
+  path: '/assistant',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ControlCenterRoute = ControlCenterRouteImport.update({
@@ -102,6 +111,21 @@ const UsersRoute = UsersRouteImport.update({
   path: '/users',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiAssistantRoute = ApiAssistantRouteImport.update({
+  id: '/api/assistant',
+  path: '/api/assistant',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AssistantIndexRoute = AssistantIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AssistantRoute,
+} as any)
+const AssistantThreadIdRoute = AssistantThreadIdRouteImport.update({
+  id: '/$threadId',
+  path: '/$threadId',
+  getParentRoute: () => AssistantRoute,
+} as any)
 const RoomPreviewTimetableRoute = RoomPreviewTimetableRouteImport.update({
   id: '/room-preview_/timetable',
   path: '/room-preview/timetable',
@@ -147,6 +171,7 @@ const SettingsIntegrationsRoomConnectorsRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/assistant': typeof AssistantRouteWithChildren
   '/control-center': typeof ControlCenterRoute
   '/layouts': typeof LayoutsRoute
   '/media': typeof MediaRoute
@@ -160,10 +185,13 @@ export interface FileRoutesByFullPath {
   '/settings': typeof SettingsRouteWithChildren
   '/sign-in': typeof SignInRoute
   '/users': typeof UsersRoute
+  '/api/assistant': typeof ApiAssistantRoute
+  '/assistant/$threadId': typeof AssistantThreadIdRoute
   '/room-preview/timetable': typeof RoomPreviewTimetableRoute
   '/screens/$screenId': typeof ScreensScreenIdRoute
   '/settings/integrations': typeof SettingsIntegrationsRouteWithChildren
   '/settings/plan': typeof SettingsPlanRoute
+  '/assistant/': typeof AssistantIndexRoute
   '/screens/': typeof ScreensIndexRoute
   '/settings/': typeof SettingsIndexRoute
   '/settings/integrations/room-connectors': typeof SettingsIntegrationsRoomConnectorsRoute
@@ -182,9 +210,12 @@ export interface FileRoutesByTo {
   '/schedules': typeof SchedulesRoute
   '/sign-in': typeof SignInRoute
   '/users': typeof UsersRoute
+  '/api/assistant': typeof ApiAssistantRoute
+  '/assistant/$threadId': typeof AssistantThreadIdRoute
   '/room-preview/timetable': typeof RoomPreviewTimetableRoute
   '/screens/$screenId': typeof ScreensScreenIdRoute
   '/settings/plan': typeof SettingsPlanRoute
+  '/assistant': typeof AssistantIndexRoute
   '/screens': typeof ScreensIndexRoute
   '/settings': typeof SettingsIndexRoute
   '/settings/integrations/room-connectors': typeof SettingsIntegrationsRoomConnectorsRoute
@@ -193,6 +224,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/assistant': typeof AssistantRouteWithChildren
   '/control-center': typeof ControlCenterRoute
   '/layouts': typeof LayoutsRoute
   '/media': typeof MediaRoute
@@ -206,10 +238,13 @@ export interface FileRoutesById {
   '/settings': typeof SettingsRouteWithChildren
   '/sign-in': typeof SignInRoute
   '/users': typeof UsersRoute
+  '/api/assistant': typeof ApiAssistantRoute
+  '/assistant/$threadId': typeof AssistantThreadIdRoute
   '/room-preview_/timetable': typeof RoomPreviewTimetableRoute
   '/screens/$screenId': typeof ScreensScreenIdRoute
   '/settings/integrations': typeof SettingsIntegrationsRouteWithChildren
   '/settings/plan': typeof SettingsPlanRoute
+  '/assistant/': typeof AssistantIndexRoute
   '/screens/': typeof ScreensIndexRoute
   '/settings/': typeof SettingsIndexRoute
   '/settings/integrations/room-connectors': typeof SettingsIntegrationsRoomConnectorsRoute
@@ -219,6 +254,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/assistant'
     | '/control-center'
     | '/layouts'
     | '/media'
@@ -232,10 +268,13 @@ export interface FileRouteTypes {
     | '/settings'
     | '/sign-in'
     | '/users'
+    | '/api/assistant'
+    | '/assistant/$threadId'
     | '/room-preview/timetable'
     | '/screens/$screenId'
     | '/settings/integrations'
     | '/settings/plan'
+    | '/assistant/'
     | '/screens/'
     | '/settings/'
     | '/settings/integrations/room-connectors'
@@ -254,9 +293,12 @@ export interface FileRouteTypes {
     | '/schedules'
     | '/sign-in'
     | '/users'
+    | '/api/assistant'
+    | '/assistant/$threadId'
     | '/room-preview/timetable'
     | '/screens/$screenId'
     | '/settings/plan'
+    | '/assistant'
     | '/screens'
     | '/settings'
     | '/settings/integrations/room-connectors'
@@ -264,6 +306,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/assistant'
     | '/control-center'
     | '/layouts'
     | '/media'
@@ -277,10 +320,13 @@ export interface FileRouteTypes {
     | '/settings'
     | '/sign-in'
     | '/users'
+    | '/api/assistant'
+    | '/assistant/$threadId'
     | '/room-preview_/timetable'
     | '/screens/$screenId'
     | '/settings/integrations'
     | '/settings/plan'
+    | '/assistant/'
     | '/screens/'
     | '/settings/'
     | '/settings/integrations/room-connectors'
@@ -289,6 +335,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AssistantRoute: typeof AssistantRouteWithChildren
   ControlCenterRoute: typeof ControlCenterRoute
   LayoutsRoute: typeof LayoutsRoute
   MediaRoute: typeof MediaRoute
@@ -302,6 +349,7 @@ export interface RootRouteChildren {
   SettingsRoute: typeof SettingsRouteWithChildren
   SignInRoute: typeof SignInRoute
   UsersRoute: typeof UsersRoute
+  ApiAssistantRoute: typeof ApiAssistantRoute
   RoomPreviewTimetableRoute: typeof RoomPreviewTimetableRoute
 }
 
@@ -312,6 +360,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/assistant': {
+      id: '/assistant'
+      path: '/assistant'
+      fullPath: '/assistant'
+      preLoaderRoute: typeof AssistantRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/control-center': {
@@ -405,6 +460,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UsersRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/assistant': {
+      id: '/api/assistant'
+      path: '/api/assistant'
+      fullPath: '/api/assistant'
+      preLoaderRoute: typeof ApiAssistantRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/assistant/': {
+      id: '/assistant/'
+      path: '/'
+      fullPath: '/assistant/'
+      preLoaderRoute: typeof AssistantIndexRouteImport
+      parentRoute: typeof AssistantRoute
+    }
+    '/assistant/$threadId': {
+      id: '/assistant/$threadId'
+      path: '/$threadId'
+      fullPath: '/assistant/$threadId'
+      preLoaderRoute: typeof AssistantThreadIdRouteImport
+      parentRoute: typeof AssistantRoute
+    }
     '/room-preview_/timetable': {
       id: '/room-preview_/timetable'
       path: '/room-preview/timetable'
@@ -464,6 +540,20 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AssistantRouteChildren {
+  AssistantThreadIdRoute: typeof AssistantThreadIdRoute
+  AssistantIndexRoute: typeof AssistantIndexRoute
+}
+
+const AssistantRouteChildren: AssistantRouteChildren = {
+  AssistantThreadIdRoute: AssistantThreadIdRoute,
+  AssistantIndexRoute: AssistantIndexRoute,
+}
+
+const AssistantRouteWithChildren = AssistantRoute._addFileChildren(
+  AssistantRouteChildren,
+)
+
 interface ScreensRouteChildren {
   ScreensScreenIdRoute: typeof ScreensScreenIdRoute
   ScreensIndexRoute: typeof ScreensIndexRoute
@@ -509,6 +599,7 @@ const SettingsRouteWithChildren = SettingsRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AssistantRoute: AssistantRouteWithChildren,
   ControlCenterRoute: ControlCenterRoute,
   LayoutsRoute: LayoutsRoute,
   MediaRoute: MediaRoute,
@@ -522,6 +613,7 @@ const rootRouteChildren: RootRouteChildren = {
   SettingsRoute: SettingsRouteWithChildren,
   SignInRoute: SignInRoute,
   UsersRoute: UsersRoute,
+  ApiAssistantRoute: ApiAssistantRoute,
   RoomPreviewTimetableRoute: RoomPreviewTimetableRoute,
 }
 export const routeTree = rootRouteImport

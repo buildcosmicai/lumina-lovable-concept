@@ -23,3 +23,9 @@
 - [x] Verify sample navigation, timetable views and layout before presenting for approval.
 - [x] Promote the approved sample as Meridian with shared room settings, adaptive states and a room-specific timetable.
 - [x] Verify Meridian library playback, template-to-editor, privacy, offline state and saved settings.
+
+# AI assistant
+- [x] Design the assistant workspace with separate conversation URLs and account-saved history.
+- [x] Connect authenticated streaming chat and owner-only conversation storage.
+- [x] Verify opening screen, suggested prompts, sign-in dialog, real AI streaming and follow-up context.
+- [ ] Verify account conversation switching and reload restoration — blocked by no signed-up account; sign in with Google or Lovable first.
