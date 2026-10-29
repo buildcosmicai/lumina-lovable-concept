@@ -9,7 +9,12 @@ import {
 
 export function createResponsesCall(
   request: Request,
-  config: { baseURL: string; apiKey: string; model: string; onResponse?: (response: Response) => Promise<void> },
+  config: {
+    baseURL: string;
+    apiKey: string;
+    model: string;
+    onResponse?: (response: Response) => Promise<void>;
+  },
   messages: ModelMessage[],
   instructions?: string,
 ) {
@@ -50,6 +55,9 @@ export function createResponsesCall(
     result,
     gateway: runIdFetch,
     response: () =>
-      withLovableAiGatewayRunIdHeader(result.toUIMessageStreamResponse({ sendReasoning: true }), runIdFetch),
+      withLovableAiGatewayRunIdHeader(
+        result.toUIMessageStreamResponse({ sendReasoning: true }),
+        runIdFetch,
+      ),
   };
 }
