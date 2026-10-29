@@ -290,7 +290,7 @@ export function AssistantChat({
               </Message>
             ))
           )}
-          {busy && !messages.at(-1)?.parts.some((p) => p.type === "text" && p.text) && (
+          {busy && (messages.at(-1)?.role !== "assistant" || !messages.at(-1)?.parts.some((p) => p.type === "text" && p.text)) && (
             <div className="flex items-center gap-3" role="status">
               <RelayMark className="size-7" />
               <Shimmer>Thinking…</Shimmer>
