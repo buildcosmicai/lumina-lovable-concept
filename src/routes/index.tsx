@@ -548,7 +548,7 @@ function LayoutEditor() {
           </span>
         )}
         <div className="ml-auto flex items-center gap-2">
-          <Button asChild variant="ghost" size="icon" title="Help"><Link to="/help" aria-label="Help"><BookOpen className="size-4" /></Link></Button>
+          <Button asChild variant="ghost" size="icon" title="Help"><Link to="/help" search={{ q: "", topic: "all" }} aria-label="Help"><BookOpen className="size-4" /></Link></Button>
           <Button asChild variant="ghost" size="icon" title="AI Assistant"><Link to="/assistant" aria-label="AI Assistant"><MessageSquare className="size-4" /></Link></Button>
           <Button variant="ghost" size="sm" onClick={resetLayout}>
             <RotateCcw className="size-4" /> Reset

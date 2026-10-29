@@ -31,5 +31,5 @@
 - [ ] Verify account conversation switching and reload restoration — blocked by no signed-up account; sign in with Google or Lovable first.
 
 # Lumina Help
-- [ ] Add searchable platform articles, topic filtering and dedicated article pages.
-- [ ] Add Help navigation and verify search, article reading and return navigation.
+- [x] Add searchable platform articles, topic filtering and dedicated article pages.
+- [x] Add Help navigation and verify search, article reading, reload and return navigation.
